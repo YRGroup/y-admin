@@ -1,14 +1,18 @@
-# vue-admin
+# Project-y-admin
 
-> A Vue.js project
+> 修改本机host为www.test.com
+
+- [project-y](https://github.com/YRGroup/y)
+
+- [schoolday](https://github.com/YRGroup/schoolday)
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-npm install
+npm i --registry=https://registry.npm.taobao.org
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at www.test.com
 npm run dev
 
 # build for production with minification
@@ -18,4 +22,3 @@ npm run build
 npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
