@@ -3,10 +3,25 @@ import Router from 'vue-router';
 import Login from '../views/Login.vue';
 import NotFound from '../views/404.vue';
 import Home from '../views/Home.vue';
-import Table from '../views/nav1/Table.vue';
-import Form from '../views/nav1/Form.vue';
-import User from '../views/nav1/User.vue';
-import Echarts from '../views/charts/Echarts.vue'
+
+import Edit from '../views/component/Edit.vue';
+import Add from '../views/component/Add.vue';
+import List from '../views/component/List.vue';
+import Echarts from '../views/component/Echarts.vue'
+
+import classMain from '../views/class/main';
+import classList from '../views/class/list';
+import classDynamicList from '../views/class/dynamicList';
+
+import teacherMain from '../views/teacher/main';
+import teacherList from '../views/teacher/list';
+
+import studentMain from '../views/student/main';
+import studentList from '../views/student/list';
+
+import parentMain from '../views/parent/main';
+import parentList from '../views/parent/list';
+
 
 Vue.use(Router);
 
@@ -23,55 +38,92 @@ let routes = [
     name: '出错啦',
     hidden: true,
   },
-  //{ path: '/main', component: Main },
   {
-    path: '/',
+    path: '/class',
     component: Home,
-    name: '导航一',
-
-    // 图标样式class
+    name: '班级',
     iconCls: 'el-icon-message',
     children: [
-      // { path: '/main', component: Main, name: '主页', hidden: true },
-      { path: 'table', component: Table, name: 'Table' },
-      { path: 'form', component: Form, name: 'Form' },
-      { path: 'user', component: User, name: '列表' },
+      { path: 'main', component: classMain, name: '班级管理主页' },
+      { path: 'list', component: classList, name: '班级列表' },
+      { path: 'dynamicList', component: classDynamicList, name: '班级动态' },      
+      { path: 'edit', component: Edit, name: '编辑班级' },
+      { path: 'add', component: Add, name: '添加班级' },
     ],
   },
-  // {
-  //     path: '/',
-  //     component: Home,
-  //     name: '导航二',
-  //     iconCls: 'fa fa-id-card-o',
-  //     children: [
-  //         { path: '/page4', component: Page4, name: '页面4' },
-  //         { path: '/page5', component: Page5, name: '页面5' }
-  //     ]
-  // },
-  // {
-  //     path: '/',
-  //     component: Home,
-  //     name: '',
-  //     iconCls: 'fa fa-address-card',
-  //     leaf: true,//只有一个节点
-  //     children: [
-  //         { path: '/page6', component: Page6, name: '导航三' }
-  //     ]
-  // },
   {
-    path: '/',
-    component: Home,
-    name: 'Charts',
-    iconCls: 'fa fa-bar-chart',
-    children: [
-      { path: 'echarts', component: Echarts, name: 'echarts' }
-    ]
+      path: '/teacher',
+      component: Home,
+      name: '教师',
+      iconCls: 'fa fa-id-card-o',
+      children: [
+          { path: 'main', component: List, name: '教师管理主页' },      
+          { path: 'list', component: teacherList, name: '教师列表' },      
+          { path: 'edit', component: Edit, name: '编辑教师' },
+          { path: 'add', component: Add, name: '添加教师' },
+      ]
   },
   {
-      path: '*',
-      hidden: true,
-      redirect: { path: '/404' }
-  }
+      path: '/student',
+      component: Home,
+      name: '学生',
+      iconCls: 'fa fa-id-card-o',
+      children: [
+          { path: 'main', component: studentMain, name: '学生管理主页' },      
+          { path: 'list', component: studentList, name: '查询学生' },      
+          { path: 'edit', component: Edit, name: '编辑学生' },
+          { path: 'add', component: Add, name: '添加学生' },
+      ]
+  },
+  {
+      path: '/parent',
+      component: Home,
+      name: '家长',
+      iconCls: 'fa fa-id-card-o',
+      children: [
+          { path: 'main', component: parentMain, name: '家长管理主页' },      
+          { path: 'list', component: parentList, name: '查询家长' },      
+          { path: 'edit', component: Edit, name: '编辑家长' },
+          { path: 'add', component: Add, name: '添加家长' },
+      ]
+  },
+  {
+      path: '/school',
+      component: Home,
+      name: '',
+      iconCls: 'fa fa-address-card',
+      leaf: true,//只有一个节点
+      children: [
+          { path: '/page6', component: Edit, name: '学校管理' }
+      ]
+  },
+  {
+      path: '/system',
+      component: Home,
+      name: '',
+      iconCls: 'fa fa-address-card',
+      leaf: true,//只有一个节点
+      children: [
+          { path: '/page6', component: Edit, name: '系统管理' }
+      ]
+  },
+  {
+    path: '/dev',
+    component: Home,
+    name: 'dev',
+    iconCls: 'fa fa-bar-chart',
+    children: [
+      { path: 'echarts', component: Echarts, name: '图表' },
+      { path: 'edit', component: Edit, name: '编辑' },
+      { path: 'add', component: Add, name: '添加' },
+      { path: 'list', component: List, name: '查询' },
+    ]
+  },
+  // {
+  //     path: '*',
+  //     hidden: true,
+  //     redirect: { path: '/404' }
+  // }
 ];
 
 export default new Router({

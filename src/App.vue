@@ -11,6 +11,9 @@
 export default {
   name: 'app',
   components: {},
+  mounted(){
+    console.log(this.$store.state)
+  }
 }
 </script>
 

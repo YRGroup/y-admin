@@ -23,13 +23,14 @@
 
 <script>
   import { requestLogin } from '../api/api';
+  import { login } from '../api/user';
   //import NProgress from 'nprogress'
   export default {
     data() {
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
+          account: '13130000083',
           checkPass: '123456'
         },
         rules2: {
@@ -61,21 +62,22 @@
             this.logining = true;
             //NProgress.start();
             var loginParams = {
-              username: this.ruleForm2.account,
+              phone: this.ruleForm2.account,
               password: this.ruleForm2.checkPass,
             };
-            requestLogin(loginParams).then(data => {
+            login(loginParams).then(res => {
               this.logining = false;
               //NProgress.done();
-              let { msg, code, user } = data;
-              if (code !== 200) {
+              let { Msg, Status, Content } = res;
+              if (Msg !== 'OK') {
                 this.$message({
-                  message: msg,
+                  message: Msg,
                   type: 'error',
                 });
               } else {
-                sessionStorage.setItem('user', JSON.stringify(user));
-                this.$router.push({ path: '/table' });
+                this.$store.commit('setToken',res.Content.Token)
+                sessionStorage.setItem('user', JSON.stringify(Content));
+                this.$router.push({ path: '/class/main' });
               }
             });
           } else {

@@ -12,8 +12,7 @@
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-lick userinfo-inner">
-						<!-- <img :src="this.sysUserAvatar" /> {{sysUserName}} -->
-						<img src="../assets/vasttian.png" /> {{sysUserName}}
+						 <img :src="this.sysUserAvatar" /> {{sysUserName}} 
 					</span>
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item>我的消息</el-dropdown-item>
@@ -31,7 +30,7 @@
 					<template v-for="(item, index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
 							<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-							<el-menu-item v-for="child in item.children" :index="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+							<el-menu-item v-for="child in item.children"  :key="child.name" :index="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
 						</el-submenu>
 						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
 					</template>
@@ -61,7 +60,7 @@
 						<el-breadcrumb separator="/" class="breadcrumb-inner">
 
 							<!-- 路由记录生成面包屑 -->
-							<el-breadcrumb-item v-for="item in $route.matched">
+							<el-breadcrumb-item v-for="item in $route.matched" :key="item.name">
 								{{ item.name }}
 							</el-breadcrumb-item>
 						</el-breadcrumb>
@@ -80,7 +79,7 @@
 	export default {
 		data() {
 			return {
-				sysName: 'VUEADMINMOCK',
+				sysName: '育人智慧校园',
 				collapsed: false,
 				sysUserName: '',
 				sysUserAvatar: '',
@@ -132,8 +131,8 @@
 			// console.log("user",user);
 			if (user) {
 				user = JSON.parse(user);
-				this.sysUserName = user.name || '';
-				this.sysUserAvatar = user.avatar || '';
+				this.sysUserName = user.TrueName || '';
+				this.sysUserAvatar = user.Headimgurl || '';
 			}
 		}
 	}
