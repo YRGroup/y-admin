@@ -11,8 +11,17 @@
 export default {
   name: 'app',
   components: {},
+  methods:{
+    showRouteInfo(){
+      // console.log('vuex:')
+      // console.log(this.$store.state)
+    }
+  },
   mounted(){
-    console.log(this.$store.state)
+    
+  },
+  watch:{
+    "$route":"showRouteInfo"
   }
 }
 </script>

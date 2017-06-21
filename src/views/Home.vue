@@ -34,6 +34,15 @@
 						</el-submenu>
 						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
 					</template>
+					<template>
+						<el-collapse>
+							<el-collapse-item title="debug" name="1">
+								<p style="text-align:center;" v-for="(i,index) in debug"><el-button @click="showInfo(i)" type="warning">{{i}}</el-button></p>
+							</el-collapse-item>
+						</el-collapse>
+						
+					</template>
+					
 				</el-menu>
 
 				<!--导航菜单-折叠后-->
@@ -79,6 +88,7 @@
 	export default {
 		data() {
 			return {
+				debug:['this','router','vuex','cookie','localStorage','sessionStorage'],
 				sysName: '育人智慧校园',
 				collapsed: false,
 				sysUserName: '',
@@ -96,6 +106,27 @@
 			};
 		},
 		methods: {
+			showInfo(val){
+				if(val==='this'){
+					console.log(val)
+					console.log(this)
+				}else if(val==='router'){
+					console.log(val)
+					console.log(this.$route.params)
+				}else if(val==='vuex'){
+					console.log(val)
+					console.log(this.$store.state)
+				}else if(val==='cookie'){
+					console.log(val)
+					console.log(document.cookie)
+				}else if(val==='localStorage'){
+					console.log(val)
+					console.log(localStorage)
+				}else if(val==='sessionStorage'){
+					console.log(val)
+					console.log(sessionStorage)
+				}
+			},
 			onSubmit() {
 				console.log('submit!');
 			},

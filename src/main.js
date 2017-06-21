@@ -22,35 +22,48 @@ import { Message } from 'element-ui';
 
 import axios from 'axios'
 axios.defaults.withCredentials=true
-axios.interceptors.request.use(function (config) {    
+axios.interceptors.request.use(config => {    
     let now = new Date().getTime()
-    let token = store.state.user.token
+    // if(sessionStorage.getItem('Token')){
+    //   const token = sessionStorage.getItem('Token')
+    // }else{
+    //   const token = store.state.user.token
+    // }
+    let token = sessionStorage.getItem('Token')
     let sigh = md5(token+now)
     config.headers.time = now
     config.headers.sign = sigh
     return config
-}, function (err) {
+}, err => {
     console.log('error')
     console.log(err)
     return Promise.reject(err)
 });
 axios.interceptors.response.use(
   response => {
+    console.log('axios to:'+response.config.url)
     console.log(response)
     return response
   },
   error => {
-    console.log('发生错误：\n ' + error)
+    console.log('发生错误：')
+    console.log(error)
     Message({
       showClose: true,
       message: error.response.statusText,
       type: 'error',
       duration: 2 * 1000
     })
+    if(error.response.status==401){
+      router.push('/login')
+    }
     return Promise.reject(error)
   }
 )
-Vue.prototype.$http = axios
+Vue.prototype.$axios = axios
+
+import classAPI from '@/api/class'
+Vue.prototype.$classAPI = classAPI
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

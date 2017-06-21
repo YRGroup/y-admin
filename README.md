@@ -1,6 +1,6 @@
 # Project-y-admin
 
-> 修改本机host为www.test.com
+> 修改本机host为admin.test.com
 
 - [project-y](https://github.com/YRGroup/y)
 
@@ -12,7 +12,7 @@
 # install dependencies
 npm i --registry=https://registry.npm.taobao.org
 
-# serve with hot reload at www.test.com
+# serve with hot reload at admin.test.com
 npm run dev
 
 # build for production with minification

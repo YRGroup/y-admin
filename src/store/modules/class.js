@@ -1,5 +1,5 @@
-import { getClassList,getClassDynamic } from '../../api/class';
-import * as types from '../mutation-types';
+import classAPI from '../../api/class'
+import * as types from '../mutation-types'
 
 const state = {
 	classList:[],
@@ -12,7 +12,7 @@ const getters = {
 const actions = {
 	getDynamicList({commit,state},para){
 		state.listLoading = true
-		getClassDynamic(para).then((value)=>{
+		classAPI.getClassDynamic(para).then((value)=>{
 			if(!value.length){
 				value.push({content:'null'})
 			}
@@ -22,7 +22,7 @@ const actions = {
 	},
 	getClassList({commit,state},para){
 		state.listLoading = true
-		getClassList(para).then((value)=>{
+		classAPI.getClassList(para).then((value)=>{
 			commit('getClassList',value)
 			state.listLoading = false
 		})

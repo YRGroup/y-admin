@@ -1,10 +1,55 @@
 <template>
 	<section>
-		<div class="ttt">
-			<span>less OK </span>
-		this is class manage main page
 
-		</div>
+		<el-card class="box-card">
+			<div slot="header" class="clearfix">
+				<span >家长管理主页</span>
+			</div>
+			<div class="item">
+				000</br></br></br></br></br></br></br>000
+			</div>
+		</el-card>
+
+		</br>
+
+		<el-row :gutter="20">
+			<el-col :span="6">
+				<el-card class="box-card">
+					<div slot="header" class="clearfix">
+						<span >卡片名称</span>
+					</div>
+					<div class="item">
+						000
+					</div>
+				</el-card>
+			</el-col>
+			<el-col :span="6">
+				<el-card class="box-card">
+					<div slot="header" class="clearfix">
+						<span style="line-height: 36px;">卡片名称</span>
+						<el-button style="float: right;" type="primary">操作按钮</el-button>
+					</div>
+					<div class="item">
+						000
+					</div>
+				</el-card>
+			</el-col>
+			<el-col :span="6">
+				<el-card class="box-card">
+					<div slot="header" class="clearfix">
+						<span style="line-height: 36px;">卡片名称</span>
+						<el-button style="float: right;" type="primary">操作按钮</el-button>
+					</div>
+					<div class="item">
+						000
+					</div>
+				</el-card>
+			</el-col>
+		</el-row>
+
+		
+
+		
 
 	</section>
 </template>
@@ -17,7 +62,7 @@
 			}
 		},
 		computed: {
-			dynamicList() {
+			data() {
 				if (!this.$store.getters.dynamicList.length) {
 					return this.getDynamicList();
 				}
@@ -28,7 +73,7 @@
 			})
 		},
 		methods: {
-			getDynamicList() {
+			getData() {
 				let para = {
 					cid: this.filters.id||16,
 					count:0,					
@@ -42,11 +87,9 @@
 </script>
 
 <style lang="less" scoped>
-.ttt{
-	line-height: 200px;
-	text-align: center;
-	span{
-		background: yellow;
-	}
-}
+.box-card {
+   	.item{
+		   min-height:200px;
+	   }
+  }
 </style>

@@ -3,7 +3,7 @@
 
 		<el-card class="box-card">
 			<div slot="header" class="clearfix">
-				<span >教师管理主页</span>
+				<span >这是主页</span>
 			</div>
 			<div class="item">
 				000</br></br></br></br></br></br></br>000
@@ -62,7 +62,7 @@
 			}
 		},
 		computed: {
-			data() {
+			dynamicList() {
 				if (!this.$store.getters.dynamicList.length) {
 					return this.getDynamicList();
 				}
@@ -73,7 +73,7 @@
 			})
 		},
 		methods: {
-			getData() {
+			getDynamicList() {
 				let para = {
 					cid: this.filters.id||16,
 					count:0,					
@@ -87,6 +87,13 @@
 </script>
 
 <style lang="less" scoped>
+.ttt{
+	line-height: 200px;
+	text-align: center;
+	span{
+		background: yellow;
+	}
+}
 .box-card {
    	.item{
 		   min-height:200px;

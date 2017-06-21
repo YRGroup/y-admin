@@ -68,18 +68,18 @@
             login(loginParams).then(res => {
               this.logining = false;
               //NProgress.done();
-              let { Msg, Status, Content } = res;
-              if (Msg !== 'OK') {
-                this.$message({
-                  message: Msg,
+              let { Msg, Status, Content } = res
+              this.$store.commit('setToken',res.Content.Token)
+              sessionStorage.setItem('Token', res.Content.Token) 
+              sessionStorage.setItem('user', JSON.stringify(Content))
+              this.$router.push({ path: '/main' })
+            }).catch(err=>{
+              this.logining = false;
+              this.$message({
+                  message: err,
                   type: 'error',
                 });
-              } else {
-                this.$store.commit('setToken',res.Content.Token)
-                sessionStorage.setItem('user', JSON.stringify(Content));
-                this.$router.push({ path: '/class/main' });
-              }
-            });
+            })
           } else {
             console.log('error submit!!');
             return false;

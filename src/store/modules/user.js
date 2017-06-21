@@ -2,12 +2,10 @@ import { login } from '../../api/user';
 import * as types from '../mutation-types';
 
 const state = {
-	token:null,
-	sign:null,
+	token:'null',
 };
 const getters = {
 	token:state=>state.token,
-	sign:state=>state.sign,
 };
 const actions = {
 	login({commit,state},para){
