@@ -72,7 +72,7 @@
               this.$store.commit('setToken',res.Content.Token)
               sessionStorage.setItem('Token', res.Content.Token) 
               sessionStorage.setItem('user', JSON.stringify(Content))
-              this.$router.push({ path: '/main' })
+              this.$router.push({ path: '/' })
             }).catch(err=>{
               this.logining = false;
               this.$message({

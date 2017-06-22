@@ -109,7 +109,7 @@ let routes = [
       iconCls: 'fa fa-address-card',
       leaf: true,//只有一个节点
       children: [
-          { path: '/page6', component: Edit, name: '学校管理' }
+          { path: '/school', component: Edit, name: '学校管理' }
       ]
   },
   {
@@ -119,7 +119,7 @@ let routes = [
       iconCls: 'fa fa-address-card',
       leaf: true,//只有一个节点
       children: [
-          { path: '/page6', component: Edit, name: '系统管理' }
+          { path: '/system', component: Edit, name: '系统管理' }
       ]
   },
   {
@@ -134,11 +134,11 @@ let routes = [
       { path: 'list', component: List, name: '查询' },
     ]
   },
-  // {
-  //     path: '*',
-  //     hidden: true,
-  //     redirect: { path: '/404' }
-  // }
+  {
+      path: '*',
+      hidden: true,
+      redirect: { path: '/404' }
+  }
 ];
 
 export default new Router({

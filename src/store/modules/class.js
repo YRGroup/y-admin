@@ -3,23 +3,11 @@ import * as types from '../mutation-types'
 
 const state = {
 	classList:[],
-	dynamicList:[],
 };
 const getters = {
 	classList: state => state.classList,
-	dynamicList: state => state.dynamicList,
 };
 const actions = {
-	getDynamicList({commit,state},para){
-		state.listLoading = true
-		classAPI.getClassDynamic(para).then((value)=>{
-			if(!value.length){
-				value.push({content:'null'})
-			}
-			commit('getDynamicList',value)
-			state.listLoading = false
-		})
-	},
 	getClassList({commit,state},para){
 		state.listLoading = true
 		classAPI.getClassList(para).then((value)=>{
@@ -29,9 +17,6 @@ const actions = {
 	},
 };
 const mutations = {
-	getDynamicList(state,value){
-		state.dynamicList=value
-	},
 	getClassList(state,value){
 		state.classList=value
 	},

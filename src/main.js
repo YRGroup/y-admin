@@ -19,9 +19,9 @@ Vue.config.productionTip = false
 
 import md5 from 'js-md5'
 import { Message } from 'element-ui';
-
 import axios from 'axios'
 axios.defaults.withCredentials=true
+// request拦截器，计算签名
 axios.interceptors.request.use(config => {    
     let now = new Date().getTime()
     // if(sessionStorage.getItem('Token')){
@@ -39,6 +39,7 @@ axios.interceptors.request.use(config => {
     console.log(err)
     return Promise.reject(err)
 });
+// response拦截器，log信息
 axios.interceptors.response.use(
   response => {
     console.log('axios to:'+response.config.url)
@@ -54,16 +55,23 @@ axios.interceptors.response.use(
       type: 'error',
       duration: 2 * 1000
     })
+    // 401未登录时跳转到登陆
     if(error.response.status==401){
       router.push('/login')
     }
     return Promise.reject(error)
   }
 )
-Vue.prototype.$axios = axios
+// Vue.prototype.$axios = axios
 
+// API服务器地址，$server或者this.$server调用
+Vue.prototype.$server = 'http://api.test.com'
+
+// 分模块挂载API方法
 import classAPI from '@/api/class'
 Vue.prototype.$classAPI = classAPI
+import postAPI from '@/api/post'
+Vue.prototype.$postAPI = postAPI
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

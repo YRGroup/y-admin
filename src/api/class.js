@@ -4,39 +4,6 @@ let base = 'http://api.test.com';
 
 let classAPI = {}
 
-// 获取动态
-classAPI.getClassDynamic = params => { 
-    return axios.get(
-        `${base}/api/Class/GetDynamicList`,
-        {params: params }
-    ).then(res => res.data.Content)
-}
-
-// 添加动态
-classAPI.addClassDynamic = params => { 
-    return axios.post(
-        `${base}/api/Class/AddDynamic`,
-        params
-    ).then(res => res.data.Content)
-}
-
-// 修改动态
-classAPI.editClassDynamic = params => { 
-    return axios.post(
-        `${base}/api/Class/AddDynamic`,
-        params
-    ).then(res => res.data.Content)
-}
-
-// 删除动态
-classAPI.deleteClassDynamic = params => { 
-    return axios.get(
-        `${base}/api/Class/AddDynamic`,
-        {params: params }
-    ).then(res => res.data.Content)
-}
-
-
 
 
 // 获取作业
@@ -108,9 +75,9 @@ classAPI.editClassInfo = params => {
 
 // 删除班级
 classAPI.deleteClass = params => { 
-    return axios.get(
+    return axios.post(
         `${base}/api/Class/delete`,
-        { params: params }
+        params
     ).then(res => res.data.Content)
 }
 

@@ -10,77 +10,95 @@
 					<el-button type="primary" v-on:click="getData">查询</el-button>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="handleAdd">新增</el-button>
+					<el-button type="primary" @click="handleAddClass">新增</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 
 		<!--列表-->
 		<template>
-			<el-table :data="data" highlight-current-row v-loading="loading"  style="width: 100%;">
+			<el-table :data="currentData" fixed 
+				highlight-current-row v-loading="loading" 
+				style="width: 100%;"
+			>
 				<el-table-column fixed="left" type="index" width="60">
 				</el-table-column>
-				<el-table-column prop="cid" label="ID" width="60" sortable>
+				<el-table-column prop="cid" label="ID" width="70" sortable>
 				</el-table-column>
 				<el-table-column prop="Name" label="名称" sortable>
 				</el-table-column>
-				<el-table-column prop="StudentCount" label="学生数量" sortable>
+				<el-table-column prop="HeadImgurl" label="班级logo" sortable :show-overflow-tooltip="true">
 				</el-table-column>
-				<el-table-column prop="TeacherCount" label="教师数量" sortable>
-				</el-table-column>
-				<el-table-column prop="HeadImgurl" label="班级logo" sortable>
-				</el-table-column>
-				<el-table-column fixed="right" label="操作" width="150">
+				<el-table-column prop="StudentCount" label="学生" align="center" sortable>
 					<template scope="scope" >
-						<el-button type="warning" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-						<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+						<el-button type="primary" size="small" 
+							@click="handleAlbums(scope.row.albums)">
+							学生  {{scope.row.StudentCount}}
+						</el-button>	
+					</template>	
+				</el-table-column>
+				<el-table-column prop="TeacherCount" label="教师" align="center" sortable>
+					<template scope="scope" >
+						<el-button type="primary" size="small" 
+							@click="handleAlbums(scope.row.albums)">
+							教师  {{scope.row.TeacherCount}}
+						</el-button>	
+					</template>	
+				</el-table-column>
+				<el-table-column fixed="right" label="操作" align="center">
+					<template scope="scope" >
+						<el-button type="warning" size="small" 
+							@click="handleEditClass(scope.row)"
+						>编辑</el-button>
+						<el-button type="danger" size="small" 
+							@click="handleDeleteClass(scope.row.cid)"
+						>删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 		</template>
 
-		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-			<el-form :model="editForm" label-width="80px" ref="editForm">
+		<el-col :span="24" class="toolbar">
+			<el-pagination
+				layout="sizes, total, prev, pager, next"
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+				:page-sizes="pageSizes"
+				:total="total"
+				style="float:right;">
+			</el-pagination>
+		</el-col>
+
+		<el-dialog title="编辑" v-model="editClassVisible" :close-on-click-modal="false">
+			<el-form :model="editClassData" label-width="80px" ref="editClassDom">
 				<el-form-item label="班级Id" prop="cid">
-					<el-input v-model="editForm.cid" :disabled="true" auto-complete="off"></el-input>
+					<el-input v-model="editClassData.cid" :disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="班级名" prop="Name">
-					<el-input v-model="editForm.Name" auto-complete="off"></el-input>
+					<el-input v-model="editClassData.Name"></el-input>
 				</el-form-item>
 				<el-form-item label="班级logo" prop="HeadImgurl">
-					<el-input v-model="editForm.HeadImgurl" auto-complete="off"></el-input>
+					<el-input v-model="editClassData.HeadImgurl"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="editFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="editSubmit">提交</el-button>
+				<el-button @click.native="editClassVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="editClassSubmit">提交</el-button>
 			</div>
 		</el-dialog>
 
-		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+		<el-dialog title="新增" v-model="addClassVisible" :close-on-click-modal="false">
+			<el-form :model="addClassData" label-width="80px" :rules="addClassRules" ref="addClassDom">
 				<el-form-item label="姓名" prop="name">
-					<el-input v-model="addForm.name" auto-complete="off"></el-input>
+					<el-input v-model="addClassData.name"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
-				<el-form-item label="生日">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.birth"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="addForm.addr"></el-input>
+				<el-form-item label="班级logo" prop="HeadImgurl">
+					<el-input v-model="addClassData.HeadImgurl"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="addFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="addSubmit">提交</el-button>
+				<el-button @click.native="addClassVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="addClassSubmit">提交</el-button>
 			</div>
 		</el-dialog>
 
@@ -91,35 +109,28 @@
 	export default {
 		data() {
 			return {
+				page: 1,
+				pageSize: 10,
+				pageSizes: [10, 20, 30, 50],
 				filters: {
 					id: '',
 				},
-				editFormVisible: false,
-				editFormRules: {
-					name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
-					]
-				},
-				editForm: {
+				editClassVisible: false,
+				editClassData: {
 					cid: '',
 					Name:'',
 					HeadImgurl: '',
 				},
-				addFormVisible: false,
-				// addLoading: false,
-				addFormRules: {
+				addClassVisible: false,
+				addClassRules: {
 					name: [
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
 					]
 				},
-				// 新增界面数据
-				addForm: {
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: '',
-				}
+				addClassData: {
+					Name: '',
+					HeadImgurl: '',
+				},
 			}
 		},
 		computed: {
@@ -129,6 +140,17 @@
 				}
 				return this.$store.getters.classList;
 			},
+			total(){
+				return this.$store.getters.classList.length
+			},
+			currentData(){
+				let start = (this.page - 1) * this.pageSize;
+				let end = this.page * this.pageSize;
+				if (!this.$store.getters.classList.length) {
+					return this.getData();
+				}
+				return this.$store.getters.classList.slice(start,end)
+			},
 			...mapGetters({
 				loading: 'listLoading',
 			})
@@ -137,54 +159,69 @@
 			getData() {
 				this.$store.dispatch('getClassList');
 			},
-			handleEdit: function (row) {
-				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
+			handleSizeChange(val) {
+				this.pageSize = val;
 			},
-			handleAdd: function () {
-				this.addFormVisible = true;
-				this.addForm = {
-					cid: '',
-					Name:'',
+			handleCurrentChange(val) {
+				this.page = val;
+			},
+			handleEditClass: function (row) {
+				this.editClassVisible = true;
+				this.editClassData = Object.assign({}, row);
+			},
+			handleAddClass: function () {
+				this.addClassVisible = true;
+				this.addClassData = {
+					Name: '',
 					HeadImgurl: '',
 				};
 			},
-			editSubmit: function () {
-				this.$refs.editForm.validate((valid) => {
+			handleDeleteClass: function (cid) {
+				this.$confirm('确认删除该记录吗?', '提示', {
+					type: 'warning'
+				}).then(()=>{
+					let para = {
+						cid:cid
+					}
+					this.$classAPI.deleteClass(para).then(()=>{
+						this.$message({
+							message: '删除成功',
+							type: 'success',
+						})
+						this.getData()
+					}).catch((err) => {
+						console.error('fff>>>>', err);
+						this.$message({
+							message: '删除失败了哦!',
+							type: 'error',
+						})
+					})
+				})
+			},
+			editClassSubmit: function () {
+				this.$refs.editClassDom.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							//NProgress.start();
-							let para = {
-								cid : this.editForm.cid,
-								Name : this.editForm.Name,
-								HeadImgurl : this.editForm.HeadImgurl,
-							}
-							this.$classAPI.editClassInfo(para).then(() => {
+							this.$classAPI.editClassInfo(this.editClassData).then(() => {
 								//NProgress.done();
-								this.$refs['editForm'].resetFields();
-								this.editFormVisible = false;
+								this.$refs['editClassDom'].resetFields();
+								this.editClassVisible = false;
 								this.getData()
 							});
 						});
 					}
 				});
 			},
-			addSubmit: function () {
-				this.$refs.addForm.validate((valid) => {
+			addClassSubmit: function () {
+				this.$refs.addClassDom.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							//NProgress.start();
-							let para = Object.assign({}, this.addForm, {
-								all: {
-									page: this.page,
-									name: this.filters.name,
-								},
-							});
-							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-							this.$store.dispatch('addUser', para).then(() => {
+							this.$classAPI.addClass(this.addClassData).then(() => {
 								//NProgress.done();
-								this.$refs['addForm'].resetFields();
-								this.addFormVisible = false;
+								this.$refs['addClassDom'].resetFields();
+								this.addClassVisible = false;
 							});
 						});
 					}

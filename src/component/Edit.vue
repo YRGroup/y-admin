@@ -112,7 +112,7 @@
 	</section>
 </template>
 <script>
-	import util from '../../common/js/util';
+	import util from '@/common/js/util';
 	import { mapGetters } from 'vuex';
 	//import NProgress from 'nprogress'
 
