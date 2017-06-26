@@ -47,7 +47,7 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    console.log('发生错误：')
+    console.log('Error：')
     console.log(error)
     Message({
       showClose: true,
@@ -72,6 +72,8 @@ import classAPI from '@/api/class'
 Vue.prototype.$classAPI = classAPI
 import postAPI from '@/api/post'
 Vue.prototype.$postAPI = postAPI
+import teacherAPI from '@/api/teacher'
+Vue.prototype.$teacherAPI = teacherAPI
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

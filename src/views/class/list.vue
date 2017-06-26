@@ -32,7 +32,7 @@
 				<el-table-column prop="StudentCount" label="学生" align="center" sortable>
 					<template scope="scope" >
 						<el-button type="primary" size="small" 
-							@click="handleAlbums(scope.row.albums)">
+							@click="$router.push('/student/list?id='+scope.row.cid)">
 							学生  {{scope.row.StudentCount}}
 						</el-button>	
 					</template>	
@@ -40,12 +40,20 @@
 				<el-table-column prop="TeacherCount" label="教师" align="center" sortable>
 					<template scope="scope" >
 						<el-button type="primary" size="small" 
-							@click="handleAlbums(scope.row.albums)">
+							@click="$router.push('/teacher/list?id='+scope.row.cid)">
 							教师  {{scope.row.TeacherCount}}
 						</el-button>	
 					</template>	
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" align="center">
+				<el-table-column prop="cid" label="动态" align="center" sortable>
+					<template scope="scope" >
+						<el-button type="primary" size="small" 
+							@click="$router.push('/post/list?id='+scope.row.cid)">
+							动态
+						</el-button>	
+					</template>	
+				</el-table-column>
+				<el-table-column fixed="right" label="操作" width="160" align="center">
 					<template scope="scope" >
 						<el-button type="warning" size="small" 
 							@click="handleEditClass(scope.row)"

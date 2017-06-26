@@ -18,7 +18,7 @@
 				</el-form-item>
 
 				<el-form-item>
-					<el-button type="primary" v-on:click="getData">查询</el-button>
+					<el-button type="primary" v-on:click="$router.push('/post/list?id='+filters.cid)">查询</el-button>
 				</el-form-item>
 				<el-form-item fixed="right">
 					<el-button type="success" @click="handleAddPost">新增</el-button>
@@ -106,7 +106,7 @@
 
 		<el-dialog title="查看配图" v-model="albumsVisible" :close-on-click-modal="false">
 			<el-row :gutter="20">
-				<el-col :span="6" v-for="i in albums">
+				<el-col :span="6" v-for="i in albums" :key="i">
 					<div class="pic">
 						<img :src="$server+i">
 					</div>
@@ -140,6 +140,7 @@
 <script>
 	import { mapGetters } from 'vuex';
 	export default {
+		name:'postList',
 		data() {
 			return {
 				page: 1,
@@ -218,6 +219,11 @@
 				console.log(val)
 			},
 			getData() {
+				if(this.$route.query.id){
+					console.log('route.query:')
+					console.log(this.$route.query)
+					this.filters.cid=this.$route.query.id
+				}
 				let para = {
 					cid: this.filters.cid,
 					count:0,					
@@ -308,6 +314,12 @@
 					}
 				});
 			},
+		},
+		mounted(){
+			
+		},
+		watch:{
+			"$route": "getData"
 		},
 	};
 

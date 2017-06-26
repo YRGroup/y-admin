@@ -19,6 +19,7 @@ import postList from '../views/post/list';
 
 import teacherMain from '../views/teacher/main';
 import teacherList from '../views/teacher/list';
+import teacherInfo from '../views/teacher/info';
 
 import studentMain from '../views/student/main';
 import studentList from '../views/student/list';
@@ -79,7 +80,8 @@ let routes = [
       iconCls: 'fa fa-id-card-o',
       children: [
           { path: '/teacher/main', component: List, name: '教师管理主页' },      
-          { path: '/teacher/list', component: teacherList, name: '教师列表' },      
+          { path: '/teacher/list', component: teacherList, name: '教师列表' }, 
+          { path: '/teacher/info', component: teacherInfo, name: '教师详情' },                     
       ]
   },
   {

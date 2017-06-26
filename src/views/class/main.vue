@@ -82,6 +82,10 @@
 				this.$store.dispatch('getDynamicList',para);
 			},
 		},
+		mounted(){
+			console.log('$route.query')
+			console.log(this.$route.query)
+		}
 	};
 
 </script>
