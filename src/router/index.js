@@ -13,6 +13,7 @@ import main from '../views/main/main';
 
 import classMain from '../views/class/main';
 import classList from '../views/class/list';
+import classInfo from '../views/class/info';
 
 import postMain from '../views/post/main';
 import postList from '../views/post/list';
@@ -23,9 +24,11 @@ import teacherInfo from '../views/teacher/info';
 
 import studentMain from '../views/student/main';
 import studentList from '../views/student/list';
+import studentInfo from '../views/student/info';
 
 import parentMain from '../views/parent/main';
 import parentList from '../views/parent/list';
+import parentInfo from '../views/parent/info';
 
 
 Vue.use(Router);
@@ -61,6 +64,7 @@ let routes = [
     children: [
       { path: '/class/main', component: classMain, name: '班级管理主页' },
       { path: '/class/list', component: classList, name: '班级列表' },
+      { path: '/class/info', component: classInfo, name: '班级详情' },
     ],
   },
 {
@@ -91,7 +95,8 @@ let routes = [
       iconCls: 'fa fa-id-card-o',
       children: [
           { path: '/student/main', component: studentMain, name: '学生管理主页' },      
-          { path: '/student/list', component: studentList, name: '查询学生' },      
+          { path: '/student/list', component: studentList, name: '学生列表' },    
+          { path: '/student/info', component: studentInfo, name: '学生详情' },                                 
       ]
   },
   {
@@ -101,7 +106,8 @@ let routes = [
       iconCls: 'fa fa-id-card-o',
       children: [
           { path: '/parent/main', component: parentMain, name: '家长管理主页' },      
-          { path: '/parent/list', component: parentList, name: '查询家长' },      
+          { path: '/parent/list', component: parentList, name: '家长列表' },      
+          { path: '/parent/info', component: parentInfo, name: '家长详情' },      
       ]
   },
   {

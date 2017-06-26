@@ -67,13 +67,18 @@ axios.interceptors.response.use(
 // API服务器地址，$server或者this.$server调用
 Vue.prototype.$server = 'http://api.test.com'
 
-// 分模块挂载API方法
+// 分模块挂载API
 import classAPI from '@/api/class'
 Vue.prototype.$classAPI = classAPI
 import postAPI from '@/api/post'
 Vue.prototype.$postAPI = postAPI
 import teacherAPI from '@/api/teacher'
 Vue.prototype.$teacherAPI = teacherAPI
+import studentAPI from '@/api/student'
+Vue.prototype.$studentAPI = studentAPI
+import parentAPI from '@/api/parent'
+Vue.prototype.$parentAPI = parentAPI
+
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

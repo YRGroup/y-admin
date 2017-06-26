@@ -8,6 +8,8 @@ import klass from './modules/class';
 import post from './modules/post';
 import user from './modules/user';
 import teacher from './modules/teacher';
+import student from './modules/student';
+import parent from './modules/parent';
 
 
 Vue.use(Vuex);
@@ -24,6 +26,8 @@ export default new Vuex.Store({
 		user,
 		post,
 		teacher,
+		student,
+		parent,
 	},
 	actions,
 	mutations,

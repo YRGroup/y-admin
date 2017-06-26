@@ -7,14 +7,20 @@
 				<el-button style="float: right;" type="primary" @click.native="changeEditInfo">编辑资料</el-button>
 			</div>
 			<el-form :model="data" label-width="80px" ref="editTeacherDom">
-				<el-form-item label="教师Id">
+				<el-form-item label="教师Id" class="form2">
 					<el-input v-model="data.Meid" :disabled="true"></el-input>
 				</el-form-item>
-				<el-form-item label="姓名">
+				<el-form-item label="手机" class="form2">
+					<el-input v-model="data.Mobilephone" :disabled="ifEditInfo?false:true"></el-input>
+				</el-form-item>
+				<el-form-item label="姓名" class="form3">
 					<el-input v-model="data.TrueName" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
+				<el-form-item label="性别" class="form3">
 					<el-input v-model="data.Sex" :disabled="ifEditInfo?false:true"></el-input>
+				</el-form-item>
+				<el-form-item label="科目" class="form3">
+					<el-input v-model="data.Course" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
 				<el-form-item label="简介">
 					<el-input v-model="data.SelfDiscription" :disabled="ifEditInfo?false:true"></el-input>
@@ -23,8 +29,8 @@
 					<el-input v-model="data.Headimgurl" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
 			</el-form>
-			<el-col :span="24" class="toolbar" v-show="ifEditInfo">
-				<el-button type="primary" size="small" @click.native="handleEditTeacher(scope.row)">提交修改</el-button>
+			<el-col :span="24" class="toolbar" v-show="ifEditInfo"  style="text-align:center;">
+				<el-button type="primary" @click.native="handleEditTeacher()">提交修改</el-button>
 			</el-col>
 		</el-card>
 
@@ -32,37 +38,46 @@
 
 		<el-row :gutter="20">
 			<el-col :span="6">
-				<el-card class="box-card">
+				<el-card class="box-card" v-if="!data.Classes.length">
 					<div slot="header" class="clearfix">
-						<span >班级</span>
+						<span >执教班级</span>
 					</div>
 					<div class="item">
-						000
+						尚未添加
 					</div>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
-				<el-card class="box-card">
+				<el-card class="box-card" v-if="data.Classes.length" v-for="c in data.Classes" :key="c.CourseName">
 					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">卡片名称</span>
-						<el-button style="float: right;" type="primary">操作按钮</el-button>
+						<span @click="$router.push('/class/main?classId='+c.ClassID)">{{c.ClassName}}</span>
 					</div>
 					<div class="item">
-						000
+						<p>执教科目：{{c.CourseName}}</p>
+						<p>执教时间：{{c.Start}}</p>
+					</div>
+				</el-card>
+			</el-col>
+			<!--<el-col :span="6">
+				<el-card class="box-card" v-if="!data.teaching_experience.length">
+					<div slot="header" class="clearfix">
+						<span >教学经历</span>
+					</div>
+					<div class="item">
+						尚未添加
 					</div>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
-				<el-card class="box-card">
+				<el-card class="box-card" v-if="data.teaching_experience.length" v-for="e in data.teaching_experience">
 					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">卡片名称</span>
-						<el-button style="float: right;" type="primary">操作按钮</el-button>
+						<span >教学经历</span>
 					</div>
 					<div class="item">
-						000
+						{{e}}
 					</div>
 				</el-card>
-			</el-col>
+			</el-col>-->
 		</el-row>
 
 		
@@ -88,7 +103,7 @@
 		methods: {
 			getData() {
 				let para = {
-					Meid: this.$route.query.id,
+					Meid: this.$route.query.teacherId||'0ddavcge'
 				};
 				this.$teacherAPI.getTeacherInfo(para).then(res=>{
 					this.data = res
@@ -100,11 +115,26 @@
 				}else{
 					this.ifEditInfo=true
 				}
-			}
+			},
+			handleEditTeacher(){
+				this.$teacherAPI.editTeacher(this.data).then(()=>{
+						this.$message({
+							message: '修改成功',
+							type: 'success',
+						})
+						this.ifEditInfo=false
+						this.getData()
+					}
+				).catch(()=>{
+					this.$message({
+						message: '修改失败',
+						type: 'error',
+					})
+				})
+			},
 		},
 		mounted(){
 			this.getData()
-			console.log(navigator)
 		}
 	};
 
@@ -113,7 +143,7 @@
 <style lang="less" scoped>
 .box-card {
    	.item{
-		   min-height:200px;
+		//    min-height:200px;
 	   }
   }
 </style>

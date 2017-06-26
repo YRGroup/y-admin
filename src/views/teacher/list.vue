@@ -4,11 +4,11 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="班级ID">
-					<el-input v-model="filters.id" placeholder="班级ID"></el-input>
+					<el-input v-model="filters.classId" placeholder="班级ID"></el-input>
 				</el-form-item>
 
 				<el-form-item>
-					<el-button type="primary" v-on:click="$router.push('/teacher/list?id='+filters.id)">查询</el-button>
+					<el-button type="primary" @click="$router.push('/teacher/list?classId='+filters.classId)">查询</el-button>
 				</el-form-item>
 				
 			</el-form>
@@ -25,15 +25,35 @@
 				</el-table-column>
 				<el-table-column prop="Sex" label="性别" sortable>
 				</el-table-column>
-				<el-table-column prop="SelfDiscription" label="简介" sortable>
+				<el-table-column prop="Course" label="科目" sortable>
 				</el-table-column>
-				<el-table-column prop="Headimgurl" :show-overflow-tooltip="true" label="头像" sortable>
+				<el-table-column prop="Headimgurl" align="center" label="头像">
+					<template scope="scope">
+						<el-popover
+							ref="popover2"
+							placement="bottom"
+							title="图片预览"
+							width="200"
+							trigger="click">
+							<img :src="scope.row.Headimgurl">
+						</el-popover>
+						<el-button size="small" v-popover:popover2>头像</el-button>
+					</template>
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" width="200" align="center">
 					<template scope="scope" >
-						<el-button type="primary" size="small" @click.native="$router.push('/teacher/info?id='+scope.row.Meid)">详情</el-button>
-						<el-button type="warning" size="small" @click.native="handleEditTeacher(scope.row)">编辑</el-button>
-						<el-button type="danger" size="small" @click.native="handleDeleteTeacher(scope.row.Meid)">删除</el-button>
+						<el-button type="primary" size="small" 
+							@click.native="$router.push('/teacher/info?teacherId='+scope.row.Meid)">
+							详情
+						</el-button>
+						<el-button type="warning" size="small" 
+							@click.native="handleEditTeacher(scope.row)">
+							编辑
+						</el-button>
+						<el-button type="danger" size="small" 
+							@click.native="handleDeleteTeacher(scope.row.Meid)">
+							删除
+						</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -49,6 +69,8 @@
 				style="float:right;">
 			</el-pagination>
 		</el-col>
+
+		
 
 		<el-dialog title="编辑教师信息" v-model="editTeacherVisible" :close-on-click-modal="false">
 			<el-form :model="editTeacherData" label-width="80px" ref="editTeacherDom">
@@ -74,6 +96,11 @@
 			</div>
 		</el-dialog>
 
+
+
+
+		
+
 	</section>
 </template>
 
@@ -87,7 +114,7 @@
 				pageSize: 10,
 				pageSizes: [10, 20, 30, 50],
 				filters: {
-					id: '1',
+					classId: '1',
 				},
 				editTeacherVisible: false,
 				editTeacherData: {
@@ -123,11 +150,11 @@
 		},
 		methods: {
 			getData() {
-				if(this.$route.query.id){
-					this.filters.cid=this.$route.query.id
+				if(this.$route.query.classId){
+					this.filters.classId=this.$route.query.classId
 				}
 				let para = {
-					cid: this.filters.id,
+					cid: this.filters.classId,
 					count:0				
 				}
 				this.$store.dispatch('getTeacherList',para);

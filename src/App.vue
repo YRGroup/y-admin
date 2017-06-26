@@ -26,7 +26,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
+@import './styles/style.less';
+
   body {
     margin: 0px;
     padding: 0px;
