@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = 'http://api.test.com';
+import base from './config'
 
 let studentAPI = {}
 

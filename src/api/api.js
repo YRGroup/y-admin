@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = '';
+import base from './config'
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 

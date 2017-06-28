@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-let base = 'http://api.test.com';
+import base from './config'
 
 let classAPI = {}
-
-
 
 // 获取作业
 classAPI.getClassHomework = params => { 

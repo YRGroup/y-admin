@@ -57,6 +57,12 @@ axios.interceptors.response.use(
     })
     // 401未登录时跳转到登陆
     if(error.response.status==401){
+      Message({
+        showClose: true,
+        message: '身份认证失败，请重新登陆',
+        type: 'error',
+        duration: 2 * 1000
+      })
       router.push('/login')
     }
     return Promise.reject(error)
@@ -65,7 +71,8 @@ axios.interceptors.response.use(
 // Vue.prototype.$axios = axios
 
 // API服务器地址，$server或者this.$server调用
-Vue.prototype.$server = 'http://api.test.com'
+import base from '@/api/config'
+Vue.prototype.$server = base
 
 // 分模块挂载API
 import classAPI from '@/api/class'
