@@ -10,12 +10,12 @@ import user from './modules/user';
 import teacher from './modules/teacher';
 import student from './modules/student';
 import parent from './modules/parent';
+import server from './modules/server';
 
 
 Vue.use(Vuex);
 
 const state = {
-	API_base_url:'http://api.test.com'
 };
 
 export default new Vuex.Store({
@@ -28,6 +28,7 @@ export default new Vuex.Store({
 		teacher,
 		student,
 		parent,
+		server,
 	},
 	actions,
 	mutations,

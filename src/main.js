@@ -44,10 +44,17 @@ axios.interceptors.response.use(
   response => {
     console.log('axios to:'+response.config.url)
     console.log(response)
-    return response
+    if(response.data.Status==0){
+        let err = {}
+        err.code=response.data.Status
+        err.msg=response.data.Msg
+        return Promise.reject(err)
+    }else{
+        return response
+    }
   },
   error => {
-    console.log('Error：')
+    console.log('发生错误：')
     console.log(error)
     Message({
       showClose: true,
@@ -85,6 +92,8 @@ import studentAPI from '@/api/student'
 Vue.prototype.$studentAPI = studentAPI
 import parentAPI from '@/api/parent'
 Vue.prototype.$parentAPI = parentAPI
+import serverAPI from '@/api/server'
+Vue.prototype.$serverAPI = serverAPI
 
 
 router.beforeEach((to, from, next) => {

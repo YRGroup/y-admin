@@ -1,14 +1,19 @@
 <template>
 	<section>
+
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item label="班级ID">
-					<el-input v-model="filters.classId" placeholder="班级ID"></el-input>
+				<el-form-item label="身份">
+					<el-radio-group v-model="filters.role">
+						<el-radio-button :label="1">学生</el-radio-button>
+						<el-radio-button :label="2">家长</el-radio-button>
+						<el-radio-button :label="3">老师</el-radio-button>
+					</el-radio-group>
 				</el-form-item>
 
 				<el-form-item>
-					<el-button type="primary" @click="$router.push('/student/list?classId='+filters.classId)">查询</el-button>
+					<el-button type="primary" @click="getData()">查询</el-button>
 				</el-form-item>
 				
 			</el-form>
@@ -21,13 +26,13 @@
 				</el-table-column>
 				<el-table-column prop="Meid" label="ID" sortable>
 				</el-table-column>
+				<el-table-column prop="Mobilephone" label="手机" sortable>
+				</el-table-column>
 				<el-table-column prop="TrueName" label="名字" sortable>
 				</el-table-column>
-				<el-table-column prop="StudentID" label="学号" sortable>
+				<el-table-column prop="Role" label="身份" sortable>
 				</el-table-column>
-				<el-table-column prop="Sex" label="性别" sortable>
-				</el-table-column>
-				<el-table-column prop="userImg" align="center" label="头像">
+				<el-table-column prop="Headimgurl" align="center" label="头像">
 					<template scope="scope">
 						<el-popover
 							ref="popover2"
@@ -35,19 +40,19 @@
 							title="图片预览"
 							width="200"
 							trigger="click">
-							<img :src="scope.row.userImg">
+							<img :src="scope.row.Headimgurl">
 						</el-popover>
 						<el-button size="small" v-popover:popover2>头像</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" width="200" align="center">
+				<el-table-column fixed="right" label="操作" width="150" align="center">
 					<template scope="scope" >
 						<el-button type="primary" size="small" 
-							@click.native="$router.push('/student/info?studentId='+scope.row.Meid)">
+							@click.native="$router.push('/teacher/info?teacherId='+scope.row.Meid)">
 							详情
 						</el-button>
 						<el-button type="danger" size="small" 
-							@click.native="handleDeleteStudent(scope.row.Meid)">
+							@click.native="handleDeleteuser(scope.row.Meid)">
 							删除
 						</el-button>
 					</template>
@@ -66,36 +71,34 @@
 			</el-pagination>
 		</el-col>
 
-		
-
 	</section>
 </template>
 
 <script>
 	import { mapGetters } from 'vuex';
 	export default {
-		name:'studentList',
+		name:'userList',
 		data() {
 			return {
 				page: 1,
 				pageSize: 10,
 				pageSizes: [10, 20, 30, 50],
 				filters: {
-					classId: '1',
+					role: 3,
 				},
 			}
 		},
 		computed: {
 			total(){
-				return this.$store.getters.studentList.length
+				return this.$store.getters.allUserList.length
 			},
 			currentData(){
 				let start = (this.page - 1) * this.pageSize;
 				let end = this.page * this.pageSize;
-				if (!this.$store.getters.studentList.length) {
+				if (!this.$store.getters.allUserList.length) {
 					return this.getData();
 				}
-				return this.$store.getters.studentList.slice(start,end)
+				return this.$store.getters.allUserList.slice(start,end)
 			},
 			...mapGetters({
 				loading: 'listLoading',
@@ -103,13 +106,10 @@
 		},
 		methods: {
 			getData() {
-				if(this.$route.query.classId){
-					this.filters.classId=this.$route.query.classId
-				}
 				let para = {
-					cid: this.filters.classId,
+					role:this.filters.role,
 				}
-				this.$store.dispatch('getStudentList',para);
+				this.$store.dispatch('getAllUserList',para);
 			},
 			handleSizeChange(val) {
 				this.pageSize = val;
@@ -117,26 +117,30 @@
 			handleCurrentChange(val) {
 				this.page = val;
 			},
-			handleDeleteStudent: function (Meid) {
+			handleDeleteuser: function (Meid) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(()=>{
 					let para = {
 						Meid:Meid
 					}
-					this.$studentAPI.deleteStudent(para).then(()=>{
-						this.$message({
-							message: '删除成功',
-							type: 'success',
-						})
-						this.getData()
-					}).catch((err) => {
-						console.error('fff>>>>', err);
-						this.$message({
-							message: '删除失败了哦!',
-							type: 'error',
-						})
+					this.$message({
+						message: Meid,
+						type: 'success',
 					})
+					// this.$teacherAPI.deleteTeacher(para).then(()=>{
+					// 	this.$message({
+					// 		message: '删除成功',
+					// 		type: 'success',
+					// 	})
+					// 	this.getData()
+					// }).catch((err) => {
+					// 	console.error('fff>>>>', err);
+					// 	this.$message({
+					// 		message: '删除失败了哦!',
+					// 		type: 'error',
+					// 	})
+					// })
 				})
 			},
 		},

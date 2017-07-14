@@ -30,6 +30,7 @@ import parentMain from '../views/parent/main';
 import parentList from '../views/parent/list';
 import parentInfo from '../views/parent/info';
 
+import userList from '../views/sys/list';
 
 Vue.use(Router);
 
@@ -108,6 +109,16 @@ let routes = [
           { path: '/parent/main', component: parentMain, name: '家长管理主页' },      
           { path: '/parent/list', component: parentList, name: '家长列表' },      
           { path: '/parent/info', component: parentInfo, name: '家长详情' },      
+      ]
+  },
+  {
+      path: '/alluser',
+      component: Home,
+      name: '',
+      iconCls: 'fa fa-address-card',
+      leaf: true,//只有一个节点
+      children: [
+          { path: '/alluser', component: userList, name: '所有用户' }
       ]
   },
   {

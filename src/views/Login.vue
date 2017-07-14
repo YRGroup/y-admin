@@ -30,7 +30,7 @@
       return {
         logining: false,
         ruleForm2: {
-          account: '13130000083',
+          account: '13130000117',
           checkPass: '123456'
         },
         rules2: {

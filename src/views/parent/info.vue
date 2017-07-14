@@ -13,11 +13,14 @@
 				<el-form-item label="手机" class="form2">
 					<el-input v-model="user.Mobilephone" :disabled="true"></el-input>
 				</el-form-item>
-				<el-form-item label="姓名" class="form2">
+				<el-form-item label="姓名" class="form3">
 					<el-input v-model="user.TrueName" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
-				<el-form-item label="性别" class="form2">
+				<el-form-item label="性别" class="form3">
 					<el-input v-model="user.Sex" :disabled="ifEditInfo?false:true"></el-input>
+				</el-form-item>
+				<el-form-item label="民族" class="form3">
+					<el-input v-model="user.Nation" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
 				<el-form-item label="简介">
 					<el-input v-model="user.SelfDiscription" :disabled="ifEditInfo?false:true"></el-input>
@@ -37,14 +40,8 @@
 				<el-form-item label="地址">
 					<el-input v-model="user.Address" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
-				<el-form-item label="民族" class="form2">
-					<el-input v-model="user.Nation" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="生日" class="form2">
+				<el-form-item label="生日">
 					<el-input v-model="user.Birthday" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="头像">
-					<el-input v-model="user.Headimgurl" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
 			</el-form>
 			<el-col :span="24" class="toolbar" v-show="ifEditInfo" style="text-align:center;">
@@ -55,53 +52,57 @@
 		</br>
 
 		<el-row :gutter="20">
-			<!--<el-col :span="6">
+			<el-col :span="6">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">就学信息</span>
-						<el-button style="float: right;" type="primary" @click.native="$router.push('/class/info?classId='+klass.ID)">查看班级</el-button>
+						<span style="line-height: 36px;">家长头像</span>
+						<el-button style="float: right;" type="primary" @click.native="(editHeadImg === true)?editHeadImg = false:editHeadImg = true">修改</el-button>
 					</div>
 					<div class="item">
-						<p>所在学校：.Name}}</p>
-						<p >所在班级：.Name}}</p>
-					</div>
-				</el-card>
-			</el-col>-->
-			
-			<!--<el-col :span="6" v-for="p in parent">
-				<el-card class="box-card">
-					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">{{p.ParentType}}</span>
-						<el-button style="float: right;" type="primary" @click.native="$router.push('/parent/info?parentId='+p.ParentMeid)">查看家长</el-button>
-					</div>
-					<div class="item">
-						<p>{{p.ParentMeid}}</p>
-						<p>{{p.ParentTrueName}}</p>
-						<p>{{p.ParentPhone}}</p>
-						<img :src="p.ParentHeadimgurl">
-					</div>
-				</el-card>
-			</el-col>-->
-			<!--<el-col :span="6">
-				<el-card class="box-card" v-if="!data.teaching_experience.length">
-					<div slot="header" class="clearfix">
-						<span >教学经历</span>
-					</div>
-					<div class="item">
-						尚未添加
+						<img v-show="!editHeadImg" class="avatar" :src="user.Headimgurl">
+						<div v-show="editHeadImg">
+							<el-upload class="avatar-uploader" 
+							:action="$store.state.server.APIurl+'/api/Upload/ImageUpload'" 
+							:show-file-list="false" 
+							:on-success="handleAvatarSuccess" 
+							:before-upload="beforeAvatarUpload">
+								<img v-if="imageUrl" :src="imageUrl" class="avatar">
+								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+							</el-upload>
+						</div>
 					</div>
 				</el-card>
 			</el-col>
+
 			<el-col :span="6">
-				<el-card class="box-card" v-if="data.teaching_experience.length" v-for="e in data.teaching_experience">
+				<el-card class="box-card" v-show="user.Students.length" v-for="c in user.Students" :key="c.Meid">
 					<div slot="header" class="clearfix">
-						<span >教学经历</span>
+						<span style="line-height: 36px;">学生信息</span>
+						<el-button style="float: right;" type="primary" @click.native="$router.push('/student/info?studentId='+c.Meid)">详情</el-button>
 					</div>
-					<div class="item">
-						{{e}}
+					<div>
+						<p>姓名：{{c.TrueName}}</p>
+						<p>性别：{{c.Sex}}</p>
+						<p>学号：{{c.StudentID}}</p>
+						<p>班级：{{c.ClassName}}</p>
 					</div>
 				</el-card>
-			</el-col>-->
+			</el-col>
+			
+			<el-col :span="6">
+				<el-card class="box-card">
+					<div slot="header" class="clearfix">
+						添加学生
+					</div>
+					<div class="item">
+						<el-input v-model="addStudentData.meid" placeholder="请输入学生ID"></el-input>
+						<div class="btn">
+							<el-button type="primary" @click.native="addStudent">添加关联学生</el-button>
+						</div>
+					</div>
+				</el-card>
+			</el-col>
+			
 		</el-row>
 
 		
@@ -119,7 +120,13 @@
 				school:{},
 				klass:[],
 				parent:[],
-				ifEditInfo:false,
+				ifEditInfo:false,			
+				editHeadImg: false,
+				imageUrl: '',
+				addStudentData:{
+					cid:'',
+					meid:'',
+				}
 			}
 		},
 		computed: {
@@ -138,6 +145,24 @@
 					this.klass = res.Class
 					this.parent = res.Parents
 				})
+			},
+			handleAvatarSuccess(res, file) {
+				this.imageUrl = res.Content[0]
+				this.data.Headimgurl=this.imageUrl
+				this.$teacherAPI.editTeacher(this.data).then(res=>{
+					this.getData()
+				})
+			},
+			beforeAvatarUpload(file) {
+				const isJPG = file.type === 'image/jpeg';
+				const isLt2M = file.size / 1024 / 1024 < 2;
+				if (!isJPG) {
+					this.$message.error('上传头像图片只能是 JPG 格式!');
+				}
+				if (!isLt2M) {
+					this.$message.error('上传头像图片大小不能超过 2MB!');
+				}
+				return isJPG && isLt2M;
 			},
 			changeEditInfo(){
 				if(this.ifEditInfo){
@@ -163,6 +188,16 @@
 					})
 				})
 			},
+			addStudent(){
+				this.addClassData.meid=this.data.Meid
+				this.$teacherAPI.addTeacherClass(this.addClassData).then(res=>{
+					this.$message({
+						message: '添加所属班级成功',
+						type: 'success',
+					})
+					this.getData()
+				})
+			}
 		},
 		mounted(){
 			this.getData()
@@ -172,9 +207,19 @@
 </script>
 
 <style lang="less" scoped>
-.box-card {
-   	.item{
-		//    min-height:200px;
-	   }
-  }
+.item {
+	text-align: center;
+	.avatar-uploader-icon {
+		font-size: 100px;
+		padding:20px;
+	}
+	.avatar {
+		width: 200px;
+		height: 200px;
+		border-radius: 50%;
+	}
+	.btn{
+		padding:10px;
+	}
+}
 </style>

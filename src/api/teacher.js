@@ -36,6 +36,14 @@ teacherAPI.editTeacher = params => {
     ).then(res => res.data.Content)
 }
 
+// 为教师添加班级
+teacherAPI.addTeacherClass = params => { 
+    return axios.post(
+        `${base}/api/Class/AddTeacher`,
+        params
+    ).then(res => res.data.Content)
+}
+
 // 删除教师
 teacherAPI.deleteTeacher = params => { 
     return axios.post(
