@@ -37,6 +37,14 @@
 						</el-button>	
 					</template>	
 				</el-table-column>
+				<el-table-column label="家长" align="center">
+					<template scope="scope" >
+						<el-button type="primary" size="small" 
+							@click="$router.push('/parent/list?classId='+scope.row.cid)">
+							家长
+						</el-button>	
+					</template>	
+				</el-table-column>
 				<el-table-column prop="TeacherCount" label="教师" align="center" sortable>
 					<template scope="scope" >
 						<el-button type="primary" size="small" 

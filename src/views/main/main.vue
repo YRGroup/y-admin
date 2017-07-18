@@ -2,17 +2,17 @@
 	<section>
 
 		<el-card class="box-card">
-			<div slot="header" class="clearfix">
+			<!-- <div slot="header" class="clearfix">
 				<span >这是主页</span>
-			</div>
+			</div> -->
 			<div class="item">
-				000</br></br></br></br></br></br></br>000
+				育人教育 智慧校园系统管理后台
 			</div>
 		</el-card>
 
 		</br>
 
-		<el-row :gutter="20">
+		<!-- <el-row :gutter="20">
 			<el-col :span="6">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
@@ -45,11 +45,7 @@
 					</div>
 				</el-card>
 			</el-col>
-		</el-row>
-
-		
-
-		
+		</el-row> -->
 
 	</section>
 </template>

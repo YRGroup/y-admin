@@ -63,9 +63,9 @@ let routes = [
     name: '班级',
     iconCls: 'el-icon-message',
     children: [
-      { path: '/class/main', component: classMain, name: '班级管理主页' },
+    //   { path: '/class/main', component: classMain, name: '班级管理主页' },
       { path: '/class/list', component: classList, name: '班级列表' },
-      { path: '/class/info', component: classInfo, name: '班级详情' },
+    //   { path: '/class/info', component: classInfo, name: '班级详情' },
     ],
   },
 {
@@ -74,7 +74,7 @@ let routes = [
     name: '动态',
     iconCls: 'el-icon-message',
     children: [
-      { path: '/post/main', component: postMain, name: '动态主页' },
+    //   { path: '/post/main', component: postMain, name: '动态主页' },
       { path: '/post/list', component: postList, name: '动态列表' },
     ],
   },
@@ -84,7 +84,7 @@ let routes = [
       name: '教师',
       iconCls: 'fa fa-id-card-o',
       children: [
-          { path: '/teacher/main', component: List, name: '教师管理主页' },      
+        //   { path: '/teacher/main', component: List, name: '教师管理主页' },      
           { path: '/teacher/list', component: teacherList, name: '教师列表' }, 
           { path: '/teacher/info', component: teacherInfo, name: '教师详情' },                     
       ]
@@ -95,7 +95,7 @@ let routes = [
       name: '学生',
       iconCls: 'fa fa-id-card-o',
       children: [
-          { path: '/student/main', component: studentMain, name: '学生管理主页' },      
+        //   { path: '/student/main', component: studentMain, name: '学生管理主页' },      
           { path: '/student/list', component: studentList, name: '学生列表' },    
           { path: '/student/info', component: studentInfo, name: '学生详情' },                                 
       ]
@@ -106,7 +106,7 @@ let routes = [
       name: '家长',
       iconCls: 'fa fa-id-card-o',
       children: [
-          { path: '/parent/main', component: parentMain, name: '家长管理主页' },      
+        //   { path: '/parent/main', component: parentMain, name: '家长管理主页' },      
           { path: '/parent/list', component: parentList, name: '家长列表' },      
           { path: '/parent/info', component: parentInfo, name: '家长详情' },      
       ]
@@ -121,38 +121,38 @@ let routes = [
           { path: '/alluser', component: userList, name: '所有用户' }
       ]
   },
-  {
-      path: '/school',
-      component: Home,
-      name: '',
-      iconCls: 'fa fa-address-card',
-      leaf: true,//只有一个节点
-      children: [
-          { path: '/school', component: Edit, name: '学校管理' }
-      ]
-  },
-  {
-      path: '/system',
-      component: Home,
-      name: '',
-      iconCls: 'fa fa-address-card',
-      leaf: true,//只有一个节点
-      children: [
-          { path: '/system', component: Edit, name: '系统管理' }
-      ]
-  },
-  {
-    path: '/dev',
-    component: Home,
-    name: 'dev',
-    iconCls: 'fa fa-bar-chart',
-    children: [
-      { path: 'echarts', component: Echarts, name: '图表' },
-      { path: 'edit', component: Edit, name: '编辑' },
-      { path: 'add', component: Add, name: '添加' },
-      { path: 'list', component: List, name: '查询' },
-    ]
-  },
+//   {
+//       path: '/school',
+//       component: Home,
+//       name: '',
+//       iconCls: 'fa fa-address-card',
+//       leaf: true,//只有一个节点
+//       children: [
+//           { path: '/school', component: Edit, name: '学校管理' }
+//       ]
+//   },
+//   {
+//       path: '/system',
+//       component: Home,
+//       name: '',
+//       iconCls: 'fa fa-address-card',
+//       leaf: true,//只有一个节点
+//       children: [
+//           { path: '/system', component: Edit, name: '系统管理' }
+//       ]
+//   },
+//   {
+//     path: '/dev',
+//     component: Home,
+//     name: 'dev',
+//     iconCls: 'fa fa-bar-chart',
+//     children: [
+//       { path: 'echarts', component: Echarts, name: '图表' },
+//       { path: 'edit', component: Edit, name: '编辑' },
+//       { path: 'add', component: Add, name: '添加' },
+//       { path: 'list', component: List, name: '查询' },
+//     ]
+//   },
   {
       path: '*',
       hidden: true,

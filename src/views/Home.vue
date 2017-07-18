@@ -34,14 +34,14 @@
 						</el-submenu>
 						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
 					</template>
-					<template>
+					<!-- <template>
 						<el-collapse>
 							<el-collapse-item title="debug" name="1">
 								<p style="text-align:center;" v-for="(i,index) in debug" :key="index"><el-button @click="showInfo(i)" type="warning">{{i}}</el-button></p>
 							</el-collapse-item>
 						</el-collapse>
 						
-					</template>
+					</template> -->
 					
 				</el-menu>
 

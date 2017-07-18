@@ -226,7 +226,8 @@
 				}
 				let para = {
 					cid: this.filters.cid,
-					count:0,					
+					pagesize : this.pageSize,
+      				currentPage : this.page,		
 					type: this.dynamicType
 				};
 				this.$store.dispatch('getPostList',para);

@@ -95,7 +95,7 @@ export default {
 			pageSize: 10,
 			pageSizes: [10, 20, 30, 50],
 			filters: {
-				classId: '1',
+				classId: this.$route.query.classId||'1',
 			},
 			editTeacherVisible: false,
 			editTeacherData: {
@@ -131,9 +131,6 @@ export default {
 	},
 	methods: {
 		getData() {
-			if (this.$route.query.classId) {
-				this.filters.classId = this.$route.query.classId
-			}
 			let para = {
 				cid: this.filters.classId,
 				count: 0
