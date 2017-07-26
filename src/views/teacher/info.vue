@@ -1,6 +1,19 @@
 <template>
 	<section>
+		
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+			<el-form :inline="true" :model="filters">
+				<el-form-item label="教师ID">
+					<el-input v-model="filters.teacherId" placeholder="班级ID"></el-input>
+				</el-form-item>
 	
+				<el-form-item>
+					<el-button type="primary" @click="refreshData">查询</el-button>
+				</el-form-item>
+	
+			</el-form>
+		</el-col>
+
 		<el-card class="box-card">
 			<div slot="header" class="clearfix">
 				<span style="line-height: 36px;">教师详情</span>
@@ -154,6 +167,9 @@ export default {
 			ifEditInfo: false,
 			editHeadImg: false,
 			imageUrl: '',
+			filters: {
+				teacherId: this.$route.query.teacherId||'m6s17m91',
+			},
 			addClassData:{
 				cid:'',
 				meid:'',
@@ -166,12 +182,19 @@ export default {
 		})
 	},
 	methods: {
+		refreshData(){
+			if(this.$route.query.teacherId!=this.filters.teacherId){
+				this.$router.push('/teacher/info?teacherId='+this.filters.teacherId)
+			}
+		},
 		getData() {
 			let para = {
-				Meid: this.$route.query.teacherId || '0ddavcge'
+				Meid: this.$route.query.teacherId
 			};
 			this.$teacherAPI.getTeacherInfo(para).then(res => {
 				this.data = res
+			}).catch(err=>{
+				this.$message.error(err.msg);
 			})
 		},
 		handleAvatarSuccess(res, file) {
@@ -228,6 +251,9 @@ export default {
 	},
 	mounted() {
 		this.getData()
+	},
+	watch: {
+		'$route': 'getData'
 	}
 };
 
