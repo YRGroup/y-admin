@@ -94,6 +94,8 @@ import parentAPI from '@/api/parent'
 Vue.prototype.$parentAPI = parentAPI
 import serverAPI from '@/api/server'
 Vue.prototype.$serverAPI = serverAPI
+import sysAPI from '@/api/sys'
+Vue.prototype.$sysAPI = sysAPI
 
 
 router.beforeEach((to, from, next) => {

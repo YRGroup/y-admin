@@ -1,7 +1,7 @@
 <template>
 	<section>
 
-		<el-card class="box-card">
+		<el-card class="box-card" style="background:#ecf0f1">
 			<!-- <div slot="header" class="clearfix">
 				<span >这是主页</span>
 			</div> -->
@@ -12,40 +12,46 @@
 
 		</br>
 
-		<!-- <el-row :gutter="20">
+		 <el-row :gutter="20">
 			<el-col :span="6">
-				<el-card class="box-card">
+				<el-card class="box-card" style="color:#fff;background:#3498db">
 					<div slot="header" class="clearfix">
-						<span >卡片名称</span>
+						<span style="line-height: 36px;">班级</span>
+						<el-button style="float: right;" type="text">班级管理</el-button>
+						
 					</div>
 					<div class="item">
-						000
+						共有班级50个
 					</div>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
-				<el-card class="box-card">
+				<el-card class="box-card" style="color:#fff;background:#9b59b6">
 					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">卡片名称</span>
-						<el-button style="float: right;" type="primary">操作按钮</el-button>
+						<span style="line-height: 36px;">动态</span>
+						<el-button style="float: right;" type="text">动态管理</el-button>
 					</div>
 					<div class="item">
-						000
+						<div>共有动态200条</div>
+						<div>评论100条</div>
+						<div>今日新增动态20条</div>
+						<div>今日新增评论20条</div>
 					</div>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
-				<el-card class="box-card">
+				<el-card class="box-card" style="color:#fff;background:#2ecc71">
 					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">卡片名称</span>
-						<el-button style="float: right;" type="primary">操作按钮</el-button>
+						<span style="line-height: 36px;">用户</span>
+						<el-button style="float: right;" type="text">用户管理</el-button>
 					</div>
 					<div class="item">
-						000
+						<div>共有用户200个</div>
+						<div>今日新增用户20个</div>
 					</div>
 				</el-card>
 			</el-col>
-		</el-row> -->
+		</el-row> 
 
 	</section>
 </template>

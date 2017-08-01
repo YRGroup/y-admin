@@ -1,6 +1,19 @@
 <template>
 	<section>
-
+	
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+			<el-form :inline="true" :model="filters">
+				<el-form-item label="学生ID">
+					<el-input v-model="filters.studentId" placeholder="学生ID"></el-input>
+				</el-form-item>
+	
+				<el-form-item>
+					<el-button type="primary" @click="refreshData">查询</el-button>
+				</el-form-item>
+	
+			</el-form>
+		</el-col>
+	
 		<el-card class="box-card">
 			<div slot="header" class="clearfix">
 				<span style="line-height: 36px;">学生详情</span>
@@ -50,13 +63,13 @@
 					<el-input v-model="user.Headimgurl" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
 			</el-form>
-			<el-col :span="24" class="toolbar" v-show="ifEditInfo"  style="text-align:center;">
+			<el-col :span="24" class="toolbar" v-show="ifEditInfo" style="text-align:center;">
 				<el-button type="primary" @click.native="handleEditStudent()">提交修改</el-button>
 			</el-col>
 		</el-card>
-
+	
 		</br>
-
+	
 		<el-row :gutter="20">
 			<el-col :span="6">
 				<el-card class="box-card">
@@ -66,11 +79,11 @@
 					</div>
 					<div class="item">
 						<p>所在学校：{{school.Name}}</p>
-						<p >所在班级：{{klass.Name}}</p>
+						<p>所在班级：{{klass.Name}}</p>
 					</div>
 				</el-card>
 			</el-col>
-			
+	
 			<el-col :span="6" v-for="p in parent" :key="p.ParentMeid">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
@@ -84,82 +97,89 @@
 					</div>
 				</el-card>
 			</el-col>
-
+	
 		</el-row>
-
-		
-
-		
-
+	
 	</section>
 </template>
 <script>
-	import { mapGetters } from 'vuex';
-	export default {
-		data() {
-			return {
-				data:{},
-				user:{},
-				school:{},
-				klass:[],
-				parent:[],
-				ifEditInfo:false,
+import { mapGetters } from 'vuex';
+export default {
+	data() {
+		return {
+			data: {},
+			user: {},
+			school: {},
+			klass: [],
+			parent: [],
+			ifEditInfo: false,
+			filters: {
+				studentId: this.$route.query.studentId,
+			},
+		}
+	},
+	computed: {
+		...mapGetters({
+			loading: 'listLoading',
+		})
+	},
+	methods: {
+		refreshData(){
+			if(this.$route.query.studentId!=this.filters.studentId){
+				this.$router.push('/student/info?studentId='+this.filters.studentId)
 			}
 		},
-		computed: {
-			...mapGetters({
-				loading: 'listLoading',
+		getData() {
+			let para = {
+				Meid: this.$route.query.studentId
+			};
+			this.$studentAPI.getStudentInfo(para).then(res => {
+				this.data = res
+				this.user = res.user
+				this.school = res.School
+				this.klass = res.Class
+				this.parent = res.Parents
 			})
 		},
-		methods: {
-			getData() {
-				let para = {
-					Meid: this.$route.query.studentId||'0ddavcge'
-				};
-				this.$studentAPI.getStudentInfo(para).then(res=>{
-					this.data = res
-					this.user = res.user
-					this.school = res.School
-					this.klass = res.Class
-					this.parent = res.Parents
-				})
-			},
-			changeEditInfo(){
-				if(this.ifEditInfo){
-					this.ifEditInfo=false
-				}else{
-					this.ifEditInfo=true
-				}
-			},
-			handleEditStudent(){
-				this.user.Role = 1
-				this.$studentAPI.editStudent(this.user).then(()=>{
-						this.$message({
-							message: '修改成功',
-							type: 'success',
-						})
-						this.ifEditInfo=false
-						this.getData()
-					}
-				).catch(()=>{
-					this.$message({
-						message: '修改失败',
-						type: 'error',
-					})
-				})
-			},
+		changeEditInfo() {
+			if (this.ifEditInfo) {
+				this.ifEditInfo = false
+			} else {
+				this.ifEditInfo = true
+			}
 		},
-		mounted(){
-			this.getData()
-		}
-	};
+		handleEditStudent() {
+			this.user.Role = 1
+			this.$studentAPI.editStudent(this.user).then(() => {
+				this.$message({
+					message: '修改成功',
+					type: 'success',
+				})
+				this.ifEditInfo = false
+				this.getData()
+			}
+			).catch(() => {
+				this.$message({
+					message: '修改失败',
+					type: 'error',
+				})
+			})
+		},
+	},
+	mounted() {
+		this.getData()
+	},
+	watch: {
+		'$route': 'getData'
+	}
+};
 
 </script>
 
 <style lang="less" scoped>
 .box-card {
-   	.item{
+	.item {
 		//    min-height:200px;
-	   }
-  }
+	}
+}
 </style>

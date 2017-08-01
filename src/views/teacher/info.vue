@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="教师ID">
-					<el-input v-model="filters.teacherId" placeholder="班级ID"></el-input>
+					<el-input v-model="filters.teacherId" placeholder="教师ID"></el-input>
 				</el-form-item>
 	
 				<el-form-item>
@@ -168,7 +168,7 @@ export default {
 			editHeadImg: false,
 			imageUrl: '',
 			filters: {
-				teacherId: this.$route.query.teacherId||'m6s17m91',
+				teacherId: this.$route.query.teacherId,
 			},
 			addClassData:{
 				cid:'',

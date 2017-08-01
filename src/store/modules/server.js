@@ -7,6 +7,19 @@ const state = {
 };
 const getters = {
 	allUserList:state => state.allUserList,
+	_APIurl: () => {
+		if(window.location.host=='www.test.com'){
+			return 'http://api.test.com'
+		}else if(window.location.host=='admin.test.com'){
+			return 'http://api.test.com'
+		}else if(window.location.host=='pc.test.com'){
+			return 'http://api.test.com'
+		}else if(window.location.host=='testapi.zzflgs.cn'){
+			return 'http://testapi.zzflgs.cn'
+		}else{
+			return 'http://testapi.zzflgs.cn'
+		}
+    }
 };
 const actions = {
 	getAllUserList({commit,state},para){

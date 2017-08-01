@@ -1,6 +1,19 @@
 <template>
 	<section>
-
+	
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+			<el-form :inline="true" :model="filters">
+				<el-form-item label="家长ID">
+					<el-input v-model="filters.parentId" placeholder="家长ID"></el-input>
+				</el-form-item>
+	
+				<el-form-item>
+					<el-button type="primary" @click="refreshData">查询</el-button>
+				</el-form-item>
+	
+			</el-form>
+		</el-col>
+	
 		<el-card class="box-card">
 			<div slot="header" class="clearfix">
 				<span style="line-height: 36px;">家长详情</span>
@@ -48,9 +61,9 @@
 				<el-button type="primary" @click.native="handleEditParent()">提交修改</el-button>
 			</el-col>
 		</el-card>
-
+	
 		</br>
-
+	
 		<el-row :gutter="20">
 			<el-col :span="6">
 				<el-card class="box-card">
@@ -61,11 +74,7 @@
 					<div class="item">
 						<img v-show="!editHeadImg" class="avatar" :src="user.Headimgurl">
 						<div v-show="editHeadImg">
-							<el-upload class="avatar-uploader" 
-							:action="$store.state.server.APIurl+'/api/Upload/ImageUpload'" 
-							:show-file-list="false" 
-							:on-success="handleAvatarSuccess" 
-							:before-upload="beforeAvatarUpload">
+							<el-upload class="avatar-uploader" :action="$store.state.server.APIurl+'/api/Upload/ImageUpload'" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
 								<img v-if="imageUrl" :src="imageUrl" class="avatar">
 								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 							</el-upload>
@@ -73,7 +82,7 @@
 					</div>
 				</el-card>
 			</el-col>
-
+	
 			<el-col :span="6">
 				<el-card class="box-card" v-show="user.Students.length" v-for="c in user.Students" :key="c.Meid">
 					<div slot="header" class="clearfix">
@@ -88,7 +97,7 @@
 					</div>
 				</el-card>
 			</el-col>
-			
+	
 			<el-col :span="6">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
@@ -102,107 +111,114 @@
 					</div>
 				</el-card>
 			</el-col>
-			
+	
 		</el-row>
-
-		
-
-		
-
+	
 	</section>
 </template>
 <script>
-	import { mapGetters } from 'vuex';
-	export default {
-		data() {
-			return {
-				user:{},
-				school:{},
-				klass:[],
-				parent:[],
-				ifEditInfo:false,			
-				editHeadImg: false,
-				imageUrl: '',
-				addStudentData:{
-					cid:'',
-					meid:'',
-				}
+import { mapGetters } from 'vuex';
+export default {
+	data() {
+		return {
+			user: {},
+			school: {},
+			klass: [],
+			parent: [],
+			ifEditInfo: false,
+			editHeadImg: false,
+			imageUrl: '',
+			filters: {
+				parentId: this.$route.query.parentId,
+			},
+			addStudentData: {
+				cid: '',
+				meid: '',
+			}
+		}
+	},
+	computed: {
+		...mapGetters({
+			loading: 'listLoading',
+		})
+	},
+	methods: {
+		refreshData() {
+			if (this.$route.query.parentId != this.filters.parentId) {
+				this.$router.push('/parent/info?parentId=' + this.filters.parentId)
 			}
 		},
-		computed: {
-			...mapGetters({
-				loading: 'listLoading',
+		getData() {
+			let para = {
+				Meid: this.$route.query.parentId
+			};
+			this.$parentAPI.getParentInfo(para).then(res => {
+				this.user = res.user
+				this.school = res.School
+				this.klass = res.Class
+				this.parent = res.Parents
 			})
 		},
-		methods: {
-			getData() {
-				let para = {
-					Meid: this.$route.query.parentId
-				};
-				this.$parentAPI.getParentInfo(para).then(res=>{
-					this.user = res.user
-					this.school = res.School
-					this.klass = res.Class
-					this.parent = res.Parents
-				})
-			},
-			handleAvatarSuccess(res, file) {
-				this.imageUrl = res.Content[0]
-				this.data.Headimgurl=this.imageUrl
-				this.$teacherAPI.editTeacher(this.data).then(res=>{
-					this.getData()
-				})
-			},
-			beforeAvatarUpload(file) {
-				const isJPG = file.type === 'image/jpeg';
-				const isLt2M = file.size / 1024 / 1024 < 2;
-				if (!isJPG) {
-					this.$message.error('上传头像图片只能是 JPG 格式!');
-				}
-				if (!isLt2M) {
-					this.$message.error('上传头像图片大小不能超过 2MB!');
-				}
-				return isJPG && isLt2M;
-			},
-			changeEditInfo(){
-				if(this.ifEditInfo){
-					this.ifEditInfo=false
-				}else{
-					this.ifEditInfo=true
-				}
-			},
-			handleEditParent(){
-				this.user.Role = 1
-				this.$parentAPI.editParent(this.user).then(()=>{
-						this.$message({
-							message: '修改成功',
-							type: 'success',
-						})
-						this.ifEditInfo=false
-						this.getData()
-					}
-				).catch(()=>{
-					this.$message({
-						message: '修改失败',
-						type: 'error',
-					})
-				})
-			},
-			addStudent(){
-				this.addClassData.meid=this.data.Meid
-				this.$teacherAPI.addTeacherClass(this.addClassData).then(res=>{
-					this.$message({
-						message: '添加所属班级成功',
-						type: 'success',
-					})
-					this.getData()
-				})
+		handleAvatarSuccess(res, file) {
+			this.imageUrl = res.Content[0]
+			this.data.Headimgurl = this.imageUrl
+			this.$teacherAPI.editTeacher(this.data).then(res => {
+				this.getData()
+			})
+		},
+		beforeAvatarUpload(file) {
+			const isJPG = file.type === 'image/jpeg';
+			const isLt2M = file.size / 1024 / 1024 < 2;
+			if (!isJPG) {
+				this.$message.error('上传头像图片只能是 JPG 格式!');
+			}
+			if (!isLt2M) {
+				this.$message.error('上传头像图片大小不能超过 2MB!');
+			}
+			return isJPG && isLt2M;
+		},
+		changeEditInfo() {
+			if (this.ifEditInfo) {
+				this.ifEditInfo = false
+			} else {
+				this.ifEditInfo = true
 			}
 		},
-		mounted(){
-			this.getData()
+		handleEditParent() {
+			this.user.Role = 1
+			this.$parentAPI.editParent(this.user).then(() => {
+				this.$message({
+					message: '修改成功',
+					type: 'success',
+				})
+				this.ifEditInfo = false
+				this.getData()
+			}
+			).catch(() => {
+				this.$message({
+					message: '修改失败',
+					type: 'error',
+				})
+			})
+		},
+		addStudent() {
+			this.addClassData.meid = this.data.Meid
+			this.$teacherAPI.addTeacherClass(this.addClassData).then(res => {
+				this.$message({
+					message: '添加所属班级成功',
+					type: 'success',
+				})
+				this.getData()
+			})
 		}
-	};
+	},
+	mounted() {
+		this.getData()
+	},
+	watch: {
+		'$route': 'getData'
+	}
+};
 
 </script>
 
@@ -211,15 +227,15 @@
 	text-align: center;
 	.avatar-uploader-icon {
 		font-size: 100px;
-		padding:20px;
+		padding: 20px;
 	}
 	.avatar {
 		width: 200px;
 		height: 200px;
 		border-radius: 50%;
 	}
-	.btn{
-		padding:10px;
+	.btn {
+		padding: 10px;
 	}
 }
 </style>
