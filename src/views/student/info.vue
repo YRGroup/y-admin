@@ -176,10 +176,6 @@ export default {
 
 </script>
 
-<style lang="less" scoped>
-.box-card {
-	.item {
-		//    min-height:200px;
-	}
-}
+<style scoped>
+
 </style>
