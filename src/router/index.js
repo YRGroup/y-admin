@@ -75,23 +75,12 @@ let routes = [{
     path: '/news',
     component: Home,
     iconCls: 'el-icon-edit',
-    name: '新闻',
+    leaf: true,
     children: [{
-        path: '/news/list',
+        path: '/news',
         component: newsList,
-        name: '新闻列表'
-      },
-      {
-        path: '/news/add',
-        component: addnews,
-        name: '添加新闻'
-      },
-      {
-        path: '/news/edit',
-        component: addnews,
-        hidden:true,
-        name: '编辑新闻'
-      },
+        name: '新闻'
+      }
     ],
   },
   {

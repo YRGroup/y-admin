@@ -19,15 +19,10 @@
 		<template>
 			<el-table :data="currentData" fixed 
 				highlight-current-row v-loading="loading" 
-				style="width: 100%;"
-			>
-				<el-table-column fixed="left" type="index" width="60">
-				</el-table-column>
+				style="width: 100%;">
 				<el-table-column prop="cid" label="ID" width="70" sortable>
 				</el-table-column>
 				<el-table-column prop="Name" label="名称" sortable>
-				</el-table-column>
-				<el-table-column prop="HeadImgurl" label="班级logo" sortable :show-overflow-tooltip="true">
 				</el-table-column>
 				<el-table-column prop="StudentCount" label="学生" align="center" sortable>
 					<template scope="scope" >

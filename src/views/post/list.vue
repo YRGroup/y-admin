@@ -244,22 +244,22 @@ export default {
 		handleCurrentChange(val) {
 			this.page = val;
 		},
-		handleAlbums: function (val) {
+		handleAlbums (val) {
 			this.albumsVisible = true
 			this.albums = val
 		},
-		handleComment: function (val) {
+		handleComment (val) {
 			this.commentVisible = true
 			this.comment = val
 		},
-		handleDeleteComment: function (cid) {
+		handleDeleteComment (cid) {
 			this.$confirm('确认删除该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
 				let para = {
 					cid: cid
 				}
-				this.$postAPI.deleteComment(para).then(() => {
+				this.$postAPI.deleteNewsComment(para).then(() => {
 					this.$message({
 						message: '删除成功',
 						type: 'success',
@@ -275,7 +275,7 @@ export default {
 				})
 			})
 		},
-		handleDeletePost: function (did) {
+		handleDeletePost (did) {
 			this.$confirm('确认删除该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -297,7 +297,7 @@ export default {
 				})
 			})
 		},
-		handleAddPost: function () {
+		handleAddPost () {
 			this.addPostVisible = true;
 			this.addPostData = {
 				auther: '',
