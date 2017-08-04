@@ -20,6 +20,14 @@ classAPI.addClassHomework = params => {
     ).then(res => res.data.Content)
 }
 
+// 添加班级
+classAPI.addClass = params => { 
+    return axios.post(
+        `${base}/api/Class/AddClass`,
+        params
+    ).then(res => res.data.Content)
+}
+
 // 修改作业
 classAPI.editClassHomework = params => { 
     return axios.post(
@@ -35,9 +43,6 @@ classAPI.deleteClassHomework = params => {
         {params: params }
     ).then(res => res.data.Content)
 }
-
-
-
 
 // 获取班级列表
 classAPI.getClassList = params => { 

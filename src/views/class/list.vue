@@ -2,15 +2,9 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="filters">
+			<el-form :inline="true">
 				<el-form-item>
-					<el-input v-model="filters.id" placeholder="班级ID"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" v-on:click="getData">查询</el-button>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="handleAddClass">新增</el-button>
+					<el-button type="primary" @click="handleAddClass">新增班级</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -53,6 +47,13 @@
 						<el-button type="primary" size="small" 
 							@click="$router.push('/post/list?classId='+scope.row.cid)">
 							动态
+						</el-button>	
+					</template>	
+				</el-table-column>
+				<el-table-column prop="cid" label="班主任" align="center" sortable>
+					<template scope="scope" >
+						<el-button type="primary" size="small">
+							班主任
 						</el-button>	
 					</template>	
 				</el-table-column>
@@ -100,11 +101,8 @@
 
 		<el-dialog title="新增" v-model="addClassVisible" :close-on-click-modal="false">
 			<el-form :model="addClassData" label-width="80px" :rules="addClassRules" ref="addClassDom">
-				<el-form-item label="姓名" prop="name">
+				<el-form-item label="班级名字" prop="name">
 					<el-input v-model="addClassData.name"></el-input>
-				</el-form-item>
-				<el-form-item label="班级logo" prop="HeadImgurl">
-					<el-input v-model="addClassData.HeadImgurl"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -224,13 +222,12 @@
 					}
 				});
 			},
-			addClassSubmit: function () {
+			addClassSubmit () {
 				this.$refs.addClassDom.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							//NProgress.start();
 							this.$classAPI.addClass(this.addClassData).then(() => {
-								//NProgress.done();
+								this.getData()
 								this.$refs['addClassDom'].resetFields();
 								this.addClassVisible = false;
 							});
