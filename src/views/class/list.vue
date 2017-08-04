@@ -18,9 +18,17 @@
 				</el-table-column>
 				<el-table-column prop="Name" label="名称" sortable>
 				</el-table-column>
+				<el-table-column prop="cid" label="班主任" align="center" sortable>
+					<template scope="scope">
+						<el-button type="text" size="small"  v-if="scope.row.AdviserMeid" @click="$router.push('/teacher/info?teacherId='+scope.row.AdviserMeid)">{{scope.row.AdviserTrueName}}</el-button>
+						<el-button v-else type="success" size="small" @click.native="startSetClassAdminTeacher(scope.row)">
+							添加
+						</el-button>	
+					</template>	
+				</el-table-column>
 				<el-table-column prop="StudentCount" label="学生" align="center" sortable>
 					<template scope="scope" >
-						<el-button type="primary" size="small" 
+						<el-button type="text" size="small" 
 							@click="$router.push('/student/list?classId='+scope.row.cid)">
 							学生  {{scope.row.StudentCount}}
 						</el-button>	
@@ -28,7 +36,7 @@
 				</el-table-column>
 				<el-table-column label="家长" align="center">
 					<template scope="scope" >
-						<el-button type="primary" size="small" 
+						<el-button type="text" size="small" 
 							@click="$router.push('/parent/list?classId='+scope.row.cid)">
 							家长
 						</el-button>	
@@ -36,7 +44,7 @@
 				</el-table-column>
 				<el-table-column prop="TeacherCount" label="教师" align="center" sortable>
 					<template scope="scope" >
-						<el-button type="primary" size="small" 
+						<el-button type="text" size="small" 
 							@click="$router.push('/teacher/list?classId='+scope.row.cid)">
 							教师  {{scope.row.TeacherCount}}
 						</el-button>	
@@ -44,16 +52,9 @@
 				</el-table-column>
 				<el-table-column prop="cid" label="动态" align="center" sortable>
 					<template scope="scope" >
-						<el-button type="primary" size="small" 
+						<el-button type="text" size="small" 
 							@click="$router.push('/post/list?classId='+scope.row.cid)">
 							动态
-						</el-button>	
-					</template>	
-				</el-table-column>
-				<el-table-column prop="cid" label="班主任" align="center" sortable>
-					<template scope="scope" >
-						<el-button type="primary" size="small">
-							班主任
 						</el-button>	
 					</template>	
 				</el-table-column>
@@ -99,15 +100,30 @@
 			</div>
 		</el-dialog>
 
-		<el-dialog title="新增" v-model="addClassVisible" :close-on-click-modal="false">
+		<el-dialog title="添加班级" v-model="addClassVisible" :close-on-click-modal="false">
 			<el-form :model="addClassData" label-width="80px" :rules="addClassRules" ref="addClassDom">
-				<el-form-item label="班级名字" prop="name">
-					<el-input v-model="addClassData.name"></el-input>
+				<el-form-item label="班级名字" prop="Name">
+					<el-input v-model="addClassData.Name"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="addClassVisible = false">取消</el-button>
 				<el-button type="primary" @click.native="addClassSubmit">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<el-dialog title="指定班主任" v-model="showSetClassAdminTeacher" :close-on-click-modal="false">
+			<el-form :model="setClassAdminTeacherData" label-width="80px" ref="addClassDom">
+				<el-form-item label="班级名字" prop="ClassID">
+					<el-input v-model="setClassAdminTeacherData.Name" :disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="班主任用户ID" prop="Meid">
+					<el-input v-model="setClassAdminTeacherData.Meid"></el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="showSetClassAdminTeacher = false">取消</el-button>
+				<el-button type="primary" @click.native="setClassAdminTeacherSubmit">提交</el-button>
 			</div>
 		</el-dialog>
 
@@ -140,6 +156,11 @@
 					Name: '',
 					HeadImgurl: '',
 				},
+				showSetClassAdminTeacher:false,
+				setClassAdminTeacherData:{
+					ClassID:'',
+					Meid:''
+				}
 			}
 		},
 		computed: {
@@ -235,6 +256,22 @@
 					}
 				});
 			},
+			startSetClassAdminTeacher(val){
+				this.setClassAdminTeacherData=val
+				this.showSetClassAdminTeacher=true
+			},
+			setClassAdminTeacherSubmit(){
+				if(this.setClassAdminTeacherData.Meid===''){
+					this.$message.warning('数据不完整！')
+				}else{
+					this.$classAPI.setClassAdminTeacher(this.setClassAdminTeacherData).then(res=>{
+						this.$message.success('指定班主任成功！')
+						this.setClassAdminTeacherData={}
+						this.showSetClassAdminTeacher=false
+						this.getData()
+					})
+				}
+			}
 		},
 		mounted(){
 			

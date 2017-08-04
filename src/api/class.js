@@ -28,6 +28,14 @@ classAPI.addClass = params => {
     ).then(res => res.data.Content)
 }
 
+// 指定班级班主任
+classAPI.setClassAdminTeacher = params => { 
+    return axios.post(
+        `${base}/api/Class/SetAdviserTeacher`,
+        params
+    ).then(res => res.data.Content)
+}
+
 // 修改作业
 classAPI.editClassHomework = params => { 
     return axios.post(
