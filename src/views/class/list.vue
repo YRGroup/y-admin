@@ -14,9 +14,9 @@
 			<el-table :data="currentData" fixed 
 				highlight-current-row v-loading="loading" 
 				style="width: 100%;">
-				<el-table-column prop="cid" label="ID" width="70" sortable>
+				<el-table-column prop="cid" label="序号" width="90" sortable>
 				</el-table-column>
-				<el-table-column prop="Name" label="名称" sortable>
+				<el-table-column prop="Name" label="班级名称" sortable>
 				</el-table-column>
 				<el-table-column prop="cid" label="班主任" align="center" sortable>
 					<template scope="scope">
@@ -26,15 +26,15 @@
 						</el-button>	
 					</template>	
 				</el-table-column>
-				<el-table-column prop="StudentCount" label="学生" align="center" sortable>
+				<el-table-column prop="StudentCount" label="学生数量" align="center" sortable>
 					<template scope="scope" >
 						<el-button type="text" size="small" 
 							@click="$router.push('/student/list?classId='+scope.row.cid)">
-							学生  {{scope.row.StudentCount}}
+							  {{scope.row.StudentCount}}
 						</el-button>	
 					</template>	
 				</el-table-column>
-				<el-table-column label="家长" align="center">
+				<el-table-column label="家长数量" align="center">
 					<template scope="scope" >
 						<el-button type="text" size="small" 
 							@click="$router.push('/parent/list?classId='+scope.row.cid)">
@@ -42,27 +42,33 @@
 						</el-button>	
 					</template>	
 				</el-table-column>
-				<el-table-column prop="TeacherCount" label="教师" align="center" sortable>
+				<el-table-column prop="TeacherCount" label="教师数量" align="center" sortable>
 					<template scope="scope" >
 						<el-button type="text" size="small" 
 							@click="$router.push('/teacher/list?classId='+scope.row.cid)">
-							教师  {{scope.row.TeacherCount}}
+							  {{scope.row.TeacherCount}}
 						</el-button>	
 					</template>	
 				</el-table-column>
-				<el-table-column prop="cid" label="动态" align="center" sortable>
+				<el-table-column prop="cid" label="班级动态" align="center" sortable>
 					<template scope="scope" >
 						<el-button type="text" size="small" 
 							@click="$router.push('/post/list?classId='+scope.row.cid)">
-							动态
+							查看
 						</el-button>	
 					</template>	
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" width="160" align="center">
+				<el-table-column fixed="right" label="操作" width="250" align="center">
 					<template scope="scope" >
-						<el-button type="warning" size="small" 
-							@click="handleEditClass(scope.row)"
-						>编辑</el-button>
+						<el-button v-if="scope.row.AdviserMeid" type="warning" size="small" 
+							@click="$router.push('/teacher/list?classId=0&op=setm&p=0&key=')">
+						更换班主任</el-button>
+						<el-button v-else type="success" size="small" 
+							@click="$router.push('/teacher/list?classId=0&op=setm&p=0&key=')">
+						添加班主任</el-button>
+
+
+
 						<el-button type="danger" size="small" 
 							@click="handleDeleteClass(scope.row.cid)"
 						>删除</el-button>
@@ -102,12 +108,19 @@
 
 		<el-dialog title="添加班级" v-model="addClassVisible" :close-on-click-modal="false">
 			<el-form :model="addClassData" label-width="80px" :rules="addClassRules" ref="addClassDom">
-				<el-form-item label="班级名字" prop="Name">
-					<el-input v-model="addClassData.Name"></el-input>
+				<el-form-item l >
+					<label style="fontsize:18">请选择要添加的班级所属的年级，比如选择初一，如果当前初一有2个班级，则新加一个班级名字为初一3班</label>
+				</el-form-item>
+				<el-form-item>
+					<el-select v-model="selectedGrade" placeholder="请选择">
+						<el-option v-for="i in aGradeList" :key="i.ID" :label="i.GradeName" :value="i.ID">
+						</el-option>
+					</el-select>
+					
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="addClassVisible = false">取消</el-button>
+
 				<el-button type="primary" @click.native="addClassSubmit">提交</el-button>
 			</div>
 		</el-dialog>
@@ -126,6 +139,7 @@
 				<el-button type="primary" @click.native="setClassAdminTeacherSubmit">提交</el-button>
 			</div>
 		</el-dialog>
+
 
 	</section>
 </template>
@@ -160,9 +174,13 @@
 				setClassAdminTeacherData:{
 					ClassID:'',
 					Meid:''
-				}
+				},
+				selectedGrade:'',
+				aGradeList:[{GradeName:'aaa',ID:1},{GradeName:'bbb',ID:2}],
+		
 			}
 		},
+		
 		computed: {
 			data() {
 				if (!this.$store.getters.classList.length) {
@@ -183,11 +201,18 @@
 			},
 			...mapGetters({
 				loading: 'listLoading',
-			})
-		},
+			}
+			)
+		}
+		,
 		methods: {
 			getData() {
 				this.$store.dispatch('getClassList');
+			},
+			getGradeList() {
+			  this.$classAPI.getGradeList().then(res => {
+								this.aGradeList = res;
+				});
 			},
 			handleSizeChange(val) {
 				this.pageSize = val;
@@ -202,8 +227,7 @@
 			handleAddClass: function () {
 				this.addClassVisible = true;
 				this.addClassData = {
-					Name: '',
-					HeadImgurl: '',
+					gid:'',
 				};
 			},
 			handleDeleteClass: function (cid) {
@@ -222,7 +246,7 @@
 					}).catch((err) => {
 						console.error('fff>>>>', err);
 						this.$message({
-							message: '删除失败了哦!',
+							message: err.msg,
 							type: 'error',
 						})
 					})
@@ -233,13 +257,19 @@
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							//NProgress.start();
-							this.$classAPI.editClassInfo(this.editClassData).then(() => {
+							editClassInfo(this.editClassData).then(() => {
 								//NProgress.done();
 								this.$refs['editClassDom'].resetFields();
 								this.editClassVisible = false;
 								this.getData()
 							});
-						});
+						}).catch((err) => {
+						console.error('fff>>>>', err);
+						this.$message({
+							message: err.msg,
+							type: 'error',
+						})
+					});
 					}
 				});
 			},
@@ -247,12 +277,18 @@
 				this.$refs.addClassDom.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.$classAPI.addClass(this.addClassData).then(() => {
+							this.$classAPI.addClass({GradeID:this.selectedGrade}).then(() => {
 								this.getData()
 								this.$refs['addClassDom'].resetFields();
 								this.addClassVisible = false;
 							});
-						});
+						}).catch((err) => {
+						console.error('fff>>>>', err);
+						this.$message({
+							message: err.msg,
+							type: 'error',
+						})
+					});
 					}
 				});
 			},
@@ -274,7 +310,7 @@
 			}
 		},
 		mounted(){
-			
+			this.getGradeList();
 		}
 	};
 

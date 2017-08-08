@@ -76,7 +76,7 @@
             }).catch(err=>{
               this.logining = false;
               this.$message({
-                  message: err,
+                  message: err.msg,
                   type: 'error',
                 });
             })

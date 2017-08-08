@@ -1,45 +1,56 @@
 <template>
 	<section>
 		<!--工具条-->
-		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+
+			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item label="班级ID">
-					<el-input v-model="filters.classId" placeholder="班级ID"></el-input>
+				<el-form-item label="班级">
+					<el-select v-model="selected"  placeholder="全部">
+						<el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
+						</el-option>
+					</el-select>
+				</el-form-item>
+	
+				<el-form-item>
+					<el-button type="primary"  @click="$router.push('/student/list?classId='+selected +'&p=0&key=')">查询</el-button>
+				
+				</el-form-item>
+
+				<el-form-item label="学生姓名/学号">
+					<el-input v-model="searchInput" placeholder="请输入学生姓名或者学号"></el-input>
+					<div>{{searchInput}}</div>
 				</el-form-item>
 
 				<el-form-item>
-					<el-button type="primary" @click="$router.push('/student/list?classId='+filters.classId)">查询</el-button>
+					<el-button type="primary" @click="$router.push('/student/list?classId=0&p=0&key='+searchInput)">查询</el-button>
 				</el-form-item>
-				
+	
 			</el-form>
 		</el-col>
 
 		<!--列表-->
 		<template>
-			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
-				<el-table-column fixed="left" type="index" width="60">
+			<el-table :data="studentList" highlight-current-row v-loading="loading" style="width: 100%;">
+				<el-table-column fixed="left" label="序号" type="index" width="70">
 				</el-table-column>
-				<el-table-column prop="Meid" label="ID" sortable>
+				<el-table-column prop="Headimgurl" align="center" label="头像">
+					<template scope="scope">				
+						<img :src="scope.row.Headimgurl"  width="50" height="50">		
+					</template>
 				</el-table-column>
+
 				<el-table-column prop="TrueName" label="名字" sortable>
 				</el-table-column>
 				<el-table-column prop="StudentID" label="学号" sortable>
 				</el-table-column>
 				<el-table-column prop="Sex" label="性别" sortable>
 				</el-table-column>
-				<el-table-column prop="userImg" align="center" label="头像">
-					<template scope="scope">
-						<el-popover
-							ref="popover2"
-							placement="bottom"
-							title="图片预览"
-							width="200"
-							trigger="click">
-							<img :src="scope.row.userImg">
-						</el-popover>
-						<el-button size="small" v-popover:popover2>头像</el-button>
+				<el-table-column prop="className" label="班级" >
+					<template scope="scope">				
+						<li style="list-style-type:none;" v-for="(item,index) in scope.row.Classes" :key="index" value='CourseName' >{{item.ClassName}}</li>		
 					</template>
 				</el-table-column>
+
 				<el-table-column fixed="right" label="操作" width="200" align="center">
 					<template scope="scope" >
 						<el-button type="primary" size="small" 
@@ -66,8 +77,6 @@
 			</el-pagination>
 		</el-col>
 
-		
-
 	</section>
 </template>
 
@@ -79,46 +88,64 @@
 			return {
 				page: 1,
 				pageSize: 10,
-				pageSizes: [10, 20, 30, 50],
+				pageSizes: [10],
 				filters: {
-					classId: '1',
+				cid: this.$route.query.classId||'0',
+				key : this.$route.query.key||'',
+				p : this.$route.query.p || '0',
 				},
+				selected :0,
+				classList:[{Name:'全部',cid:0}],
+				searchInput:'',
+				studentList:[],
+				total :0,
 			}
 		},
 		computed: {
-			total(){
-				return this.$store.getters.studentList.length
-			},
-			currentData(){
-				let start = (this.page - 1) * this.pageSize;
-				let end = this.page * this.pageSize;
-				if (!this.$store.getters.studentList.length) {
-					return this.getData();
-				}
-				return this.$store.getters.studentList.slice(start,end)
-			},
 			...mapGetters({
 				loading: 'listLoading',
 			})
 		},
 		methods: {
 			getData() {
-				if(this.$route.query.classId){
-					this.filters.classId=this.$route.query.classId
-				}
-				let para = {
-					cid: this.filters.classId,
-				}
-				this.$store.dispatch('getStudentList',para);
+				console.log( this.$route.query.i );
+
+				this.filters.cid = this.$route.query.classId||'0';
+				this.filters.key = this.$route.query.key||'';
+				this.filters.p = this.$route.query.p||'0';
+				this.getNowData();
+
+		},
+			getNowData(){
+				let start = (this.filters.p - 1) * this.pageSize;
+				let end =this.filters.p * this.pageSize;
+				
+				console.log(this.filters.cid +'aaa'+this.filters.key);
+				this.$studentAPI.getStudentList(this.filters).then(
+					res=>{
+						this.total = res.Total;
+						this.studentList = res.ModelList
+					}
+				)
+			},
+			getClassList() {
+			  this.$classAPI.getClassList().then(res => {
+						this.classList = res;
+						this.classList.splice(0,0,{Name:'全部',cid:0});				
+				});
 			},
 			handleSizeChange(val) {
+				this.filters.p = val;
 				this.pageSize = val;
+				this.getNowData();
 			},
 			handleCurrentChange(val) {
+				this.filters.p = val;
 				this.page = val;
+				this.getNowData();
 			},
 			handleDeleteStudent: function (Meid) {
-				this.$confirm('确认删除该记录吗?', '提示', {
+				this.$confirm('确认删除该学生吗?', '提示', {
 					type: 'warning'
 				}).then(()=>{
 					let para = {
@@ -133,7 +160,7 @@
 					}).catch((err) => {
 						console.error('fff>>>>', err);
 						this.$message({
-							message: '删除失败了哦!',
+							message:err.msg,
 							type: 'error',
 						})
 					})
@@ -141,6 +168,8 @@
 			},
 		},
 		mounted(){
+			this.getClassList();
+			this.getData();
 		},
 		watch:{
 			"$route": "getData"

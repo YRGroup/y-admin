@@ -59,6 +59,13 @@ classAPI.getClassList = params => {
         { params: params }
     ).then(res => res.data.Content)
 }
+// 获取班级列表
+classAPI.getGradeList = params => { 
+    return axios.get(
+        `${base}/api/school/GetGrade`,
+        { params: params }
+    ).then(res => res.data.Content)
+}
 
 // 获取班级信息
 classAPI.getClassInfo = params => { 
