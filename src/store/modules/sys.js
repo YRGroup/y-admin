@@ -14,7 +14,7 @@ const actions = {
 		state.listLoading = true
 		sysAPI.getNewsList(para).then((value)=>{
 			if(!value.length){
-				value.push({content:'null'})
+				//value.push({content:'null'})
 			}
 			commit('getNewsList',value)
 			state.listLoading = false

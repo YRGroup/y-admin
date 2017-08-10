@@ -16,7 +16,6 @@
 					<el-button type="primary"  @click="$router.push('/teacher/list?classId='+selected+'&op='+filters.op +'&p=0&key=')">查询</el-button>
 				
 				</el-form-item>
-aaaa
 				<el-form-item label="教师姓名/手机号">
 					<el-input v-model="searchInput" placeholder="请输入教师姓名或者手机号"></el-input>
 					
@@ -25,17 +24,7 @@ aaaa
 				<el-form-item>
 					<el-button type="primary" @click="$router.push('/teacher/list?classId=0&p=0&key='+searchInput+'&setm='+filters.setm)">查询</el-button>
 				</el-form-item>
-		
-				<el-form :inline="true" :model="filters" v-if="filters.setm>0">
-					<el-form-item>
-						<el-button type="success" @click="$router.push('/teacher/list?classId=0&p=0&key='+searchInput+'&setm='+filters.setm)">添加一个老师并成为当前班级班主任</el-button>
-					</el-form-item>
-		
-				</el-form>
 			</el-form>
-
-
-
 		</el-col>
 	
 		<!--列表-->
@@ -67,7 +56,14 @@ aaaa
 					</template>
 				</el-table-column>
 				
-				<el-table-column fixed="right" label="操作" width="200" align="center">
+				<el-table-column  v-if="filters.setm>0" fixed="right" label="操作" width="200" align="center">
+					<template scope="scope">
+						<el-button type="primary" size="small" @click.native="setClassAdminTeacher(scope.row.Meid)">
+							设为班主任
+						</el-button>
+					</template>
+				</el-table-column>
+				<el-table-column v-else fixed="right" label="操作" width="200" align="center">
 					<template scope="scope">
 						<el-button type="primary" size="small" @click.native="$router.push('/teacher/info?teacherId='+scope.row.Meid)">
 							详情
@@ -245,6 +241,17 @@ export default {
 				}
 			});
 		},
+		setClassAdminTeacher(meid){
+				if(meid===''){
+					this.$message.warning('数据不完整！')
+				}else{
+					let p={ClassID:this.filters.setm,Meid:meid}
+					this.$classAPI.setClassAdminTeacher(p).then(res=>{
+						this.$message.success('指定班主任成功！')
+						this.$router.go(-1);
+					})
+				}
+			}
 	},
 	mounted() {
 		this.getClassList();

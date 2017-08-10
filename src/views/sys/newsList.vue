@@ -9,6 +9,7 @@
 						<el-radio-button :label="1">新闻</el-radio-button>
 						<el-radio-button :label="2">资料</el-radio-button>
 						<el-radio-button :label="3">轮播图</el-radio-button>
+						<el-radio-button :label="0">回收站</el-radio-button>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item style="float:right">
@@ -21,7 +22,7 @@
 		<template>
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
 	
-				<el-table-column prop="ID" label="ID">
+				<el-table-column prop="ID" label="ID" width="80">
 				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
 				</el-table-column>
@@ -29,40 +30,9 @@
 				</el-table-column>
 				<el-table-column prop="Describtion" label="描述" show-overflow-tooltip>
 				</el-table-column>
-				<el-table-column prop="SortID" label="SortID">
+				<el-table-column prop="SortID" label="排序">
 				</el-table-column>
-				<el-table-column prop="IsHot" label="IsHot">
-					<template scope="scope">
-						<span>{{scope.row.IsHot.toString()}}</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="IsRed" label="IsRed">
-					<template scope="scope">
-						<span>{{scope.row.IsRed.toString()}}</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="IsSlide" label="IsSlide">
-					<template scope="scope">
-						<span>{{scope.row.IsSlide.toString()}}</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="IsSys" label="IsSys">
-					<template scope="scope">
-						<span>{{scope.row.IsSys.toString()}}</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="IsTop" label="IsTop">
-					<template scope="scope">
-						<span>{{scope.row.IsTop.toString()}}</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="Status" label="Status">
-				</el-table-column>
-				<el-table-column prop="CanRely" label="CanRely">
-					<template scope="scope">
-						<span>{{scope.row.CanRely.toString()}}</span>
-					</template>
-				</el-table-column>
+				
 				<el-table-column prop="Attach" label="附件">
 					<template scope="scope">
 						<el-button type="info" size="small">{{scope.row.Attachs.length}}</el-button>
@@ -86,8 +56,11 @@
 						<el-button type="primary" size="small" @click.native="handleEdit(scope.row)">
 							编辑
 						</el-button>
-						<el-button type="danger" size="small" @click.native="handleDeleteNews(scope.row.ID)">
-							删除
+						<el-button v-if="scope.row.IsDelete" type="danger" size="small" @click.native="handleUnDeleteNews(scope.row.ID)">
+							上架
+						</el-button>
+						<el-button v-else type="danger" size="small" @click.native="handleDeleteNews(scope.row.ID)">
+							下架
 						</el-button>
 					</template>
 				</el-table-column>
@@ -245,9 +218,9 @@ export default {
 		currentData() {
 			let start = (this.page - 1) * this.pageSize;
 			let end = this.page * this.pageSize;
-			if (!this.$store.getters.allNewsList.length) {
-				return this.getData();
-			}
+			// if (!this.$store.getters.allNewsList.length) {
+			// 	return this.getData();
+			// }
 			return this.$store.getters.allNewsList.slice(start, end)
 		},
 		...mapGetters({
@@ -354,6 +327,7 @@ export default {
 				category: this.filters.category,
 				currentPage: this.page,
 				pagesize: this.pageSize,
+				IsDelete: this.filters.category==0
 			}
 			this.$store.dispatch('getNewsList', para);
 		},
@@ -370,7 +344,7 @@ export default {
 			this.isEdit = true
 		},
 		handleDeleteNews: function (id) {
-			this.$confirm('确认删除该记录吗?', '提示', {
+			this.$confirm('确认下架该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
 				let para = {
@@ -378,14 +352,36 @@ export default {
 				}
 				this.$sysAPI.deleteNews(para).then(() => {
 					this.$message({
-						message: '删除成功',
+						message: '下架成功',
 						type: 'success',
 					})
 					this.getData()
 				}).catch((err) => {
 					console.error('fff>>>>', err);
 					this.$message({
-						message: '删除失败了哦!',
+						message: '下架失败了哦!',
+						type: 'error',
+					})
+				})
+			})
+		},
+		handleUnDeleteNews: function (id) {
+			this.$confirm('确认上架该记录吗?', '提示', {
+				type: 'warning'
+			}).then(() => {
+				let para = {
+					ID: id
+				}
+				this.$sysAPI.unDeleteNews(para).then(() => {
+					this.$message({
+						message: '上架成功',
+						type: 'success',
+					})
+					this.getData()
+				}).catch((err) => {
+					console.error('fff>>>>', err);
+					this.$message({
+						message: '上架失败了哦!',
 						type: 'error',
 					})
 				})

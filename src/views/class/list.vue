@@ -21,8 +21,8 @@
 				<el-table-column prop="cid" label="班主任" align="center" sortable>
 					<template scope="scope">
 						<el-button type="text" size="small"  v-if="scope.row.AdviserMeid" @click="$router.push('/teacher/info?teacherId='+scope.row.AdviserMeid)">{{scope.row.AdviserTrueName}}</el-button>
-						<el-button v-else type="success" size="small" @click.native="startSetClassAdminTeacher(scope.row)">
-							添加
+						<el-button v-else type="text" size="small" @click.native="">
+							暂无
 						</el-button>	
 					</template>	
 				</el-table-column>
@@ -61,10 +61,10 @@
 				<el-table-column fixed="right" label="操作" width="250" align="center">
 					<template scope="scope" >
 						<el-button v-if="scope.row.AdviserMeid" type="warning" size="small" 
-							@click="$router.push('/teacher/list?classId=0&op=setm&p=0&key=')">
+							@click="$router.push('/teacher/list?classId=0&setm='+scope.row.cid+'&p=0&key=')">
 						更换班主任</el-button>
 						<el-button v-else type="success" size="small" 
-							@click="$router.push('/teacher/list?classId=0&op=setm&p=0&key=')">
+							@click="$router.push('/teacher/list?classId=0&setm='+scope.row.cid+'&p=0&key=')">
 						添加班主任</el-button>
 
 
@@ -311,6 +311,7 @@
 		},
 		mounted(){
 			this.getGradeList();
+			this.getData();
 		}
 	};
 

@@ -30,6 +30,10 @@ sysAPI.deleteNews = params => {
   return axios.post(
     `${base}/api/School/DeleteArticle`, params).then(res => res.data.Content)
 }
+sysAPI.unDeleteNews = params => {
+  return axios.post(
+    `${base}/api/School/UnDeleteArticle`, params).then(res => res.data.Content)
+}
 
 // 删除校园新闻评论
 sysAPI.deleteNewsComment = params => {

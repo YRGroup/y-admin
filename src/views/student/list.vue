@@ -18,7 +18,7 @@
 
 				<el-form-item label="学生姓名/学号">
 					<el-input v-model="searchInput" placeholder="请输入学生姓名或者学号"></el-input>
-					<div>{{searchInput}}</div>
+				
 				</el-form-item>
 
 				<el-form-item>
@@ -45,10 +45,8 @@
 				</el-table-column>
 				<el-table-column prop="Sex" label="性别" sortable>
 				</el-table-column>
-				<el-table-column prop="className" label="班级" >
-					<template scope="scope">				
-						<li style="list-style-type:none;" v-for="(item,index) in scope.row.Classes" :key="index" value='CourseName' >{{item.ClassName}}</li>		
-					</template>
+				<el-table-column prop="ClassName" label="班级" >sortable
+					
 				</el-table-column>
 
 				<el-table-column fixed="right" label="操作" width="200" align="center">
