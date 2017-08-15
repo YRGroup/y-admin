@@ -41,4 +41,30 @@ sysAPI.deleteNewsComment = params => {
     `${base}/api/School/DeleteComment`, params).then(res => res.data.Content)
 }
 
+sysAPI.deleteUser = params => {
+  return axios.get(
+    `${base}/api/user/delete`, {
+      params: params
+    }
+  ).then(res => res.data.Content)
+}
+
+sysAPI.addTeacherAccount = params => {
+  return axios.post(
+    `${base}/api/user/AddTeacher`, params
+  ).then(res => res.data.Content)
+}
+
+sysAPI.addStudentAccount = params => {
+  return axios.post(
+    `${base}/api/user/AddStudent`, params
+  ).then(res => res.data.Content)
+}
+
+sysAPI.addAdminAccount = params => {
+  return axios.post(
+    `${base}/api/user/AddStudent`, params
+  ).then(res => res.data.Content)
+}
+
 export default sysAPI

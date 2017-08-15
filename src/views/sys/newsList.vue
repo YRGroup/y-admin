@@ -271,6 +271,7 @@ export default {
 			if (file.Content) {
 				let j = {}
 				j.FilePath = file.Content[0]
+				j.FileName=fileList.name
 				this.data.Attachs.push(j)
 				this.$message.success('附件上传成功！')
 			}
