@@ -3,10 +3,8 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item label="班级ID">
-					<el-input v-model="filters.cid" placeholder="班级ID:" style="width:50px;"></el-input>
-				</el-form-item>
-				<el-form-item>
+
+				<el-form-item label="班级">
 					<el-select v-model="filters.cid" placeholder="请选择">
 						<el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
 						</el-option>
@@ -148,7 +146,7 @@ export default {
 			pageSize: 10,
 			pageSizes: [10, 20, 30, 50],
 			filters: {
-				cid: '2',
+				cid: '1',
 				type: 0
 			},
 			addPostVisible: false,
@@ -178,6 +176,9 @@ export default {
 			return this.$store.getters.postList;
 		},
 		classList() {
+			if (!this.$store.getters.classList.length) {
+				return this.$store.dispatch('getClassList')
+			}
 			return this.$store.getters.classList
 		},
 		total() {

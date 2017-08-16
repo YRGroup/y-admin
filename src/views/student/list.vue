@@ -13,12 +13,10 @@
 	
 				<el-form-item>
 					<el-button type="primary"  @click="$router.push('/student/list?classId='+selected +'&p=0&key=')">查询</el-button>
-				
 				</el-form-item>
 
 				<el-form-item label="学生姓名/学号">
 					<el-input v-model="searchInput" placeholder="请输入学生姓名或者学号"></el-input>
-				
 				</el-form-item>
 
 				<el-form-item>
@@ -106,13 +104,10 @@
 		},
 		methods: {
 			getData() {
-				console.log( this.$route.query.i );
-
 				this.filters.cid = this.$route.query.classId||'0';
 				this.filters.key = this.$route.query.key||'';
 				this.filters.p = this.$route.query.p||'0';
 				this.getNowData();
-
 		},
 			getNowData(){
 				let start = (this.filters.p - 1) * this.pageSize;

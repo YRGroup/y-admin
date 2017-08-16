@@ -3,12 +3,15 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item label="班级ID">
-					<el-input v-model="filters.classId" placeholder="班级ID"></el-input>
+				<el-form-item label="班级">
+					<el-select v-model="selected"  placeholder="请选择">
+						<el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
+						</el-option>
+					</el-select>
 				</el-form-item>
 
 				<el-form-item>
-					<el-button type="primary" @click="$router.push('/parent/list?classId='+filters.classId)">查询</el-button>
+					<el-button type="primary" @click="$router.push('/parent/list?classId='+selected)">查询</el-button>
 				</el-form-item>
 				
 			</el-form>
@@ -85,6 +88,7 @@
 		name:'teacherList',
 		data() {
 			return {
+				selected :0,
 				page: 1,
 				pageSize: 10,
 				pageSizes: [10, 20, 30, 50],
@@ -96,6 +100,12 @@
 		computed: {
 			total(){
 				return this.$store.getters.parentList.length
+			},
+			classList() {
+				if (!this.$store.getters.classList.length) {
+					return this.$store.dispatch('getClassList')
+				}
+				return this.$store.getters.classList
 			},
 			currentData(){
 				let start = (this.page - 1) * this.pageSize;
@@ -110,6 +120,12 @@
 			})
 		},
 		methods: {
+			getClassList() {
+			  this.$classAPI.getClassList().then(res => {
+						this.classList = res;
+						this.classList.splice(0,0,{Name:'全部',cid:0});				
+				});
+			},
 			getData() {
 				if(this.$route.query.classId){
 					this.filters.classId=this.$route.query.classId
@@ -149,6 +165,7 @@
 			},
 		},
 		mounted(){
+			this.getClassList();
 		},
 		watch:{
 			"$route": "getData"

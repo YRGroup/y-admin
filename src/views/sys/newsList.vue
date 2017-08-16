@@ -24,6 +24,8 @@
 	
 				<el-table-column prop="ID" label="ID" width="80">
 				</el-table-column>
+				<el-table-column  v-show="filters.category==0" :formatter="categoryFormatter" prop="CategoryID" label="类别">
+				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
 				</el-table-column>
 				<el-table-column prop="content" label="内容" show-overflow-tooltip>
@@ -218,9 +220,6 @@ export default {
 		currentData() {
 			let start = (this.page - 1) * this.pageSize;
 			let end = this.page * this.pageSize;
-			// if (!this.$store.getters.allNewsList.length) {
-			// 	return this.getData();
-			// }
 			return this.$store.getters.allNewsList.slice(start, end)
 		},
 		...mapGetters({
@@ -228,6 +227,15 @@ export default {
 		})
 	},
 	methods: {
+		categoryFormatter(row){
+			if(row.CategoryID==1){
+				return '新闻'
+			}else if(row.CategoryID==2){
+				return '资料'
+			}else if(row.CategoryID==3){
+				return '轮播图'
+			}
+		},
 		startAddNews() {
 			this.showEditForm = true
 			this.isEdit = false
