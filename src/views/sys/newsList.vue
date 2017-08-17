@@ -72,7 +72,7 @@
 			</el-pagination>
 		</el-col>
 	
-		<el-dialog :visible.sync="showEditForm" title="添加新闻" size="full">
+		<el-dialog :visible.sync="showEditForm" title="添加新闻">
 			<el-form label-width="80px">
 				<el-form-item label="类型">
 					<el-radio-group v-model="data.CategoryID">
@@ -417,6 +417,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.getData()
 	},
 	watch: {
 		"$route": "getData"

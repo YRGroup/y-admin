@@ -1,10 +1,10 @@
 <template>
 	<section>
 	
-		<el-card class="box-card">
-			<div slot="header" class="clearfix">
+		<el-card class="box-card" style="margin-top:10px">
+			<!-- <div slot="header" class="clearfix">
 				<span>添加新闻</span>
-			</div>
+			</div> -->
 			<el-form label-width="80px">
 				<el-form-item label="类型">
 					<el-radio-group v-model="data.CategoryID">
@@ -163,7 +163,7 @@ export default {
 					pagesize:10,
 				}
 				this.$store.dispatch('getNewsList',para);
-				this.$router.push('/news/list')
+				this.$router.push('/news/newsList')
 			}).catch(err => {
 				this.$message.error(err.msg)
 			})
