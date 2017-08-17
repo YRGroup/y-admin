@@ -13,7 +13,12 @@
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item style="float:right">
-					<el-button type="success" @click="startAddNews">添加新闻</el-button>
+					<el-button type="success" @click="startAddNews">
+						<span v-show="filters.category==1">添加新闻</span>
+						<span v-show="filters.category==2">添加资料</span>
+						<span v-show="filters.category==3">添加轮播图</span>
+						<span v-show="filters.category==0">添加</span>
+					</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -32,9 +37,8 @@
 				</el-table-column>
 				<el-table-column prop="Describtion" label="描述" show-overflow-tooltip>
 				</el-table-column>
-				<el-table-column prop="SortID" label="排序">
-				</el-table-column>
-				
+				<!-- <el-table-column prop="SortID" label="排序">
+				</el-table-column> -->
 				<el-table-column prop="Attach" label="附件">
 					<template scope="scope">
 						<el-button type="info" size="small">{{scope.row.Attachs.length}}</el-button>
@@ -53,8 +57,11 @@
 				<el-table-column prop="AddTime" label="时间">
 				</el-table-column>
 	
-				<el-table-column fixed="right" label="操作" width="150" align="center">
+				<el-table-column fixed="right" label="操作" width="220" align="center">
 					<template scope="scope">
+						<el-button type="success" size="small" @click.native="handleLook(scope.row)">
+							查看
+						</el-button>
 						<el-button type="primary" size="small" @click.native="handleEdit(scope.row)">
 							编辑
 						</el-button>
@@ -74,9 +81,9 @@
 			</el-pagination>
 		</el-col>
 	
-		<el-dialog :visible.sync="showEditForm" title="添加新闻" size="full">
+		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'" size="full">
 			<el-form label-width="80px">
-				<el-form-item label="类型">
+				<el-form-item label="类型" v-show="!isLook">
 					<el-radio-group v-model="data.CategoryID">
 						<el-radio :label="1">新闻</el-radio>
 						<el-radio :label="2">资料</el-radio>
@@ -84,12 +91,12 @@
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="标题">
-					<el-input v-model="data.Title"></el-input>
+					<el-input v-model="data.Title" :disabled="isLook"></el-input>
 				</el-form-item>
 				<el-form-item label="内容" v-show="data.CategoryID!=3">
-					<vue-editor v-model="data.content" useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
+					<vue-editor v-model="data.content" :disabled="isLook" useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
 				</el-form-item>
-				<el-form-item label="描述">
+				<el-form-item label="描述" v-show="!isLook">
 					<el-input v-model="data.Describtion"></el-input>
 				</el-form-item>
 			</el-form>
@@ -123,7 +130,7 @@
 					<img :src="i.Thumbpath" style="width:300px;" v-for="(i,index) in data.Albums" :key="index">
 				</el-form-item>
 			</el-form>
-			<el-form label-width="80px" :inline="true">
+			<el-form label-width="80px" :inline="true" v-show="!isLook">
 				<el-form-item label="属性">
 				</el-form-item>
 				<el-form-item>
@@ -152,7 +159,7 @@
 				</el-form-item>
 			</el-form>
 	
-			<span slot="footer" class="dialog-footer">
+			<span slot="footer" class="dialog-footer" v-show="!isLook">
 				<el-button @click="showEditForm = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确认发布</el-button>
 			</span>
@@ -202,6 +209,7 @@ export default {
 			commentVisible: false,
 			comment: {},
 			isEdit: false,
+			isLook: false,
 			attachList: [],
 			albumsList: [],
 			page: 1,
@@ -239,11 +247,12 @@ export default {
 		startAddNews() {
 			this.showEditForm = true
 			this.isEdit = false
+			this.isLook = false
 			this.data = {
 				Title: '',
 				content: '',
 				Describtion: '',
-				CategoryID: 1,
+				CategoryID: this.filters.category,
 				Status: 1,
 				SortID: 1,
 				Albums: [],
@@ -346,11 +355,19 @@ export default {
 		handleCurrentChange(val) {
 			this.page = val;
 		},
+		handleLook(val) {
+			this.data = val
+			this.data.CategoryID = this.filters.category
+			this.showEditForm = true
+			this.isEdit = true
+			this.isLook = true
+		},
 		handleEdit(val) {
 			this.data = val
 			this.data.CategoryID = this.filters.category
 			this.showEditForm = true
 			this.isEdit = true
+			this.isLook = false
 		},
 		handleDeleteNews: function (id) {
 			this.$confirm('确认下架该记录吗?', '提示', {
@@ -425,6 +442,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.getData()
 	},
 	watch: {
 		"$route": "getData"
