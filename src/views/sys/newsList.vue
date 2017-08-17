@@ -25,36 +25,36 @@
 	
 		<!--列表-->
 		<template>
-			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
+			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;" border>
 	
 				<!-- <el-table-column prop="ID" label="ID" width="80">
 					</el-table-column> -->
-				<el-table-column v-show="filters.category==0" :formatter="categoryFormatter" prop="CategoryID" label="类别">
+				<el-table-column v-show="filters.category==0" :formatter="categoryFormatter" align="center"  prop="CategoryID" label="类别" width="100">
 				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
 				</el-table-column>
-				<el-table-column prop="content" label="内容" show-overflow-tooltip>
-				</el-table-column>
-				<el-table-column prop="Describtion" label="描述" show-overflow-tooltip>
-				</el-table-column>
+				<!-- <el-table-column prop="content" label="内容" show-overflow-tooltip>
+				</el-table-column> -->
+				<!-- <el-table-column prop="Describtion" label="描述" show-overflow-tooltip>
+				</el-table-column> -->
 				<!-- <el-table-column prop="SortID" label="排序">
 					</el-table-column> -->
-				<el-table-column prop="Attach" label="附件">
+				<!-- <el-table-column prop="Attach" label="附件">
 					<template scope="scope">
 						<el-button type="info" size="small">{{scope.row.Attachs.length}}</el-button>
 					</template>
-				</el-table-column>
-				<el-table-column prop="Albums" label="相册">
+				</el-table-column> -->
+				<!-- <el-table-column prop="Albums" label="相册">
 					<template scope="scope">
 						<el-button type="info" size="small">{{scope.row.Albums.length}}</el-button>
 					</template>
-				</el-table-column>
-				<el-table-column prop="Comment" label="评论" align="center">
+				</el-table-column> -->
+				<el-table-column prop="Comment" label="评论" align="center" width="100">
 					<template scope="scope">
 						<el-button type="info" size="small" @click="handleComment(scope.row.Comments)">{{scope.row.Comments.length}}</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column prop="AddTime" label="时间">
+				<el-table-column prop="AddTime" label="时间" align="center"  width="200">
 				</el-table-column>
 	
 				<el-table-column fixed="right" label="操作" width="220" align="center">
@@ -68,7 +68,7 @@
 						<el-button v-if="scope.row.IsDelete" type="danger" size="small" @click.native="handleUnDeleteNews(scope.row.ID)">
 							上架
 						</el-button>
-						<el-button v-else type="danger" size="small" @click.native="handleDeleteNews(scope.row.ID)">
+						<el-button v-else type="warning" size="small" @click.native="handleDeleteNews(scope.row.ID)">
 							下架
 						</el-button>
 					</template>
