@@ -74,12 +74,18 @@ let routes = [{
   {
     path: '/news',
     component: Home,
-    iconCls: 'el-icon-edit',
-    leaf: true,
+    name: '新闻',
+    iconCls: 'fa fa-id-card-o',
+    // leaf: true,
     children: [{
-        path: '/news',
+        path: '/news/newsList',
         component: newsList,
-        name: '新闻'
+        name: '新闻列表'
+      },
+      {
+        path: '/news/addnews',
+        component: addnews,
+        name: '发布新闻'
       }
     ],
   },

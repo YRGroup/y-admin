@@ -27,8 +27,8 @@
 		<template>
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
 	
-				<el-table-column prop="ID" label="ID" width="80">
-				</el-table-column>
+				<!-- <el-table-column prop="ID" label="ID" width="80">
+				</el-table-column> -->
 				<el-table-column  v-show="filters.category==0" :formatter="categoryFormatter" prop="CategoryID" label="类别">
 				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
@@ -81,7 +81,7 @@
 			</el-pagination>
 		</el-col>
 	
-		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'" size="full">
+		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'" size="large">
 			<el-form label-width="80px">
 				<el-form-item label="类型" v-show="!isLook">
 					<el-radio-group v-model="data.CategoryID">
