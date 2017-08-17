@@ -28,8 +28,8 @@
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
 	
 				<!-- <el-table-column prop="ID" label="ID" width="80">
-				</el-table-column> -->
-				<el-table-column  v-show="filters.category==0" :formatter="categoryFormatter" prop="CategoryID" label="类别">
+					</el-table-column> -->
+				<el-table-column v-show="filters.category==0" :formatter="categoryFormatter" prop="CategoryID" label="类别">
 				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
 				</el-table-column>
@@ -38,7 +38,7 @@
 				<el-table-column prop="Describtion" label="描述" show-overflow-tooltip>
 				</el-table-column>
 				<!-- <el-table-column prop="SortID" label="排序">
-				</el-table-column> -->
+					</el-table-column> -->
 				<el-table-column prop="Attach" label="附件">
 					<template scope="scope">
 						<el-button type="info" size="small">{{scope.row.Attachs.length}}</el-button>
@@ -103,20 +103,20 @@
 			<el-form label-width="80px" v-show="!isEdit">
 				<el-form-item label="题图" v-show="data.CategoryID==1">
 					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleImageSuccess">
-						<el-button size="small" type="primary">点击上传</el-button>
-						<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb；只能上传一张题图，多次上传会覆盖旧图</div>
+						<span><el-button size="small" type="primary">点击上传</el-button></span>
+						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="附件" v-show="data.CategoryID==2">
 					<el-upload class="uploadAttach" :action="$store.getters._APIurl+'/api/Upload/FileUpload'" :on-remove="handleAttachRemove" :on-success="handleAttachSuccess">
-						<el-button size="small" type="primary">点击上传</el-button>
-						<div slot="tip" class="el-upload__tip">文件尺寸不超过3Mb</div>
+						<span><el-button size="small" type="primary">点击上传</el-button></span>
+						<span slot="tip" class="el-upload__tip"> 文件尺寸不超过3Mb</span>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="相册" v-show="data.CategoryID==3">
 					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleAlbumSuccess">
-						<el-button size="small" type="primary">点击上传</el-button>
-						<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+						<span><el-button size="small" type="primary">点击上传</el-button></span>
+						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸1140*300</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
 			</el-form>
@@ -130,34 +130,34 @@
 					<img :src="i.Thumbpath" style="width:300px;" v-for="(i,index) in data.Albums" :key="index">
 				</el-form-item>
 			</el-form>
-			<el-form label-width="80px" :inline="true" v-show="!isLook">
-				<el-form-item label="属性">
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="data.IsHot">IsHot</el-checkbox>
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="data.IsRed">IsRed</el-checkbox>
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="data.IsSlide">IsSlide</el-checkbox>
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="data.IsSys">IsSys</el-checkbox>
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="data.IsTop">IsTop</el-checkbox>
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="data.CanRely">CanRely</el-checkbox>
-				</el-form-item>
-				<el-form-item label="状态">
-					<el-input v-model="data.Status" style="width:70px" type="number"></el-input>
-				</el-form-item>
-				<el-form-item label="排序">
-					<el-input v-model="data.SortID" style="width:70px" type="number"></el-input>
-				</el-form-item>
-			</el-form>
+			<!-- <el-form label-width="80px" :inline="true" v-show="!isLook">
+					<el-form-item label="属性">
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsHot">IsHot</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsRed">IsRed</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsSlide">IsSlide</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsSys">IsSys</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsTop">IsTop</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.CanRely">CanRely</el-checkbox>
+					</el-form-item>
+					<el-form-item label="状态">
+						<el-input v-model="data.Status" style="width:70px" type="number"></el-input>
+					</el-form-item>
+					<el-form-item label="排序">
+						<el-input v-model="data.SortID" style="width:70px" type="number"></el-input>
+					</el-form-item>
+				</el-form> -->
 	
 			<span slot="footer" class="dialog-footer" v-show="!isLook">
 				<el-button @click="showEditForm = false">取 消</el-button>
@@ -235,12 +235,12 @@ export default {
 		})
 	},
 	methods: {
-		categoryFormatter(row){
-			if(row.CategoryID==1){
+		categoryFormatter(row) {
+			if (row.CategoryID == 1) {
 				return '新闻'
-			}else if(row.CategoryID==2){
+			} else if (row.CategoryID == 2) {
 				return '资料'
-			}else if(row.CategoryID==3){
+			} else if (row.CategoryID == 3) {
 				return '轮播图'
 			}
 		},
@@ -288,7 +288,7 @@ export default {
 			if (file.Content) {
 				let j = {}
 				j.FilePath = file.Content[0]
-				j.FileName=fileList.name
+				j.FileName = fileList.name
 				this.data.Attachs.push(j)
 				this.$message.success('附件上传成功！')
 			}
@@ -317,27 +317,26 @@ export default {
 			}
 		},
 		submit() {
-			this.$confirm('确认提交吗?', '提示', {
-				type: 'warning'
-			}).then(() => {
-				if (this.data.Title == '') {
-					this.$message.error('标题不能为空！')
-				} else {
-					this.$sysAPI.addNews(this.data).then(() => {
-						this.$message.success('添加校园新闻成功！')
-						let para = {
-							category: this.data.CategoryID,
-							currentPage: 1,
-							pagesize: 10,
-						}
-						this.$store.dispatch('getNewsList', para);
-						this.showEditForm = false
-					}).catch(err => {
-						this.$message.error(err.msg)
-					})
-				}
-
-			})
+			if (this.data.Title == '') {
+				this.$message.error('标题不能为空！')
+			} else if (this.data.Content == '') {
+				this.$message.error('内容不能为空！')
+			} else if (this.data.Describtion == '') {
+				this.$message.error('描述不能为空！')
+			} else {
+				this.$sysAPI.addNews(this.data).then(() => {
+					this.$message.success('添加校园新闻成功！')
+					let para = {
+						category: this.data.CategoryID,
+						currentPage: 1,
+						pagesize: 10,
+					}
+					this.$store.dispatch('getNewsList', para);
+					this.showEditForm = false
+				}).catch(err => {
+					this.$message.error(err.msg)
+				})
+			}
 
 		},
 		getData() {
@@ -345,7 +344,7 @@ export default {
 				category: this.filters.category,
 				currentPage: this.page,
 				pagesize: this.pageSize,
-				IsDelete: this.filters.category==0
+				IsDelete: this.filters.category == 0
 			}
 			this.$store.dispatch('getNewsList', para);
 		},
