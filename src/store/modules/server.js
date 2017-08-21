@@ -16,7 +16,10 @@ const getters = {
 			return 'http://api.test.com'
 		}else if(window.location.host=='testapi.zzflgs.cn'){
 			return 'http://testapi.zzflgs.cn'
-		}else{
+		}else if(window.location.host=='jkyr.yearnedu.com'){
+  		  	return 'http://jkyr.yearnedu.com'
+		}
+		else{
 			return 'http://testapi.zzflgs.cn'
 		}
     }
