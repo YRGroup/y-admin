@@ -52,7 +52,7 @@ let routes = [{
   {
     path: '/',
     component: Home,
-    iconCls: 'fa fa-address-card',
+    iconCls: 'fa fa-home',
     leaf: true,
     children: [{
       path: '/',
@@ -63,7 +63,7 @@ let routes = [{
   {
     path: '/class',
     component: Home,
-    iconCls: 'el-icon-menu',
+    iconCls: 'fa fa-bank',
     leaf: true,
     children: [{
       path: '/class/list',
@@ -75,7 +75,7 @@ let routes = [{
     path: '/news',
     component: Home,
     name: '新闻',
-    iconCls: 'fa fa-id-card-o',
+    iconCls: 'fa fa-newspaper-o',
     // leaf: true,
     children: [{
         path: '/news/newsList',
@@ -92,7 +92,7 @@ let routes = [{
   {
     path: '/post',
     component: Home,
-    iconCls: 'el-icon-picture',
+    iconCls: 'fa fa-map-signs',
     leaf: true,
     children: [{
       path: '/post/list',
@@ -104,7 +104,7 @@ let routes = [{
     path: '/alluser',
     component: Home,
     name: '',
-    iconCls: 'fa fa-search',
+    iconCls: 'fa fa-users',
     leaf: true, //只有一个节点
     children: [{
       path: '/alluser',
@@ -116,7 +116,7 @@ let routes = [{
     path: '/teacher',
     component: Home,
     name: '教师',
-    iconCls: 'fa fa-id-card-o',
+    iconCls: 'fa fa-user',
     children: [
       //   { path: '/teacher/main', component: List, name: '教师管理主页' },      
       {
@@ -135,7 +135,7 @@ let routes = [{
     path: '/student',
     component: Home,
     name: '学生',
-    iconCls: 'fa fa-id-card-o',
+    iconCls: 'fa fa-meh-o',
     children: [{
         path: '/student/list',
         component: studentList,
@@ -152,7 +152,7 @@ let routes = [{
     path: '/parent',
     component: Home,
     name: '家长',
-    iconCls: 'fa fa-id-card-o',
+    iconCls: 'fa fa-address-book-o',
     children: [{
         path: '/parent/list',
         component: parentList,
