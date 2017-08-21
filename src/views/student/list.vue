@@ -124,7 +124,7 @@ export default {
 		getClassList() {
 			this.$classAPI.getClassList().then(res => {
 				this.classList = res;
-				this.classList.splice(0, 0, { Name: '全部', cid: 0 });
+				// this.classList.splice(0, 0, { Name: '全部', cid: 0 });
 			});
 		},
 		handleSizeChange(val) {
