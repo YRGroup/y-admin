@@ -225,7 +225,7 @@ export default {
 				if (valid) {
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
 						//NProgress.start();
-						this.$teacherAPI.editTeacher(this.addTeacherData).then(() => {
+						this.$teacherAPI.editTeacher(this.editTeacherData).then(() => {
 							//NProgress.done();
 							this.$refs['editTeacherDom'].resetFields();
 							this.editTeacherVisible = false;
