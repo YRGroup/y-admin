@@ -96,7 +96,7 @@
 				<el-form-item label="内容" v-show="data.CategoryID!=3">
 					<vue-editor v-model="data.content" :disabled="isLook" useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
 				</el-form-item>
-				<el-form-item label="描述" v-show="!isLook">
+				<el-form-item label="摘要" v-show="!isLook">
 					<el-input v-model="data.Describtion"></el-input>
 				</el-form-item>
 			</el-form>
@@ -322,7 +322,7 @@ export default {
 			} else if (this.data.Content == '') {
 				this.$message.error('内容不能为空！')
 			} else if (this.data.Describtion == '') {
-				this.$message.error('描述不能为空！')
+				this.$message.error('摘要不能为空！')
 			} else {
 				this.$sysAPI.addNews(this.data).then(() => {
 					this.$message.success('添加校园新闻成功！')
