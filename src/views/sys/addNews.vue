@@ -16,7 +16,7 @@
 				<el-form-item label="内容" v-show="data.CategoryID!=3">
 					<vue-editor v-model="data.content" :disabled="isLook" useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
 				</el-form-item>
-				<el-form-item label="描述" v-show="!isLook">
+				<el-form-item label="摘要" v-show="!isLook">
 					<el-input v-model="data.Describtion"></el-input>
 				</el-form-item>
 			</el-form>
