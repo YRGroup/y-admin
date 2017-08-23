@@ -81,7 +81,7 @@
 						<img v-show="!editHeadImg" class="avatar" :src="data.Headimgurl">
 						<div v-show="editHeadImg">
 							<el-upload class="avatar-uploader" 
-							:action="$store.state.server.APIurl+'/api/Upload/ImageUpload'" 
+							:action="$store.getters._APIurl+'/api/Upload/ImageUpload'" 
 							:show-file-list="false" 
 							:on-success="handleAvatarSuccess" 
 							:before-upload="beforeAvatarUpload">

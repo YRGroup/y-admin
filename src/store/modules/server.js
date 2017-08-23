@@ -2,7 +2,6 @@ import * as types from '../mutation-types';
 import serverAPI from '@/api/server'
 
 const state = {
-	APIurl:'http://api.test.com',
 	allUserList:[],
 };
 const getters = {
@@ -14,10 +13,9 @@ const getters = {
 			return 'http://api.test.com'
 		}else if(window.location.host=='pc.test.com'){
 			return 'http://api.test.com'
-		}else if(window.location.host=='testapi.zzflgs.cn'){
-			return 'http://testapi.zzflgs.cn'
-		}else{
-			return 'http://testapi.zzflgs.cn'
+		}
+		else{
+			return ''
 		}
     }
 };

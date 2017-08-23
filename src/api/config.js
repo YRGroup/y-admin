@@ -1,5 +1,13 @@
-// API根目录
-// const base = 'http://testapi.zzflgs.cn'
-const base = 'http://api.test.com'
+var base
+
+if(window.location.host=='www.test.com'){
+    base = 'http://api.test.com'
+}else if(window.location.host=='admin.test.com'){
+    base = 'http://api.test.com'
+}else if(window.location.host=='pc.test.com'){
+    base = 'http://api.test.com'
+}else{
+    base = ''
+}
 
 export default base
