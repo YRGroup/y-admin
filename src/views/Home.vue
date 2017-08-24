@@ -162,6 +162,7 @@
 			// console.log("user",user);
 			if (user) {
 				user = JSON.parse(user);
+				this.$store.commit('login',user)
 				this.sysUserName = user.TrueName || '';
 				this.sysUserAvatar = user.Headimgurl || '';
 			}
