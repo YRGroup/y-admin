@@ -160,7 +160,7 @@ export default {
 				},
 			],
 			showAddAccount: false,
-			addAccountData_role: 0,
+			addAccountData_role: 4,
 			addAccountData: [{MobilePhone : '',truename: '',ClassID :'',CourseID:''}]
 		}
 	},
@@ -217,23 +217,19 @@ export default {
 				let para = {
 					Meid: Meid
 				}
-				this.$message({
-					message: Meid,
-					type: 'success',
+				this.$teacherAPI.deleteTeacher(para).then(()=>{
+					this.$message({
+						message: '删除成功',
+						type: 'success',
+					})
+					this.getData()
+				}).catch((err) => {
+					console.error('fff>>>>', err);
+					this.$message({
+						message: '删除失败了哦!',
+						type: 'error',
+					})
 				})
-				// this.$teacherAPI.deleteTeacher(para).then(()=>{
-				// 	this.$message({
-				// 		message: '删除成功',
-				// 		type: 'success',
-				// 	})
-				// 	this.getData()
-				// }).catch((err) => {
-				// 	console.error('fff>>>>', err);
-				// 	this.$message({
-				// 		message: '删除失败了哦!',
-				// 		type: 'error',
-				// 	})
-				// })
 			})
 		},
 		addAccountSubmit() {
