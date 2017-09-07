@@ -190,19 +190,33 @@ let routes = [{
   //           { path: '/system', component: Edit, name: '系统管理' }
   //       ]
   //   },
-  //   {
-  //     path: '/dev',
-  //     component: Home,
-  //     name: 'dev',
-  //     iconCls: 'fa fa-bar-chart',
-  //     children: [
-  //       { path: 'echarts', component: Echarts, name: '图表' },
-  //       { path: 'edit', component: Edit, name: '编辑' },
-  //       { path: 'add', component: Add, name: '添加' },
-  //       { path: 'list', component: List, name: '查询' },
-  //     ]
-  //   },
-
+  // {
+  //   path: '/dev',
+  //   component: Home,
+  //   name: 'dev',
+  //   iconCls: 'fa fa-bar-chart',
+  //   children: [{
+  //       path: '/dev/echarts',
+  //       component: Echarts,
+  //       name: '图表'
+  //     },
+  //     {
+  //       path: '/dev/edit',
+  //       component: Edit,
+  //       name: '编辑'
+  //     },
+  //     {
+  //       path: '/dev/add',
+  //       component: Add,
+  //       name: '添加'
+  //     },
+  //     {
+  //       path: '/dev/list',
+  //       component: List,
+  //       name: '查询'
+  //     },
+  //   ]
+  // },
   {
     path: '*',
     hidden: true,

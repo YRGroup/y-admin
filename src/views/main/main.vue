@@ -1,104 +1,222 @@
 <template>
-	<section>
-
-		<el-card class="box-card" style="background:#ecf0f1">
-			<!-- <div slot="header" class="clearfix">
-				<span >这是主页</span>
-			</div> -->
-			<div class="item">
-				育人教育 智慧校园系统管理后台
-			</div>
-		</el-card>
-
-		</br>
-
-		 <el-row :gutter="20">
-			<el-col :span="6">
-				<el-card class="box-card" style="color:#fff;background:#3498db">
-					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">班级</span>
-						<el-button style="float: right;" type="text">班级管理</el-button>
-						
-					</div>
-					<div class="item">
-						共有班级50个
-					</div>
-				</el-card>
+	<section class="chart-container">
+		<el-row>
+			<el-col :span="12">
+				<div id="chartBar" style="width:100%; height:400px;"></div>
 			</el-col>
-			<el-col :span="6">
-				<el-card class="box-card" style="color:#fff;background:#9b59b6">
-					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">动态</span>
-						<el-button style="float: right;" type="text">动态管理</el-button>
-					</div>
-					<div class="item">
-						<div>共有动态200条</div>
-						<div>评论100条</div>
-						<div>今日新增动态20条</div>
-						<div>今日新增评论20条</div>
-					</div>
-				</el-card>
+			<el-col :span="12">
+				<div id="chartColumn" style="width:100%; height:400px;"></div>
 			</el-col>
-			<el-col :span="6">
-				<el-card class="box-card" style="color:#fff;background:#2ecc71">
-					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">用户</span>
-						<el-button style="float: right;" type="text">用户管理</el-button>
-					</div>
-					<div class="item">
-						<div>共有用户200个</div>
-						<div>今日新增用户20个</div>
-					</div>
-				</el-card>
+		</el-row>
+		<el-row>
+			<el-col :span="12">
+				<div id="chartLine" style="width:100%; height:400px;"></div>
 			</el-col>
-		</el-row> 
-
+			<el-col :span="12">
+				<div id="chartPie" style="width:100%; height:400px;"></div>
+			</el-col>
+		</el-row>
 	</section>
 </template>
+
 <script>
-	import { mapGetters } from 'vuex';
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		computed: {
-			dynamicList() {
-				if (!this.$store.getters.dynamicList.length) {
-					return this.getDynamicList();
+import echarts from 'echarts';
+
+export default {
+	data() {
+		return {
+			chartColumn: null,
+			chartBar: null,
+			chartLine: null,
+			chartPie: null,
+		}
+	},
+	mounted() {
+		var _this = this;
+
+		//基于准备好的dom，初始化echarts实例
+		this.chartColumn = echarts.init(document.getElementById('chartColumn'));
+		this.chartBar = echarts.init(document.getElementById('chartBar'));
+		this.chartLine = echarts.init(document.getElementById('chartLine'));
+		this.chartPie = echarts.init(document.getElementById('chartPie'));
+
+		this.chartColumn.setOption({
+			title: {
+				text: '用户信息'
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {  
+					type: 'shadow'   
 				}
-				return this.$store.getters.dynamicList;
 			},
-			...mapGetters({
-				loading: 'listLoading',
-			})
-		},
-		methods: {
-			getDynamicList() {
-				let para = {
-					cid: this.filters.id||16,
-					count:0,					
-					type: this.dynamicType
-				};
-				this.$store.dispatch('getDynamicList',para);
+			legend: {
+				data: ['已激活', '未激活']
 			},
-		},
-	};
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'value'
+			},
+			yAxis: {
+				type: 'category',
+				data: ['老师', '家长', '学生']
+			},
+			series: [
+				{
+					name: '已激活',
+					type: 'bar',
+					stack: '总量',
+					label: {
+						normal: {
+							show: true,
+							position: 'insideRight'
+						}
+					},
+					data: [320, 302, 301]
+				},
+				{
+					name: '未激活',
+					type: 'bar',
+					stack: '总量',
+					label: {
+						normal: {
+							show: true,
+							position: 'insideRight'
+						}
+					},
+					data: [120, 132, 101]
+				},
+			]
+		});
 
-</script>
+		this.chartBar.setOption({
+			title: {
+				text: '学校信息',
+				subtext: '数据来自网络',
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow',
+				}
+			},
+			legend: {
+				data: ['已激活', '未激活'],
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true,
+			},
+			yAxis: {
+				type: 'value',
+			},
+			xAxis: {
+				type: 'category',
+				data: ['学校1', '学校2', '学校3', '学校4', '学校5', '学校6'],
+			},
+			series: [
+				{
+					name: '已激活',
+					type: 'bar',
+					stack: '总用户',
+					data: [300, 354, 141, 155, 240, 320],
+				},
+				{
+					name: '未激活',
+					type: 'bar',
+					stack: '总用户',
+					data: [500, 600, 500, 300, 400, 700],
+				}
+			],
+		});
 
-<style lang="less" scoped>
-.ttt{
-	line-height: 200px;
-	text-align: center;
-	span{
-		background: yellow;
+		this.chartLine.setOption({
+			title: {
+				text: '用户活跃度',
+			},
+			tooltip: {
+				trigger: 'axis',
+			},
+			legend: {
+				data: ['新增用户', '已激活用户', '总用户'],
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true,
+			},
+			xAxis: {
+				type: 'category',
+				boundaryGap: false,
+				data: ['3月', '4月', '5月', '6月', '7月', '8月', '9月'],
+			},
+			yAxis: {
+				type: 'value',
+			},
+			series: [
+				{
+					name: '新增用户',
+					type: 'line',
+					stack: '总量',
+					data: [120, 132, 101, 134, 90, 230, 210],
+				},
+				{
+					name: '已激活用户',
+					type: 'line',
+					stack: '总量',
+					data: [220, 182, 191, 234, 290, 330, 310],
+				},
+				{
+					name: '总用户',
+					type: 'line',
+					stack: '总量',
+					data: [820, 932, 901, 934, 1290, 1330, 1320],
+				},
+			],
+		});
+
+		this.chartPie.setOption({
+			title: {
+				text: '访问来源',
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: '{a} <br/>{b} : {c} ({d}%)',
+			},
+			legend: {
+				data: ['微信', '网页', '搜索引擎', '直接打开','APP'],
+			},
+			series: [
+				{
+					name: '访问来源',
+					type: 'pie',
+					radius: '55%',
+					center: ['50%', '60%'],
+					data: [
+						{ value: 335, name: '微信' },
+						{ value: 310, name: '网页' },
+						{ value: 234, name: '搜索引擎' },
+						{ value: 135, name: '直接打开' },
+						{ value: 1548, name: 'APP' },
+					],
+					itemStyle: {
+						emphasis: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)',
+						}
+					}
+				}
+			],
+		});
 	}
 }
-.box-card {
-   	.item{
-		   min-height:200px;
-	   }
-  }
-</style>
+</script>
