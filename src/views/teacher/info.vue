@@ -1,162 +1,139 @@
 <template>
 	<section>
-	
+
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="教师ID">
 					<el-input v-model="filters.teacherId" placeholder="教师ID"></el-input>
 				</el-form-item>
-	
 				<el-form-item>
 					<el-button type="primary" @click="refreshData">查询</el-button>
 				</el-form-item>
-	
 			</el-form>
 		</el-col>
-	
+
 		<el-card class="box-card">
 			<div slot="header" class="clearfix">
 				<span style="line-height: 36px;">教师详情</span>
 				<el-button style="float: right;" type="primary" @click.native="changeEditInfo">编辑资料</el-button>
 			</div>
-			<el-form :model="data" label-width="80px" ref="editTeacherDom">
-				<el-form-item label="教师Id" class="form2">
-					<el-input v-model="data.Meid" :disabled="true"></el-input>
-				</el-form-item>
-				<el-form-item label="手机" class="form2">
-					<el-input v-model="data.Mobilephone" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="姓名" class="form3">
-					<el-input v-model="data.TrueName" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="性别" class="form3">
-					<el-input v-model="data.Sex" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="民族" class="form3">
-					<el-input v-model="data.Volk" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="科目" class="form3">
-					<el-input v-model="data.Course" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="教龄" class="form3">
-					<el-input v-model="data.SchoolAge" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="职称" class="form3">
-					<el-input v-model="data.Title" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="身份证">
-					<el-input v-model="data.IDCard" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="个人荣誉" class="form3">
-					<el-input v-model="data.PersonalHonor" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="政治面貌" class="form3">
-					<el-input v-model="data.PoliticalStatus" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="原始学历专业" class="form3">
-					<el-input v-model="data.Professional" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="简历">
-					<el-input v-model="data.Resume" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-				<el-form-item label="备注">
-					<el-input v-model="data.Remark" :disabled="ifEditInfo?false:true"></el-input>
-				</el-form-item>
-			</el-form>
-			<el-col :span="24" class="toolbar" v-show="ifEditInfo" style="text-align:center;">
-				<el-button type="primary" @click.native="handleEditTeacher()">提交修改</el-button>
-			</el-col>
+			<div>
+				<div class="content" v-show="!ifEditInfo">
+					<div class="itemList">
+						<div class="item-content">
+							<p>
+								<span class="title">手机：</span>
+								<span>{{data.Mobilephone}}</span>
+							</p>
+							<p>
+								<span class="title">姓名：</span>
+								<span>{{data.TrueName}}</span>
+							</p>
+							<p>
+								<span class="title">性别：</span>
+								<span>{{data.Sex}}</span>
+							</p>
+							<p>
+								<span class="title">学科：</span>
+								<span>{{data.Course}}</span>
+							</p>
+							<p>
+								<span class="title">生日：</span>
+								<span>{{data.Resume}}</span>
+							</p>
+							<p>
+								<span class="title">身份证号：</span>
+								<span>{{data.IDCard}}</span>
+							</p>
+							<p>
+								<span class="title">民族：</span>
+								<span>{{data.Volk}}</span>
+							</p>
+							<p>
+								<span class="title">政治面貌：</span>
+								<span>{{data.PoliticalStatus}}</span>
+							</p>
+							<p>
+								<span class="title">教龄：</span>
+								<span>{{data.SchoolAge}}</span>
+							</p>
+							<p>
+								<span class="title">职称：</span>
+								<span>{{data.Title}}</span>
+							</p>
+						</div>
+					</div>
+					<div class="itemList">
+						<div class="header">
+							<i class="iconfont">&#xe69b;</i>教学经历</div>
+						<div class="item-content">
+							<p v-for="(i,index) in data.TeachExperience" :key="index">
+								<span class="name">{{i.SchoolName}}</span>
+								<span class="time">{{i.StartTime}} - {{i.EndTime}}</span>
+							</p>
+						</div>
+					</div>
+					<div class="itemList">
+						<div class="header">
+							<i class="iconfont">&#xe63d;</i>个人荣誉</div>
+						<div class="item-content">
+							<li class="honorItem" v-for="(i,index) in data.PersonalHonor" :key="index">
+								<img :src="i.ImgPath">
+								<div class="info">{{i.Description}}</div>
+							</li>
+						</div>
+					</div>
+				</div>
+				<el-form :model="data" label-width="80px" ref="editTeacherDom" v-show="ifEditInfo">
+					<el-form-item label="教师Id" class="form2">
+						<el-input v-model="data.Meid" :disabled="true"></el-input>
+					</el-form-item>
+					<el-form-item label="手机" class="form2">
+						<el-input v-model="data.Mobilephone" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="姓名" class="form3">
+						<el-input v-model="data.TrueName" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="性别" class="form3">
+						<el-input v-model="data.Sex" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="民族" class="form3">
+						<el-input v-model="data.Volk" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="科目" class="form3">
+						<el-input v-model="data.Course" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="教龄" class="form3">
+						<el-input v-model="data.SchoolAge" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="职称" class="form3">
+						<el-input v-model="data.Title" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="身份证">
+						<el-input v-model="data.IDCard" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="个人荣誉" class="form3">
+						<el-input v-model="data.PersonalHonor" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="政治面貌" class="form3">
+						<el-input v-model="data.PoliticalStatus" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="原始学历专业" class="form3">
+						<el-input v-model="data.Professional" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="简历">
+						<el-input v-model="data.Resume" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+					<el-form-item label="备注">
+						<el-input v-model="data.Remark" :disabled="ifEditInfo?false:true"></el-input>
+					</el-form-item>
+				</el-form>
+				<el-col :span="24" class="toolbar" v-show="ifEditInfo" style="text-align:center;">
+					<el-button type="primary" @click.native="handleEditTeacher()">提交修改</el-button>
+				</el-col>
+			</div>
 		</el-card>
-	
-		</br>
-	
-		<el-row :gutter="20">
-			<el-col :span="6">
-				<el-card class="box-card">
-					<div slot="header" class="clearfix">
-						<span style="line-height: 36px;">教师头像</span>
-						<el-button style="float: right;" type="primary" @click.native="(editHeadImg === true)?editHeadImg = false:editHeadImg = true">修改</el-button>
-					</div>
-					<div class="item">
-						<img v-show="!editHeadImg" class="avatar" :src="data.Headimgurl">
-						<div v-show="editHeadImg">
-							<el-upload class="avatar-uploader" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-								<img v-if="imageUrl" :src="imageUrl" class="avatar">
-								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
-							</el-upload>
-						</div>
-					</div>
-				</el-card>
-			</el-col>
-			<el-col :span="6">
-				<el-card class="box-card" v-if="!data.Classes.length">
-					<div slot="header" class="clearfix">
-						<span>执教班级</span>
-					</div>
-					<div class="item">
-						尚未添加
-					</div>
-				</el-card>
-			</el-col>
-			<el-col :span="6">
-				<el-card class="box-card" v-show="data.Classes.length" v-for="c in data.Classes" :key="c.ClassID">
-					<div slot="header" class="clearfix">
-						<span @click="$router.push('/class/main?classId='+c.ClassID)">{{c.ClassName}}</span>
-					</div>
-					<div class="item">
-						<p>执教科目：{{c.CourseName}}</p>
-						<p>执教时间：{{c.Start}}</p>
-					</div>
-				</el-card>
-			</el-col>
-			<el-col :span="6">
-				<el-card class="box-card">
-					<div slot="header" class="clearfix">
-						添加班级
-					</div>
-					<div class="item">
-						<p>
-							<el-select v-model="addClassData.cid" filterable placeholder="请选择">
-								<el-option v-for="item in $store.getters.classList" :key="item.cid" :label="item.Name" :value="item.cid">
-								</el-option>
-							</el-select>
-						</p>
-						<p>
-							<el-select v-model="addClassData.course_name" filterable placeholder="请选择">
-								<el-option v-for="item in courseList" :key="item.CourseId" :label="item.name" :value="item.name">
-								</el-option>
-							</el-select>
-						</p>
-						<p>{{addClassData.cid}}</p>
-						<p>{{addClassData.course_name}}</p>
-						<div class="btn">
-							<el-button type="primary" @click.native="addClass">添加所属班级</el-button>
-						</div>
-					</div>
-				</el-card>
-			</el-col>
-			<!--<el-col :span="6">
-								<el-card class="box-card" v-if="!data.teaching_experience.length">
-									<div slot="header" class="clearfix">
-										<span >教学经历</span>
-									</div>
-									<div class="item">
-										尚未添加
-									</div>
-								</el-card>
-							</el-col>
-							<el-col :span="6">
-								<el-card class="box-card" v-if="data.teaching_experience.length" v-for="e in data.teaching_experience">
-									<div slot="header" class="clearfix">
-										<span >教学经历</span>
-									</div>
-									<div class="item">
-										{{e}}
-									</div>
-								</el-card>
-							</el-col>-->
-		</el-row>
-	
+
 	</section>
 </template>
 <script>
@@ -313,6 +290,69 @@ export default {
 	}
 	.btn {
 		padding: 10px;
+	}
+}
+
+
+.content {
+	line-height: 2em;
+	.itemList {
+		padding: 30px 20px;
+		position: relative;
+		&:last-child {
+			border: none;
+		}
+		.setBtn {
+			position: absolute;
+			right: 20px;
+			top: 30px;
+			padding: 1px 10px;
+			border-radius: 4px;
+			cursor: pointer;
+			&:hover {
+				color: #fff;
+			}
+		}
+		.header {
+			line-height: 28px;
+			font-size: 16px;
+			margin-bottom: 10px;
+			.iconfont {
+				margin-right: 8px;
+			}
+		}
+		.item-content {
+			// padding-top:30px;
+			// text-align: center;
+			margin-left: 40px;
+			line-height: 2em;
+			.name {
+				width: 500px;
+				display: inline-block;
+			}
+			.title {
+				text-align: right;
+				display: inline-block;
+				width: 80px;
+			}
+			.img {
+				display: inline-block;
+				padding-right: 15px;
+				img {
+					width: 120px; // border-radius: 50%;
+				}
+			}
+		}
+	}
+}
+
+.honorItem {
+	max-width: 120px;
+	display: inline-block;
+	text-align: center;
+	padding: 20px;
+	img {
+		width: 100%;
 	}
 }
 </style>

@@ -23,13 +23,13 @@
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;" border>
 				<el-table-column prop="Title" label="ID">
 				</el-table-column>
+				<el-table-column prop="Type" label="类别">
+				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
 				</el-table-column>
-				<el-table-column prop="content" label="类别">
+				<el-table-column prop="Link" label="链接" show-overflow-tooltip>
 				</el-table-column>
-				<el-table-column prop="content" label="链接" show-overflow-tooltip>
-				</el-table-column>
-				<el-table-column prop="Albums" label="相册">
+				<el-table-column prop="Albums" label="图片">
 					<template scope="scope">
 						<el-button type="info" size="small">{{scope.row.Albums.length}}</el-button>
 					</template>
@@ -38,17 +38,11 @@
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" width="220" align="center">
 					<template scope="scope">
-						<el-button type="success" size="small" @click.native="handleLook(scope.row)">
-							查看
-						</el-button>
 						<el-button type="primary" size="small" @click.native="handleEdit(scope.row)">
 							编辑
 						</el-button>
-						<el-button v-if="scope.row.IsDelete" type="danger" size="small" @click.native="handleUnDeleteNews(scope.row.ID)">
-							上架
-						</el-button>
-						<el-button v-else type="warning" size="small" @click.native="handleDeleteNews(scope.row.ID)">
-							下架
+						<el-button type="warning" size="small" @click.native="handleDeleteNews(scope.row.ID)">
+							删除
 						</el-button>
 					</template>
 				</el-table-column>
@@ -60,85 +54,32 @@
 			</el-pagination>
 		</el-col>
 	
-		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'" size="large">
+		<el-dialog :visible.sync="showEditForm" title="轮播图" size="small">
 			<el-form label-width="80px">
-				<el-form-item label="类型" v-show="!isLook">
-					<el-radio-group v-model="data.CategoryID">
-						<el-radio :label="1">新闻</el-radio>
-						<el-radio :label="2">资料</el-radio>
-						<el-radio :label="3">轮播图</el-radio>
+				<el-form-item label="类型">
+					<el-radio-group v-model="data.Type">
+						<el-radio :label="1">站内链接</el-radio>
+						<el-radio :label="2">站外链接</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="标题">
 					<el-input v-model="data.Title" :disabled="isLook"></el-input>
 				</el-form-item>
-				<el-form-item label="内容" v-show="data.CategoryID!=3">
-					<vue-editor v-model="data.content" :disabled="isLook" useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
+				<el-form-item label="站内链接" v-show="data.Type==1">
+					<el-input v-model="data.Link"></el-input>
 				</el-form-item>
-				<el-form-item label="摘要" v-show="!isLook">
-					<el-input v-model="data.Describtion"></el-input>
+				<el-form-item label="站外链接" v-show="data.Type==2">
+					<el-input v-model="data.Url"></el-input>
 				</el-form-item>
-			</el-form>
-			<el-form label-width="80px" v-show="!isEdit">
-				<el-form-item label="题图" v-show="data.CategoryID==1">
+				<el-form-item label="题图">
 					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleImageSuccess">
 						<span><el-button size="small" type="primary">点击上传</el-button></span>
 						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
-				<el-form-item label="附件" v-show="data.CategoryID==2">
-					<el-upload class="uploadAttach" :action="$store.getters._APIurl+'/api/Upload/FileUpload'" :on-remove="handleAttachRemove" :on-success="handleAttachSuccess">
-						<span><el-button size="small" type="primary">点击上传</el-button></span>
-						<span slot="tip" class="el-upload__tip"> 文件尺寸不超过3Mb</span>
-					</el-upload>
-				</el-form-item>
-				<el-form-item label="相册" v-show="data.CategoryID==3">
-					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleAlbumSuccess">
-						<span><el-button size="small" type="primary">点击上传</el-button></span>
-						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸1140*300</span> 只能上传jpg/png文件，且不超过500kb</span>
-					</el-upload>
-				</el-form-item>
 			</el-form>
-			<el-form label-width="80px" v-show="isEdit">
-				<el-form-item label="附件" v-show="data.CategoryID==2">
-					<li v-for="(i,index) in data.Attachs" :key="index">
-						<a :href="i.FilePath">{{i.FileName}}</a>
-					</li>
-				</el-form-item>
-				<el-form-item label="相册" v-show="data.CategoryID!=2">
-					<img :src="i.Thumbpath" style="width:300px;" v-for="(i,index) in data.Albums" :key="index">
-				</el-form-item>
-			</el-form>
-			<!-- <el-form label-width="80px" :inline="true" v-show="!isLook">
-					<el-form-item label="属性">
-					</el-form-item>
-					<el-form-item>
-						<el-checkbox v-model="data.IsHot">IsHot</el-checkbox>
-					</el-form-item>
-					<el-form-item>
-						<el-checkbox v-model="data.IsRed">IsRed</el-checkbox>
-					</el-form-item>
-					<el-form-item>
-						<el-checkbox v-model="data.IsSlide">IsSlide</el-checkbox>
-					</el-form-item>
-					<el-form-item>
-						<el-checkbox v-model="data.IsSys">IsSys</el-checkbox>
-					</el-form-item>
-					<el-form-item>
-						<el-checkbox v-model="data.IsTop">IsTop</el-checkbox>
-					</el-form-item>
-					<el-form-item>
-						<el-checkbox v-model="data.CanRely">CanRely</el-checkbox>
-					</el-form-item>
-					<el-form-item label="状态">
-						<el-input v-model="data.Status" style="width:70px" type="number"></el-input>
-					</el-form-item>
-					<el-form-item label="排序">
-						<el-input v-model="data.SortID" style="width:70px" type="number"></el-input>
-					</el-form-item>
-				</el-form> -->
 	
-			<span slot="footer" class="dialog-footer" v-show="!isLook">
+			<span slot="footer" class="dialog-footer">
 				<el-button @click="showEditForm = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确认发布</el-button>
 			</span>
@@ -177,13 +118,10 @@ export default {
 		return {
 			data: {
 				Title: '',
-				content: '',
-				Describtion: '',
-				CategoryID: 1,
-				Status: 1,
-				SortID: 1,
-				Albums: [],
-				Attachs: [],
+				Link:'',
+				Url:'',
+				Type: 1,
+				ImgUrl:''
 			},
 			commentVisible: false,
 			comment: {},
@@ -214,28 +152,16 @@ export default {
 		})
 	},
 	methods: {
-		categoryFormatter(row) {
-			if (row.CategoryID == 1) {
-				return '新闻'
-			} else if (row.CategoryID == 2) {
-				return '资料'
-			} else if (row.CategoryID == 3) {
-				return '轮播图'
-			}
-		},
 		startAddNews() {
 			this.showEditForm = true
 			this.isEdit = false
 			this.isLook = false
 			this.data = {
 				Title: '',
-				content: '',
-				Describtion: '',
-				CategoryID: this.filters.category,
-				Status: 1,
-				SortID: 1,
-				Albums: [],
-				Attachs: [],
+				Link:'',
+				Url:'',
+				Type: 1,
+				ImgUrl:''
 			}
 		},
 		handleImageAdded: function (file, Editor, cursorLocation) {

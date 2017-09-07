@@ -19,6 +19,7 @@ import classList from '../views/class/list';
 import classInfo from '../views/class/info';
 
 import postMain from '../views/post/main';
+import homework from '../views/post/homework';
 import postList from '../views/post/list';
 
 import teacherMain from '../views/teacher/main';
@@ -68,13 +69,13 @@ let routes = [{
     children: [{
       path: '/class/list',
       component: classList,
-      name: '班级'
+      name: '班级列表'
     }, ],
   },
   {
     path: '/news',
     component: Home,
-    name: '内容',
+    name: '全局内容',
     iconCls: 'fa fa-id-card-o',
     children: [{
         path: '/news/newsList',
@@ -91,13 +92,17 @@ let routes = [{
   {
     path: '/post',
     component: Home,
+    name: '班级内容',
     iconCls: 'el-icon-picture',
-    leaf: true,
     children: [{
       path: '/post/list',
       component: postList,
       name: '动态'
-    }, ],
+    },{
+      path: '/post/homework',
+      component: homework,
+      name: '作业'
+    } ],
   },
   {
     path: '/alluser',

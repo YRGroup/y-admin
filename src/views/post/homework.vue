@@ -12,7 +12,7 @@
 				</el-form-item>
 
 				<el-form-item style="float:right">
-					<el-button type="success" @click="handleAddPost">新增动态</el-button>
+					<el-button type="success" @click="handleAddPost" :disabled="true">添加作业</el-button>
 				</el-form-item>
 
 			</el-form>
@@ -23,31 +23,24 @@
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
 				<el-table-column fixed="left" type="index" width="60">
 				</el-table-column>
-				<el-table-column prop="id" label="ID" sortable>
+				<el-table-column prop="HID" label="ID" sortable>
 				</el-table-column>
-				<el-table-column prop="auther" label="作者" sortable>
+				<el-table-column prop="AutherName" label="作者" sortable>
 				</el-table-column>
-				<el-table-column prop="category" label="类别" sortable>
+				<el-table-column prop="CourseName" label="科目" sortable>
 				</el-table-column>
-				<el-table-column prop="date" label="时间" min-width="100" sortable>
+				<el-table-column prop="Title" label="标题" min-width="100" sortable>
 				</el-table-column>
-				<el-table-column prop="content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
+				<el-table-column prop="Content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
 				</el-table-column>
-				<el-table-column prop="albums" label="配图">
+				<el-table-column prop="Albums" label="配图">
 					<template scope="scope">
-						<el-button type="primary" size="small" v-if="scope.row.albums.length" @click="handleAlbums(scope.row.albums)">
+						<el-button type="primary" size="small" v-if="scope.row.Albums.length" @click="handleAlbums(scope.row.albums)">
 							配图 {{scope.row.albums.length}}
 						</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column prop="comment" label="评论">
-					<template scope="scope">
-						<el-button type="primary" size="small" v-if="scope.row.comment.length" @click="handleComment(scope.row.comment)">
-							评论 {{scope.row.comment.length}}
-						</el-button>
-					</template>
-				</el-table-column>
-				<el-table-column prop="like" label="点赞" sortable>
+				<el-table-column prop="CreateTime" label="时间" min-width="100" sortable>
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" align="center" width="200">
 					<template scope="scope">
@@ -64,17 +57,22 @@
 			</el-pagination>
 		</el-col>
 
-		<el-dialog title="查看动态" v-model="perviewPostVisible" :close-on-click-modal="false">
-			<div class="postContainer" v-if="perviewPostData!=={}">
-				<div class="userFace" @click="openUserPage(i)">
-					<img :src="perviewPostData.userImg">
+		<el-dialog title="查看作业" v-model="perviewHomeworkVisible" :close-on-click-modal="false">
+			<div class="homeworkContainer" v-if="perviewHomeworkData!=={}">
+				<div class="course">
+					{{perviewHomeworkData.CourseName}}
 				</div>
-				<div class="header">{{perviewPostData.auther}}</div>
-				<div class="content">{{perviewPostData.content}}</div>
-				<div class="albums">
-					<li v-for="(p,index) in perviewPostData.albums" :key="index">
-						<img :src="p" @click="openImgBig(p)">
-					</li>
+				<div class="tasktitle">{{perviewHomeworkData.Title}}</div>
+				<div class="taskbox">
+					<div class="taskcon">{{perviewHomeworkData.Content}}</div>
+					<div class="albums">
+						<li v-for="(p,index) in perviewHomeworkData.Albums" :key="index">
+							<img :src="p" @click="openImgBig(p)">
+						</li>
+					</div>
+					<div class="taskbottom">
+						<span class="time">{{perviewHomeworkData.CreateTime}}</span>
+					</div>
 				</div>
 			</div>
 		</el-dialog>
@@ -154,8 +152,8 @@ export default {
 				cid: '1',
 				type: 1
 			},
-			perviewPostData: {},
-			perviewPostVisible: false,
+			perviewHomeworkData: {},
+			perviewHomeworkVisible: false,
 			addPostVisible: false,
 			addPostRules: {
 				auther: [
@@ -177,10 +175,10 @@ export default {
 	},
 	computed: {
 		data() {
-			if (!this.$store.getters.postList.length) {
+			if (!this.$store.getters.homeworkList.length) {
 				return this.getData();
 			}
-			return this.$store.getters.postList;
+			return this.$store.getters.homeworkList;
 		},
 		classList() {
 			if (!this.$store.getters.classList.length) {
@@ -189,37 +187,15 @@ export default {
 			return this.$store.getters.classList
 		},
 		total() {
-			return this.$store.getters.postList.length
+			return this.$store.getters.homeworkList.length
 		},
 		currentData() {
 			let start = (this.page - 1) * this.pageSize;
 			let end = this.page * this.pageSize;
-			if (!this.$store.getters.postList.length) {
+			if (!this.$store.getters.homeworkList.length) {
 				return this.getData();
 			}
-			return this.$store.getters.postList.slice(start, end)
-		},
-		dynamicType() {
-			switch (this.filtersType) {
-				case '全部':
-					return 0
-					break;
-				case '动态':
-					return 1
-					break;
-				case '新闻':
-					return 2
-					break;
-				case '通知':
-					return 3
-					break;
-				case '作业':
-					return 4
-					break;
-				default:
-					return 0
-					break;
-			}
+			return this.$store.getters.homeworkList.slice(start, end)
 		},
 		...mapGetters({
 			loading: 'listLoading',
@@ -234,21 +210,18 @@ export default {
 		},
 		getData() {
 			if (this.$route.query.id) {
-				console.log('route.query:')
-				console.log(this.$route.query)
 				this.filters.cid = this.$route.query.id
 			}
 			let para = {
 				cid: this.filters.cid,
 				pagesize: this.pageSize,
 				currentPage: this.page,
-				type: this.dynamicType
 			};
-			this.$store.dispatch('getPostList', para);
+			this.$store.dispatch('getHomeworkList', para);
 		},
 		handleLook(val) {
-			this.perviewPostData = val
-			this.perviewPostVisible = true
+			this.perviewHomeworkData = val
+			this.perviewHomeworkVisible = true
 		},
 		handleSizeChange(val) {
 			this.pageSize = val;
@@ -345,40 +318,65 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.postContainer {
-	margin: 15px 0;
+.homeworkContainer {
+	margin-bottom: 15px;
 	position: relative;
-	background: #fff;
-	padding-left: 80px;
-	.userFace {
+	.course {
 		position: absolute;
-		left: 20px;
-		top: 20px;
-		img {
-			width: 46px;
-			height: 46px;
-			border-radius: 50%;
+		top: 0;
+		right: 0;
+		padding: 0 24px 0 30px;
+		display: inline-block;
+		color: #fff;
+		line-height: 36px;
+		opacity: 0.6;
+		&:before {
+			position: absolute;
+			content: '';
+			left: 0;
+			width: 0;
+			height: 0;
+			border: 18px solid transparent;
+			border-left-color: #fff;
 		}
 	}
-	.header {
-		display: inline-block;
-		font-size: 16px;
-		line-height: 42px;
+	.tasktitle {
+		line-height: 36px;
+		font-size: 18px;
+		margin-bottom: 10px;
 	}
-	.content {
-		line-height: 24px;
-		word-break: break-all;
-		cursor: pointer;
+	.taskbox {
 		color: #666;
-	}
-	.albums {
-		margin: 10px 0;
-		li {
-			display: inline-block;
+		cursor: pointer;
+		.taskcon {
+			margin: 0 auto;
 			img {
-				max-height: 120px;
-				margin-right: 15px;
-				margin-bottom: 15px;
+				text-align: center;
+				max-height: 100px;
+			}
+		}
+		.albums {
+			overflow: hidden;
+			li {
+				float: left;
+				width: 120px;
+				height: 120px;
+				line-height: 120px;
+				margin: 10px 10px 0 0;
+			}
+			img {
+				max-width: 120px;
+			}
+		}
+		.taskbottom {
+			margin-top: 10px;
+			.time {
+				padding-top: 20px;
+				font-size: 12px;
+			}
+			.btn {
+				float: right;
+				padding: 0 15px;
 			}
 		}
 	}
