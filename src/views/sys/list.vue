@@ -41,10 +41,13 @@
 						<el-button size="small" v-popover:popover2>头像</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" width="150" align="center">
+				<el-table-column fixed="right" label="操作" width="230" align="center">
 					<template scope="scope">
 						<el-button type="primary" size="small" @click="openUserinfo(scope.row)">
 							详情
+						</el-button>
+						<el-button type="success" size="small" @click="handleRefreshPw(scope.row)">
+							重置密码
 						</el-button>
 						<el-button type="danger" size="small" @click.native="handleDeleteuser(scope.row.Meid)">
 							删除
@@ -209,6 +212,27 @@ export default {
 		},
 		handleCurrentChange(val) {
 			this.page = val;
+		},
+		handleRefreshPw (val) {
+			this.$confirm('确认重置密码吗?', '提示', {
+				type: 'warning'
+			}).then(() => {
+				let para = {
+					Meid: val.Meid
+				}
+				this.$sysAPI.resetPassword(para).then(()=>{
+					this.$message({
+						message: '重置密码成功，新密码是 123456',
+						type: 'success',
+					})
+				}).catch((err) => {
+					console.error('fff>>>>', err);
+					this.$message({
+						message: '重置密码失败了哦!',
+						type: 'error',
+					})
+				})
+			})
 		},
 		handleDeleteuser: function (Meid) {
 			this.$confirm('确认删除该记录吗?', '提示', {
