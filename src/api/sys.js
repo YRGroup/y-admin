@@ -67,4 +67,8 @@ sysAPI.addAdminAccount = params => {
   ).then(res => res.data.Content)
 }
 
+sysAPI.getChartData = params => {
+  return axios.get(`${base}/api/School/GetChartData`).then(res => res.data.Content)
+}
+
 export default sysAPI

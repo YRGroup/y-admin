@@ -12,7 +12,7 @@ import Echarts from '../component/Echarts.vue'
 import main from '../views/main/main';
 
 import newsList from '../views/sys/newsList';
-import addnews from '../views/sys/addNews';
+import swiperList from '../views/sys/swiperList';
 
 import classMain from '../views/class/main';
 import classList from '../views/class/list';
@@ -54,7 +54,6 @@ let routes = [{
     component: Home,
     iconCls: 'fa fa-address-card',
     leaf: true,
-    hidden: true,
     children: [{
       path: '/',
       component: main,
@@ -75,19 +74,18 @@ let routes = [{
   {
     path: '/news',
     component: Home,
-    name: '新闻',
+    name: '内容',
     iconCls: 'fa fa-id-card-o',
-    leaf: true,
     children: [{
         path: '/news/newsList',
         component: newsList,
         name: '新闻'
       },
-      // {
-      //   path: '/news/addnews',
-      //   component: addnews,
-      //   name: '发布新闻'
-      // }
+      {
+        path: '/news/swiperList',
+        component: swiperList,
+        name: '轮播图'
+      },
     ],
   },
   {

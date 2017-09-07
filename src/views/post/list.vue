@@ -10,7 +10,7 @@
 						</el-option>
 					</el-select>
 				</el-form-item>
-	
+
 				<el-form-item label="数据类型">
 					<el-radio-group v-model="filters.type" @change="getData">
 						<el-radio-button label="0">全部</el-radio-button>
@@ -20,17 +20,17 @@
 						<el-radio-button label="4">作业</el-radio-button>
 					</el-radio-group>
 				</el-form-item>
-	
+
 				<el-form-item>
 					<el-button type="primary" v-on:click="$router.push('/post/list?id='+filters.cid)">查询</el-button>
 				</el-form-item>
 				<el-form-item fixed="right">
 					<el-button type="success" @click="handleAddPost">新增</el-button>
 				</el-form-item>
-	
+
 			</el-form>
 		</el-col>
-	
+
 		<!--列表-->
 		<template>
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
@@ -62,19 +62,46 @@
 				</el-table-column>
 				<el-table-column prop="like" label="点赞" sortable>
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" align="center">
+				<el-table-column fixed="right" label="操作" align="center" width="200">
 					<template scope="scope">
+						<el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
+						<el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
 						<el-button type="danger" size="small" @click="handleDeletePost(scope.row.id)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 		</template>
-	
+
 		<el-col :span="24" class="toolbar">
 			<el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
-	
+
+		<el-dialog title="查看动态" v-model="perviewPostVisible" :close-on-click-modal="false">
+			<div class="postContainer" v-if="perviewPostData!=={}">
+				<div class="img" @click="openUserPage(i)">
+					<img :src="perviewPostData.userImg">
+				</div>
+				<div class="tips">{{perviewPostData.category}}</div>
+				<div class="header">{{perviewPostData.auther}}</div>
+				<div class="content">{{perviewPostData.content}}</div>
+				<div class="albums">
+					<li v-for="(p,index) in perviewPostData.albums" :key="index">
+						<img :src="p" @click="openImgBig(p)">
+					</li>
+				</div>
+				<div class="comment" v-if="perviewPostData.comment1">
+					<div class="name">
+						{{i.comment1.TrueName}}：
+					</div>
+					<div class="content">
+						{{i.comment1.content}}
+					</div>
+					<div class="btn" @click="$router.push('/post/'+i.ID)">查看更多</div>
+				</div>
+			</div>
+		</el-dialog>
+
 		<el-dialog title="新增动态" v-model="addPostVisible" :close-on-click-modal="false">
 			<el-form :model="addPostData" label-width="80px" :rules="addPostRules" ref="addPostDom">
 				<el-form-item label="作者" prop="auther">
@@ -96,7 +123,7 @@
 				<el-button type="primary" @click.native="addPostSubmit">提交</el-button>
 			</div>
 		</el-dialog>
-	
+
 		<el-dialog title="查看配图" v-model="albumsVisible" :close-on-click-modal="false">
 			<el-row :gutter="20">
 				<el-col :span="6" v-for="i in albums" :key="i">
@@ -115,7 +142,7 @@
 				</el-col>
 			</el-row>
 		</el-dialog>
-	
+
 		<el-dialog title="查看评论" v-model="commentVisible" :close-on-click-modal="false">
 			<el-table :data="comment" highlight-current-row>
 				<el-table-column fixed="left" type="index" width="60">
@@ -128,12 +155,13 @@
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" align="center">
 					<template scope="scope">
+
 						<el-button type="danger" size="small" @click="handleDeleteComment(scope.row.id)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 		</el-dialog>
-	
+
 	</section>
 </template>
 <script>
@@ -149,6 +177,8 @@ export default {
 				cid: '1',
 				type: 0
 			},
+			perviewPostData: {},
+			perviewPostVisible: false,
 			addPostVisible: false,
 			addPostRules: {
 				auther: [
@@ -239,21 +269,25 @@ export default {
 			};
 			this.$store.dispatch('getPostList', para);
 		},
+		handleLook(val) {
+			this.perviewPostData = val
+			this.perviewPostVisible = true
+		},
 		handleSizeChange(val) {
 			this.pageSize = val;
 		},
 		handleCurrentChange(val) {
 			this.page = val;
 		},
-		handleAlbums (val) {
+		handleAlbums(val) {
 			this.albumsVisible = true
 			this.albums = val
 		},
-		handleComment (val) {
+		handleComment(val) {
 			this.commentVisible = true
 			this.comment = val
 		},
-		handleDeleteComment (cid) {
+		handleDeleteComment(cid) {
 			this.$confirm('确认删除该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -276,7 +310,7 @@ export default {
 				})
 			})
 		},
-		handleDeletePost (did) {
+		handleDeletePost(did) {
 			this.$confirm('确认删除该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -298,7 +332,7 @@ export default {
 				})
 			})
 		},
-		handleAddPost () {
+		handleAddPost() {
 			this.addPostVisible = true;
 			this.addPostData = {
 				auther: '',
@@ -306,7 +340,7 @@ export default {
 				content: '',
 			};
 		},
-		addPostSubmit: function () {
+		addPostSubmit: function() {
 			this.$refs.addPostDom.validate((valid) => {
 				if (valid) {
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {

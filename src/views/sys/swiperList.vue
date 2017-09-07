@@ -1,54 +1,40 @@
 <template>
 	<section>
-
+	
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="类别">
 					<el-radio-group v-model="filters.category" @change="getData">
-						<el-radio-button :label="1">新闻</el-radio-button>
-						<el-radio-button :label="2">资料</el-radio-button>
+						<el-radio-button :label="3">轮播图</el-radio-button>
 						<el-radio-button :label="0">回收站</el-radio-button>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item style="float:right">
-					<el-button type="success" @click="startAddNews" v-show="filters.category!==0">
-						<span v-show="filters.category==1">添加新闻</span>
-						<span v-show="filters.category==2">添加资料</span>
+					<el-button type="success" @click="startAddNews">
+						<span>添加轮播图</span>
 					</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
-
+	
 		<!--列表-->
 		<template>
 			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;" border>
-				<el-table-column v-show="filters.category==0" :formatter="categoryFormatter" align="center" prop="CategoryID" label="类别" width="100">
+				<el-table-column prop="Title" label="ID">
 				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
 				</el-table-column>
-				<!-- <el-table-column prop="content" label="内容" show-overflow-tooltip>
-							</el-table-column> -->
-				<!-- <el-table-column prop="Describtion" label="描述" show-overflow-tooltip>
-							</el-table-column> -->
-				<!-- <el-table-column prop="SortID" label="排序">
-								</el-table-column> -->
-				<!-- <el-table-column prop="Attach" label="附件">
-								<template scope="scope">
-									<el-button type="info" size="small">{{scope.row.Attachs.length}}</el-button>
-								</template>
-							</el-table-column> -->
-				<!-- <el-table-column prop="Albums" label="相册">
-								<template scope="scope">
-									<el-button type="info" size="small">{{scope.row.Albums.length}}</el-button>
-								</template>
-							</el-table-column> -->
-				<el-table-column prop="Comment" label="评论" align="center" width="100">
+				<el-table-column prop="content" label="类别">
+				</el-table-column>
+				<el-table-column prop="content" label="链接" show-overflow-tooltip>
+				</el-table-column>
+				<el-table-column prop="Albums" label="相册">
 					<template scope="scope">
-						<el-button type="info" size="small" @click="handleComment(scope.row.Comments)">{{scope.row.Comments.length}}</el-button>
+						<el-button type="info" size="small">{{scope.row.Albums.length}}</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column prop="AddTime" label="时间" align="center" width="200">
+				<el-table-column prop="AddTime" label="时间" align="center"  width="200">
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" width="220" align="center">
 					<template scope="scope">
@@ -68,18 +54,19 @@
 				</el-table-column>
 			</el-table>
 		</template>
-
+	
 		<el-col :span="24" class="toolbar">
 			<el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
-
+	
 		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'" size="large">
 			<el-form label-width="80px">
 				<el-form-item label="类型" v-show="!isLook">
 					<el-radio-group v-model="data.CategoryID">
 						<el-radio :label="1">新闻</el-radio>
 						<el-radio :label="2">资料</el-radio>
+						<el-radio :label="3">轮播图</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="标题">
@@ -95,19 +82,20 @@
 			<el-form label-width="80px" v-show="!isEdit">
 				<el-form-item label="题图" v-show="data.CategoryID==1">
 					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleImageSuccess">
-						<span>
-							<el-button size="small" type="primary">点击上传</el-button>
-						</span>
-						<span slot="tip" class="el-upload__tip">
-							<span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
+						<span><el-button size="small" type="primary">点击上传</el-button></span>
+						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="附件" v-show="data.CategoryID==2">
 					<el-upload class="uploadAttach" :action="$store.getters._APIurl+'/api/Upload/FileUpload'" :on-remove="handleAttachRemove" :on-success="handleAttachSuccess">
-						<span>
-							<el-button size="small" type="primary">点击上传</el-button>
-						</span>
+						<span><el-button size="small" type="primary">点击上传</el-button></span>
 						<span slot="tip" class="el-upload__tip"> 文件尺寸不超过3Mb</span>
+					</el-upload>
+				</el-form-item>
+				<el-form-item label="相册" v-show="data.CategoryID==3">
+					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleAlbumSuccess">
+						<span><el-button size="small" type="primary">点击上传</el-button></span>
+						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸1140*300</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
 			</el-form>
@@ -121,21 +109,42 @@
 					<img :src="i.Thumbpath" style="width:300px;" v-for="(i,index) in data.Albums" :key="index">
 				</el-form-item>
 			</el-form>
+			<!-- <el-form label-width="80px" :inline="true" v-show="!isLook">
+					<el-form-item label="属性">
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsHot">IsHot</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsRed">IsRed</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsSlide">IsSlide</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsSys">IsSys</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.IsTop">IsTop</el-checkbox>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="data.CanRely">CanRely</el-checkbox>
+					</el-form-item>
+					<el-form-item label="状态">
+						<el-input v-model="data.Status" style="width:70px" type="number"></el-input>
+					</el-form-item>
+					<el-form-item label="排序">
+						<el-input v-model="data.SortID" style="width:70px" type="number"></el-input>
+					</el-form-item>
+				</el-form> -->
+	
 			<span slot="footer" class="dialog-footer" v-show="!isLook">
 				<el-button @click="showEditForm = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确认发布</el-button>
 			</span>
-
+	
 		</el-dialog>
-
-		<el-dialog title="查看新闻" v-model="newsVisible" :close-on-click-modal="false">
-			<div class="newsContainer" v-if="newsPreviewData!=={}">
-				<div class="title">{{newsPreviewData.Title}}</div>
-				<div class="time">{{newsPreviewData.AddTime}}</div>
-				<div class="content" v-html="newsPreviewData.content"></div>
-			</div>
-		</el-dialog>
-
+	
 		<el-dialog title="查看评论" v-model="commentVisible" :close-on-click-modal="false">
 			<el-table :data="comment" highlight-current-row>
 				<el-table-column fixed="left" type="index" width="60">
@@ -153,7 +162,7 @@
 				</el-table-column>
 			</el-table>
 		</el-dialog>
-
+	
 	</section>
 </template>
 
@@ -176,8 +185,6 @@ export default {
 				Albums: [],
 				Attachs: [],
 			},
-			newsVisible: false,
-			newsPreviewData: {},
 			commentVisible: false,
 			comment: {},
 			isEdit: false,
@@ -231,7 +238,7 @@ export default {
 				Attachs: [],
 			}
 		},
-		handleImageAdded: function(file, Editor, cursorLocation) {
+		handleImageAdded: function (file, Editor, cursorLocation) {
 			var formData = new FormData();
 			formData.append('image', file)
 			axios({
@@ -327,8 +334,11 @@ export default {
 			this.page = val;
 		},
 		handleLook(val) {
-			this.newsPreviewData = val
-			this.newsVisible = true
+			this.data = val
+			this.data.CategoryID = this.filters.category
+			this.showEditForm = true
+			this.isEdit = true
+			this.isLook = true
 		},
 		handleEdit(val) {
 			this.data = val
@@ -337,7 +347,7 @@ export default {
 			this.isEdit = true
 			this.isLook = false
 		},
-		handleDeleteNews: function(id) {
+		handleDeleteNews: function (id) {
 			this.$confirm('确认下架该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -359,7 +369,7 @@ export default {
 				})
 			})
 		},
-		handleUnDeleteNews: function(id) {
+		handleUnDeleteNews: function (id) {
 			this.$confirm('确认上架该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -419,24 +429,6 @@ export default {
 
 </script>
 
-<style lang="less" scoped>
-.newsContainer {
-	padding: 20px 80px;
-	text-align: center;
-	.title {
-		margin-top: 10px;
-		line-height: 36px;
-		font-size: 24px;
-	}
-	.time {
-		color: #ccc;
-		line-height: 30px;
-	}
-	.content {
-		line-height: 2em;
-		text-indent: 2em;
-		text-align: left;
-		overflow: hidden;
-	}
-}
+<style scoped>
+
 </style>
