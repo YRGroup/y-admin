@@ -54,6 +54,7 @@ let routes = [{
     component: Home,
     iconCls: 'fa fa-home',
     leaf: true,
+    hidden: true,
     children: [{
       path: '/',
       component: main,
@@ -75,18 +76,18 @@ let routes = [{
     path: '/news',
     component: Home,
     name: '新闻',
-    iconCls: 'fa fa-newspaper-o',
-    // leaf: true,
+    iconCls: 'fa fa-id-card-o',
+    leaf: true,
     children: [{
         path: '/news/newsList',
         component: newsList,
-        name: '新闻列表'
+        name: '新闻'
       },
-      {
-        path: '/news/addnews',
-        component: addnews,
-        name: '发布新闻'
-      }
+      // {
+      //   path: '/news/addnews',
+      //   component: addnews,
+      //   name: '发布新闻'
+      // }
     ],
   },
   {
@@ -116,7 +117,8 @@ let routes = [{
     path: '/teacher',
     component: Home,
     name: '教师',
-    iconCls: 'fa fa-user',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
     children: [
       //   { path: '/teacher/main', component: List, name: '教师管理主页' },      
       {
@@ -135,7 +137,8 @@ let routes = [{
     path: '/student',
     component: Home,
     name: '学生',
-    iconCls: 'fa fa-meh-o',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
     children: [{
         path: '/student/list',
         component: studentList,
@@ -152,7 +155,8 @@ let routes = [{
     path: '/parent',
     component: Home,
     name: '家长',
-    iconCls: 'fa fa-address-book-o',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
     children: [{
         path: '/parent/list',
         component: parentList,
@@ -186,19 +190,33 @@ let routes = [{
   //           { path: '/system', component: Edit, name: '系统管理' }
   //       ]
   //   },
-  //   {
-  //     path: '/dev',
-  //     component: Home,
-  //     name: 'dev',
-  //     iconCls: 'fa fa-bar-chart',
-  //     children: [
-  //       { path: 'echarts', component: Echarts, name: '图表' },
-  //       { path: 'edit', component: Edit, name: '编辑' },
-  //       { path: 'add', component: Add, name: '添加' },
-  //       { path: 'list', component: List, name: '查询' },
-  //     ]
-  //   },
-
+  // {
+  //   path: '/dev',
+  //   component: Home,
+  //   name: 'dev',
+  //   iconCls: 'fa fa-bar-chart',
+  //   children: [{
+  //       path: '/dev/echarts',
+  //       component: Echarts,
+  //       name: '图表'
+  //     },
+  //     {
+  //       path: '/dev/edit',
+  //       component: Edit,
+  //       name: '编辑'
+  //     },
+  //     {
+  //       path: '/dev/add',
+  //       component: Add,
+  //       name: '添加'
+  //     },
+  //     {
+  //       path: '/dev/list',
+  //       component: List,
+  //       name: '查询'
+  //     },
+  //   ]
+  // },
   {
     path: '*',
     hidden: true,

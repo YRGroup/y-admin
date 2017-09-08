@@ -10,8 +10,17 @@ const getters = {
 const actions = {
 	getClassList({commit,state},para){
 		state.listLoading = true
-		classAPI.getClassList(para).then((value)=>{
-			commit('getClassList',value)
+		classAPI.getClassList(para).then(value=>{
+			if(value.length===0){
+				let a={
+					cid:-1,Name:'当前没有班级',StudentCount:0,TeacherCount:0
+				}
+				let b=[]
+				b.push(a)
+				commit('getClassList',b)
+			}else{
+				commit('getClassList',value)
+			}
 			state.listLoading = false
 		})
 	},

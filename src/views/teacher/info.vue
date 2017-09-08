@@ -1,6 +1,6 @@
 <template>
 	<section>
-		
+	
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="教师ID">
@@ -13,7 +13,7 @@
 	
 			</el-form>
 		</el-col>
-
+	
 		<el-card class="box-card">
 			<div slot="header" class="clearfix">
 				<span style="line-height: 36px;">教师详情</span>
@@ -80,11 +80,7 @@
 					<div class="item">
 						<img v-show="!editHeadImg" class="avatar" :src="data.Headimgurl">
 						<div v-show="editHeadImg">
-							<el-upload class="avatar-uploader" 
-							:action="$store.getters._APIurl+'/api/Upload/ImageUpload'" 
-							:show-file-list="false" 
-							:on-success="handleAvatarSuccess" 
-							:before-upload="beforeAvatarUpload">
+							<el-upload class="avatar-uploader" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
 								<img v-if="imageUrl" :src="imageUrl" class="avatar">
 								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 							</el-upload>
@@ -119,15 +115,20 @@
 						添加班级
 					</div>
 					<div class="item">
-						<el-select v-model="addClassData.cid" filterable placeholder="请选择">
-							<el-option
-							v-for="item in $store.getters.classList"
-							:key="item.cid"
-							:label="item.Name"
-							:value="item.cid">
-							</el-option>
-						</el-select>
+						<p>
+							<el-select v-model="addClassData.cid" filterable placeholder="请选择">
+								<el-option v-for="item in $store.getters.classList" :key="item.cid" :label="item.Name" :value="item.cid">
+								</el-option>
+							</el-select>
+						</p>
+						<p>
+							<el-select v-model="addClassData.course_name" filterable placeholder="请选择">
+								<el-option v-for="item in courseList" :key="item.CourseId" :label="item.name" :value="item.name">
+								</el-option>
+							</el-select>
+						</p>
 						<p>{{addClassData.cid}}</p>
+						<p>{{addClassData.course_name}}</p>
 						<div class="btn">
 							<el-button type="primary" @click.native="addClass">添加所属班级</el-button>
 						</div>
@@ -135,25 +136,25 @@
 				</el-card>
 			</el-col>
 			<!--<el-col :span="6">
-						<el-card class="box-card" v-if="!data.teaching_experience.length">
-							<div slot="header" class="clearfix">
-								<span >教学经历</span>
-							</div>
-							<div class="item">
-								尚未添加
-							</div>
-						</el-card>
-					</el-col>
-					<el-col :span="6">
-						<el-card class="box-card" v-if="data.teaching_experience.length" v-for="e in data.teaching_experience">
-							<div slot="header" class="clearfix">
-								<span >教学经历</span>
-							</div>
-							<div class="item">
-								{{e}}
-							</div>
-						</el-card>
-					</el-col>-->
+								<el-card class="box-card" v-if="!data.teaching_experience.length">
+									<div slot="header" class="clearfix">
+										<span >教学经历</span>
+									</div>
+									<div class="item">
+										尚未添加
+									</div>
+								</el-card>
+							</el-col>
+							<el-col :span="6">
+								<el-card class="box-card" v-if="data.teaching_experience.length" v-for="e in data.teaching_experience">
+									<div slot="header" class="clearfix">
+										<span >教学经历</span>
+									</div>
+									<div class="item">
+										{{e}}
+									</div>
+								</el-card>
+							</el-col>-->
 		</el-row>
 	
 	</section>
@@ -170,9 +171,48 @@ export default {
 			filters: {
 				teacherId: this.$route.query.teacherId,
 			},
-			addClassData:{
-				cid:'',
-				meid:'',
+			courseList: [
+				{
+					CourseId: 1,
+					name: '语文'
+				},
+				{
+					CourseId: 2,
+					name: '数学'
+				},
+				{
+					CourseId: 3,
+					name: '英语'
+				},
+				{
+					CourseId: 4,
+					name: '物理'
+				},
+				{
+					CourseId: 5,
+					name: '化学'
+				},
+				{
+					CourseId: 6,
+					name: '生物'
+				},
+				{
+					CourseId: 7,
+					name: '历史'
+				},
+				{
+					CourseId: 8,
+					name: '地理'
+				},
+				{
+					CourseId: 9,
+					name: '政治'
+				},
+			],
+			addClassData: {
+				cid: '',
+				meid: '',
+				course_name: ''
 			}
 		}
 	},
@@ -182,9 +222,9 @@ export default {
 		})
 	},
 	methods: {
-		refreshData(){
-			if(this.$route.query.teacherId!=this.filters.teacherId){
-				this.$router.push('/teacher/info?teacherId='+this.filters.teacherId)
+		refreshData() {
+			if (this.$route.query.teacherId != this.filters.teacherId) {
+				this.$router.push('/teacher/info?teacherId=' + this.filters.teacherId)
 			}
 		},
 		getData() {
@@ -193,14 +233,14 @@ export default {
 			};
 			this.$teacherAPI.getTeacherInfo(para).then(res => {
 				this.data = res
-			}).catch(err=>{
+			}).catch(err => {
 				this.$message.error(err.msg);
 			})
 		},
 		handleAvatarSuccess(res, file) {
 			this.imageUrl = res.Content[0]
-			this.data.Headimgurl=this.imageUrl
-			this.$teacherAPI.editTeacher(this.data).then(res=>{
+			this.data.Headimgurl = this.imageUrl
+			this.$teacherAPI.editTeacher(this.data).then(res => {
 				this.getData()
 			})
 		},
@@ -238,9 +278,9 @@ export default {
 				})
 			})
 		},
-		addClass(){
-			this.addClassData.meid=this.data.Meid
-			this.$teacherAPI.addTeacherClass(this.addClassData).then(res=>{
+		addClass() {
+			this.addClassData.meid = this.data.Meid
+			this.$teacherAPI.addTeacherClass(this.addClassData).then(res => {
 				this.$message({
 					message: '添加所属班级成功',
 					type: 'success',
@@ -264,15 +304,15 @@ export default {
 	text-align: center;
 	.avatar-uploader-icon {
 		font-size: 100px;
-		padding:20px;
+		padding: 20px;
 	}
 	.avatar {
 		width: 200px;
 		height: 200px;
 		border-radius: 50%;
 	}
-	.btn{
-		padding:10px;
+	.btn {
+		padding: 10px;
 	}
 }
 </style>

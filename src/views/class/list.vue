@@ -21,7 +21,7 @@
 				<el-table-column prop="cid" label="班主任" align="center" sortable>
 					<template scope="scope">
 						<el-button type="text" size="small"  v-if="scope.row.AdviserMeid" @click="$router.push('/teacher/info?teacherId='+scope.row.AdviserMeid)">{{scope.row.AdviserTrueName}}</el-button>
-						<el-button v-else type="text" size="small" @click.native="">
+						<el-button v-else type="text" size="small">
 							暂无
 						</el-button>	
 					</template>	

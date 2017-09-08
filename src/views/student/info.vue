@@ -35,8 +35,8 @@
 				<el-form-item label="性别" class="form2">
 					<el-input v-model="user.Sex" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
-				<el-form-item label="简介">
-					<el-input v-model="user.SelfDiscription" :disabled="ifEditInfo?false:true"></el-input>
+				<el-form-item label="学号">
+					<el-input v-model="user.StudentID" :disabled="ifEditInfo?false:true"></el-input>
 				</el-form-item>
 				<el-form-item label="注册时间">
 					<el-input v-model="user.RegisterTime" :disabled="ifEditInfo?false:true"></el-input>

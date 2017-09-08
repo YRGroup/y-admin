@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<!--工具条-->
-	
+
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="班级">
@@ -10,22 +10,22 @@
 						</el-option>
 					</el-select>
 				</el-form-item>
-	
+
 				<el-form-item>
 					<el-button type="primary" @click="$router.push('/student/list?classId='+selected +'&p=0&key=')">查询</el-button>
 				</el-form-item>
-	
+
 				<el-form-item label="学生姓名/学号">
 					<el-input v-model="searchInput" placeholder="请输入学生姓名或者学号"></el-input>
 				</el-form-item>
-	
+
 				<el-form-item>
 					<el-button type="primary" @click="$router.push('/student/list?classId=0&p=0&key='+searchInput)">查询</el-button>
 				</el-form-item>
-	
+
 			</el-form>
 		</el-col>
-	
+
 		<!--列表-->
 		<template>
 			<el-table :data="studentList" highlight-current-row v-loading="loading" style="width: 100%;">
@@ -36,7 +36,6 @@
 						<img :src="scope.row.Headimgurl" width="50" height="50">
 					</template>
 				</el-table-column>
-	
 				<el-table-column prop="TrueName" label="名字" sortable>
 				</el-table-column>
 				<el-table-column prop="StudentID" label="学号" sortable>
@@ -44,6 +43,16 @@
 				<el-table-column prop="Sex" label="性别" sortable>
 				</el-table-column>
 				<el-table-column prop="ClassName" label="班级">
+				</el-table-column>
+				<el-table-column prop="ParentName" label="家长">
+					<template scope="scope">
+						<el-popover trigger="hover" placement="top">
+							<p>手机号: {{ scope.row.ParentPhone }}</p>
+							<div slot="reference" class="name-wrapper">
+								<el-tag @click.native="$router.push('/parent/info?parentId='+scope.row.ParentMeid)">{{ scope.row.ParentName }}</el-tag>
+							</div>
+						</el-popover>
+					</template>
 				</el-table-column>
 				<el-table-column prop="Status" label="状态">
 					<template scope="scope">
@@ -67,12 +76,12 @@
 				</el-table-column>
 			</el-table>
 		</template>
-	
+
 		<el-col :span="24" class="toolbar">
 			<el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
-	
+
 	</section>
 </template>
 
@@ -118,6 +127,13 @@ export default {
 				res => {
 					this.total = res.Total;
 					this.studentList = res.ModelList
+					this.studentList.forEach(o => {
+						if (o.Parents.length > 0) {
+							o.ParentName = o.Parents[0].TrueName
+							o.ParentPhone = o.Parents[0].Mobilephone
+							o.ParentMeid = o.Parents[0].Meid
+						}
+					})
 				}
 			)
 		},
@@ -137,7 +153,7 @@ export default {
 			this.page = val;
 			this.getNowData();
 		},
-		handleDeleteStudent: function (Meid) {
+		handleDeleteStudent: function(Meid) {
 			this.$confirm('确认删除该学生吗?', '提示', {
 				type: 'warning'
 			}).then(() => {

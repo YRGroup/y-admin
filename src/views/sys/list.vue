@@ -70,16 +70,22 @@
 					</el-radio-group>
 				</el-form-item>
 			</el-form>
-			<el-form label-width="80px" :inline="true" v-for="(i,index) in addAccountData" :key="index">
+			<el-form label-width="60px" :inline="true" v-for="(i,index) in addAccountData" :key="index">
 				<el-form-item label="手机号">
 					<el-input v-model="i.MobilePhone "></el-input>
 				</el-form-item>
 				<el-form-item label="姓名">
-					<el-input v-model="i.truename"></el-input>
+					<el-input v-model="i.truename" style="width:100px;"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-select v-model="i.ClassID" placeholder="请选择班级">
+					<el-select v-model="i.ClassID" placeholder="请选择班级" style="width:120px;">
 						<el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item>
+					<el-select v-model="i.CourseID" placeholder="请选择学科" style="width:120px;">
+						<el-option v-for="i in courseList" :key="i.CourseId" :label="i.name" :value="i.CourseId">
 						</el-option>
 					</el-select>
 				</el-form-item>
@@ -91,7 +97,7 @@
 			</el-form>
 			<el-form label-width="80px">
 				<el-form-item>
-					<el-button @click.native="addAccountData.push({MobilePhone : '',truename: '',ClassID :''})" type="text">添加一行</el-button>
+					<el-button @click.native="addAccountData.push({MobilePhone : '',truename: '',ClassID :'',CourseID:''})" type="text">添加一行</el-button>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -115,9 +121,47 @@ export default {
 			filters: {
 				role: 3,
 			},
+			courseList: [
+				{
+					CourseId: 1,
+					name: '语文'
+				},
+				{
+					CourseId: 2,
+					name: '数学'
+				},
+				{
+					CourseId: 3,
+					name: '英语'
+				},
+				{
+					CourseId: 4,
+					name: '物理'
+				},
+				{
+					CourseId: 5,
+					name: '化学'
+				},
+				{
+					CourseId: 6,
+					name: '生物'
+				},
+				{
+					CourseId: 7,
+					name: '历史'
+				},
+				{
+					CourseId: 8,
+					name: '地理'
+				},
+				{
+					CourseId: 9,
+					name: '政治'
+				},
+			],
 			showAddAccount: false,
-			addAccountData_role: 0,
-			addAccountData: [{MobilePhone : '',truename: '',ClassID :''}]
+			addAccountData_role: 4,
+			addAccountData: [{MobilePhone : '',truename: '',ClassID :'',CourseID:''}]
 		}
 	},
 	computed: {
@@ -173,23 +217,19 @@ export default {
 				let para = {
 					Meid: Meid
 				}
-				this.$message({
-					message: Meid,
-					type: 'success',
+				this.$teacherAPI.deleteTeacher(para).then(()=>{
+					this.$message({
+						message: '删除成功',
+						type: 'success',
+					})
+					this.getData()
+				}).catch((err) => {
+					console.error('fff>>>>', err);
+					this.$message({
+						message: '删除失败了哦!',
+						type: 'error',
+					})
 				})
-				// this.$teacherAPI.deleteTeacher(para).then(()=>{
-				// 	this.$message({
-				// 		message: '删除成功',
-				// 		type: 'success',
-				// 	})
-				// 	this.getData()
-				// }).catch((err) => {
-				// 	console.error('fff>>>>', err);
-				// 	this.$message({
-				// 		message: '删除失败了哦!',
-				// 		type: 'error',
-				// 	})
-				// })
 			})
 		},
 		addAccountSubmit() {
