@@ -67,4 +67,16 @@ sysAPI.addAdminAccount = params => {
   ).then(res => res.data.Content)
 }
 
+// 获取统计数据
+sysAPI.getChartData = params => {
+  return axios.get(`${base}/api/School/GetChartData`).then(res => res.data.Content)
+}
+
+// 重置密码
+sysAPI.resetPassword = params => {
+  return axios.post(
+    `${base}/api/user/ResetPassword`, params
+  ).then(res => res.data.Content)
+}
+
 export default sysAPI

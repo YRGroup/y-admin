@@ -12,13 +12,14 @@ import Echarts from '../component/Echarts.vue'
 import main from '../views/main/main';
 
 import newsList from '../views/sys/newsList';
-import addnews from '../views/sys/addNews';
+import swiperList from '../views/sys/swiperList';
 
 import classMain from '../views/class/main';
 import classList from '../views/class/list';
 import classInfo from '../views/class/info';
 
 import postMain from '../views/post/main';
+import homework from '../views/post/homework';
 import postList from '../views/post/list';
 
 import teacherMain from '../views/teacher/main';
@@ -54,7 +55,6 @@ let routes = [{
     component: Home,
     iconCls: 'fa fa-home',
     leaf: true,
-    hidden: true,
     children: [{
       path: '/',
       component: main,
@@ -69,37 +69,40 @@ let routes = [{
     children: [{
       path: '/class/list',
       component: classList,
-      name: '班级'
+      name: '班级列表'
     }, ],
   },
   {
     path: '/news',
     component: Home,
-    name: '新闻',
+    name: '全局内容',
     iconCls: 'fa fa-id-card-o',
-    leaf: true,
     children: [{
         path: '/news/newsList',
         component: newsList,
         name: '新闻'
       },
-      // {
-      //   path: '/news/addnews',
-      //   component: addnews,
-      //   name: '发布新闻'
-      // }
+      {
+        path: '/news/swiperList',
+        component: swiperList,
+        name: '轮播图'
+      },
     ],
   },
   {
     path: '/post',
     component: Home,
-    iconCls: 'fa fa-map-signs',
-    leaf: true,
+    name: '班级内容',
+    iconCls: 'el-icon-picture',
     children: [{
       path: '/post/list',
       component: postList,
       name: '动态'
-    }, ],
+    },{
+      path: '/post/homework',
+      component: homework,
+      name: '作业'
+    } ],
   },
   {
     path: '/alluser',
