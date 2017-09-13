@@ -1,18 +1,18 @@
 <template>
 	<section class="chart-container">
 		<el-row>
-			<el-col :span="12">
+			<el-col :span="12"  class="card">
 				<div id="chartBar" style="width:100%; height:400px;"></div>
 			</el-col>
-			<el-col :span="12">
+			<el-col :span="12"  class="card">
 				<div id="chartColumn" style="width:100%; height:400px;"></div>
 			</el-col>
 		</el-row>
 		<el-row>
-			<el-col :span="12">
+			<el-col :span="12"  class="card">
 				<div id="chartLine" style="width:100%; height:400px;"></div>
 			</el-col>
-			<el-col :span="12">
+			<el-col :span="12"  class="card">
 				<div id="chartPie" style="width:100%; height:400px;"></div>
 			</el-col>
 		</el-row>
@@ -21,6 +21,7 @@
 
 <script>
 import echarts from 'echarts';
+import theme from '../../../static/macarons.js'
 
 export default {
 	data() {
@@ -261,10 +262,20 @@ export default {
 		this.getData()
 	},
 	mounted() {
-		this.chartColumn = echarts.init(document.getElementById('chartColumn'));
-		this.chartBar = echarts.init(document.getElementById('chartBar'));
-		this.chartLine = echarts.init(document.getElementById('chartLine'));
-		this.chartPie = echarts.init(document.getElementById('chartPie'));
+		this.chartColumn = echarts.init(document.getElementById('chartColumn'),'macarons');
+		this.chartBar = echarts.init(document.getElementById('chartBar'),'macarons');
+		this.chartLine = echarts.init(document.getElementById('chartLine'),'macarons');
+		this.chartPie = echarts.init(document.getElementById('chartPie'),'macarons');
 	}
 }
 </script>
+<style>
+.chart-container{
+	padding:10px;
+}
+.card{
+	padding:20px;
+	border:1px solid #eee;
+}
+
+</style>
