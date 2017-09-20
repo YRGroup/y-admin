@@ -53,7 +53,7 @@ let routes = [{
   {
     path: '/',
     component: Home,
-    iconCls: 'fa fa-address-card',
+    iconCls: 'fa fa-home',
     leaf: true,
     children: [{
       path: '/',
@@ -64,7 +64,7 @@ let routes = [{
   {
     path: '/class',
     component: Home,
-    iconCls: 'el-icon-menu',
+    iconCls: 'fa fa-bank',
     leaf: true,
     children: [{
       path: '/class/list',
@@ -108,7 +108,7 @@ let routes = [{
     path: '/alluser',
     component: Home,
     name: '',
-    iconCls: 'fa fa-search',
+    iconCls: 'fa fa-users',
     leaf: true, //只有一个节点
     children: [{
       path: '/alluser',

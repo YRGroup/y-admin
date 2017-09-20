@@ -1,8 +1,8 @@
 <template>
 	<section>
-	
+
 		<el-card class="box-card" style="margin-top:10px">
-						<el-form label-width="80px">
+			<el-form label-width="80px">
 				<el-form-item label="类型" v-show="!isLook">
 					<el-radio-group v-model="data.CategoryID">
 						<el-radio :label="1">新闻</el-radio>
@@ -23,20 +23,28 @@
 			<el-form label-width="80px" v-show="!isEdit">
 				<el-form-item label="题图" v-show="data.CategoryID==1">
 					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleImageSuccess">
-						<span><el-button size="small" type="primary">点击上传</el-button></span>
-						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
+						<span>
+							<el-button size="small" type="primary">点击上传</el-button>
+						</span>
+						<span slot="tip" class="el-upload__tip">
+							<span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="附件" v-show="data.CategoryID==2">
 					<el-upload class="uploadAttach" :action="$store.getters._APIurl+'/api/Upload/FileUpload'" :on-remove="handleAttachRemove" :on-success="handleAttachSuccess">
-						<span><el-button size="small" type="primary">点击上传</el-button></span>
+						<span>
+							<el-button size="small" type="primary">点击上传</el-button>
+						</span>
 						<span slot="tip" class="el-upload__tip"> 文件尺寸不超过3Mb</span>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="相册" v-show="data.CategoryID==3">
 					<el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleAlbumSuccess">
-						<span><el-button size="small" type="primary">点击上传</el-button></span>
-						<span slot="tip" class="el-upload__tip"><span style="color:red"> 尺寸1140*300</span> 只能上传jpg/png文件，且不超过500kb</span>
+						<span>
+							<el-button size="small" type="primary">点击上传</el-button>
+						</span>
+						<span slot="tip" class="el-upload__tip">
+							<span style="color:red"> 尺寸1140*300</span> 只能上传jpg/png文件，且不超过500kb</span>
 					</el-upload>
 				</el-form-item>
 			</el-form>
@@ -50,45 +58,45 @@
 					<img :src="i.Thumbpath" style="width:300px;" v-for="(i,index) in data.Albums" :key="index">
 				</el-form-item>
 			</el-form>
-	
+
 			<span slot="footer" class="dialog-footer" v-show="!isLook">
 				<el-button @click="showEditForm = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确认发布</el-button>
 			</span>
 			<!-- <el-form label-width="80px" :inline="true">
-						<el-form-item label="属性">
-						</el-form-item>
-						<el-form-item>
-							<el-checkbox v-model="data.IsHot">IsHot</el-checkbox>
-						</el-form-item>
-						<el-form-item>
-							<el-checkbox v-model="data.IsRed">IsRed</el-checkbox>
-						</el-form-item>
-						<el-form-item>
-							<el-checkbox v-model="data.IsSlide">IsSlide</el-checkbox>
-						</el-form-item>
-						<el-form-item>
-							<el-checkbox v-model="data.IsSys">IsSys</el-checkbox>
-						</el-form-item>
-						<el-form-item>
-							<el-checkbox v-model="data.IsTop">IsTop</el-checkbox>
-						</el-form-item>
-						<el-form-item>
-							<el-checkbox v-model="data.CanRely">CanRely</el-checkbox>
-						</el-form-item>
-						<el-form-item label="状态">
-							<el-input v-model="data.Status" style="width:70px" type="number"></el-input>
-						</el-form-item>
-						<el-form-item label="排序">
-							<el-input v-model="data.SortID" style="width:70px" type="number"></el-input>
-						</el-form-item>
-					</el-form> -->
-	
+							<el-form-item label="属性">
+							</el-form-item>
+							<el-form-item>
+								<el-checkbox v-model="data.IsHot">IsHot</el-checkbox>
+							</el-form-item>
+							<el-form-item>
+								<el-checkbox v-model="data.IsRed">IsRed</el-checkbox>
+							</el-form-item>
+							<el-form-item>
+								<el-checkbox v-model="data.IsSlide">IsSlide</el-checkbox>
+							</el-form-item>
+							<el-form-item>
+								<el-checkbox v-model="data.IsSys">IsSys</el-checkbox>
+							</el-form-item>
+							<el-form-item>
+								<el-checkbox v-model="data.IsTop">IsTop</el-checkbox>
+							</el-form-item>
+							<el-form-item>
+								<el-checkbox v-model="data.CanRely">CanRely</el-checkbox>
+							</el-form-item>
+							<el-form-item label="状态">
+								<el-input v-model="data.Status" style="width:70px" type="number"></el-input>
+							</el-form-item>
+							<el-form-item label="排序">
+								<el-input v-model="data.SortID" style="width:70px" type="number"></el-input>
+							</el-form-item>
+						</el-form> -->
+
 			<el-col :span="24" class="toolbar" style="text-align:center;">
 				<el-button type="primary" @click="submit">确认发布</el-button>
 			</el-col>
 		</el-card>
-	
+
 	</section>
 </template>
 
@@ -175,8 +183,6 @@ export default {
 		submit() {
 			if (this.data.Title == '') {
 				this.$message.error('标题不能为空！')
-			} else if (this.data.Content == '') {
-				this.$message.error('内容不能为空！')
 			} else if (this.data.Describtion == '') {
 				this.$message.error('描述不能为空！')
 			} else {
