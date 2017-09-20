@@ -1,0 +1,68 @@
+import axios from 'axios'
+import _APIurl from './config'
+
+let API = {}
+
+// 获取学生信息
+API.getStudentInfo = (studentId) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl+'/api/Student/GetInfo?meid='+studentId).then((res)=>{
+      resolve(res.data.Content)
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+}
+// testing
+
+// 修改学生信息
+API.editStudentInfo = (data) => {
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl+'/api/Student/ModifyInfo',data).then((res)=>{
+      if(res.data.Msg!='ok'){
+        resolve(res.data.Msg)
+      }else{
+        reject(res.data.Msg)
+      }
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+}
+// testing
+
+
+// 获取学生的成绩单
+API.getExamScore = (userId,examid) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl+'/api/Student/GetExamScore',{
+      params:{
+        meid:userId,
+        examid:examid||0
+      }
+    }).then((res)=>{
+      resolve(res.data.Content[0])
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+}
+// testing
+
+// 获取考试列表
+API.getExamList = (userId) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl+'/api/Student/GetExamTotalScore',{
+      params:{
+        meid:userId
+      }
+    }).then((res)=>{
+      resolve(res.data.Content)
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+}
+// testing
+
+export default API

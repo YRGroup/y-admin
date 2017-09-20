@@ -1,5 +1,4 @@
-import teacherAPI from '@/api/teacher'
-import * as types from '../mutation-types'
+import $API from '@/server/api'
 
 const state = {
 	teacherList:[],
@@ -9,13 +8,11 @@ const getters = {
 };
 const actions = {
 	getTeacherList({commit,state},para){
-		state.listLoading = true
 		teacherAPI.getTeacherList(para).then((value)=>{
 			if(!value.length){
 				value.push({content:'null'})
 			}
 			commit('getTeacherList',value)
-			state.listLoading = false
 		})
 	},
 };

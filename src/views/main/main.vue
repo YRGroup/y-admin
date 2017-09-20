@@ -28,7 +28,7 @@ export default {
 			chartColumn: null,
 			chartBar: null,
 			chartLine: null,
-			chartPie: null,
+      chartPie: null,
 			chart1_x: [],
 			chart1_line1: [],
 			chart1_line2: [],
@@ -37,6 +37,7 @@ export default {
 			chart3_x: [],
 			chart3_line1: [],
 			chart3_line2: [],
+			chart3_line3: [],
 			chart4_data: [],
 		}
 	},
@@ -56,7 +57,8 @@ export default {
 					res.MonthlyActivity.forEach(o => {
 						this.chart3_x.push(o.Year + '-' + o.Month)
 						this.chart3_line1.push(o.NewCount)
-						this.chart3_line2.push(o.TotalCount)
+						this.chart3_line2.push(o.ActivityCount)
+						this.chart3_line3.push(o.TotalCount)
 					})
 					this.setChart3()
 				} else if (res.MonthlyActivity.length === 1) {
@@ -72,22 +74,22 @@ export default {
 				}
 				if (res.UserType.length) {
 					res.UserType.forEach(o => {
-						let a ={}
-						switch(o.Type){
+						let a = {}
+						switch (o.Type) {
 							case '1':
-							a.name='微信'
-							break
+								a.name = '微信'
+								break
 							case '2':
-							a.name='网页'
-							break
+								a.name = '网页'
+								break
 							case '3':
-							a.name='搜索'
-							break
+								a.name = '搜索'
+								break
 							case '4':
-							a.name='客户端'
-							break
+								a.name = '客户端'
+								break
 						}
-						a.value=o.Count
+						a.value = o.Count
 						this.chart4_data.push(a)
 					})
 					this.setChart4()
@@ -197,7 +199,7 @@ export default {
 			this.chartLine.setOption({
 				title: { text: '用户活跃度' },
 				tooltip: { trigger: 'axis' },
-				legend: { data: ['新增用户', '总用户'] },
+				legend: { data: ['新增用户', '活跃用户', '总用户'] },
 				grid: {
 					left: '3%',
 					right: '4%',
@@ -218,10 +220,16 @@ export default {
 						data: this.chart3_line1
 					},
 					{
-						name: '总用户',
+						name: '活跃用户',
 						type: 'line',
 						stack: '总量',
 						data: this.chart3_line2
+					},
+					{
+						name: '总用户',
+						type: 'line',
+						stack: '总量',
+						data: this.chart3_line3
 					},
 				],
 			});
@@ -244,7 +252,7 @@ export default {
 						type: 'pie',
 						radius: '55%',
 						center: ['50%', '60%'],
-						data:this.chart4_data,
+						data: this.chart4_data,
 						itemStyle: {
 							emphasis: {
 								shadowBlur: 10,

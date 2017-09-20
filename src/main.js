@@ -6,20 +6,38 @@ import router from './router';
 import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css'
-
-// import Mock from './mock';
-// Mock.bootstrap();
-
 import 'font-awesome/css/font-awesome.min.css';
-
-Vue.use(ElementUI);
-// Vue.use(Vuex);
-
-Vue.config.productionTip = false
-
 import md5 from 'js-md5'
 import { Message } from 'element-ui';
 import axios from 'axios'
+
+import API from '@/server/api'
+Vue.prototype.$API = API
+
+// API服务器地址，$server或者this.$server调用
+import base from '@/api/config'
+Vue.prototype.$server = base
+
+// 分模块挂载API
+import classAPI from '@/api/class'
+Vue.prototype.$classAPI = classAPI
+import postAPI from '@/api/post'
+Vue.prototype.$postAPI = postAPI
+import teacherAPI from '@/api/teacher'
+Vue.prototype.$teacherAPI = teacherAPI
+import studentAPI from '@/api/student'
+Vue.prototype.$studentAPI = studentAPI
+import parentAPI from '@/api/parent'
+Vue.prototype.$parentAPI = parentAPI
+import serverAPI from '@/api/server'
+Vue.prototype.$serverAPI = serverAPI
+import sysAPI from '@/api/sys'
+Vue.prototype.$sysAPI = sysAPI
+
+Vue.use(ElementUI);
+
+Vue.config.productionTip = false
+
 axios.defaults.withCredentials=true
 // request拦截器，计算签名
 axios.interceptors.request.use(config => {    
@@ -75,28 +93,6 @@ axios.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-// Vue.prototype.$axios = axios
-
-// API服务器地址，$server或者this.$server调用
-import base from '@/api/config'
-Vue.prototype.$server = base
-
-// 分模块挂载API
-import classAPI from '@/api/class'
-Vue.prototype.$classAPI = classAPI
-import postAPI from '@/api/post'
-Vue.prototype.$postAPI = postAPI
-import teacherAPI from '@/api/teacher'
-Vue.prototype.$teacherAPI = teacherAPI
-import studentAPI from '@/api/student'
-Vue.prototype.$studentAPI = studentAPI
-import parentAPI from '@/api/parent'
-Vue.prototype.$parentAPI = parentAPI
-import serverAPI from '@/api/server'
-Vue.prototype.$serverAPI = serverAPI
-import sysAPI from '@/api/sys'
-Vue.prototype.$sysAPI = sysAPI
-
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

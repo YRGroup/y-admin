@@ -1,5 +1,4 @@
-import parentAPI from '@/api/parent'
-import * as types from '../mutation-types'
+import $API from '@/server/api'
 
 const state = {
 	parentList:[],
@@ -9,13 +8,11 @@ const getters = {
 };
 const actions = {
 	getParentList({commit,state},para){
-		state.listLoading = true
 		parentAPI.getParentList(para).then((value)=>{
 			if(!value.length){
 				value.push({content:'null'})
 			}
 			commit('getParentList',value)
-			state.listLoading = false
 		})
 	},
 };

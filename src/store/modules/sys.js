@@ -1,5 +1,4 @@
-import * as types from '../mutation-types';
-import sysAPI from '@/api/sys'
+import $API from '@/server/api'
 
 const state = {
 	allNewsList:[],
@@ -11,13 +10,11 @@ const getters = {
 };
 const actions = {
 	getNewsList({commit,state},para){
-		state.listLoading = true
 		sysAPI.getNewsList(para).then((value)=>{
 			if(!value.length){
 				//value.push({content:'null'})
 			}
 			commit('getNewsList',value)
-			state.listLoading = false
 		})
 	}
 };

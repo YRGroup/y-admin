@@ -1,5 +1,4 @@
-import * as types from '../mutation-types';
-import serverAPI from '@/api/server'
+import $API from '@/server/api'
 
 const state = {
 	allUserList:[],
@@ -21,13 +20,11 @@ const getters = {
 };
 const actions = {
 	getAllUserList({commit,state},para){
-		state.listLoading = true
 		serverAPI.getAllUserList(para).then((value)=>{
 			if(!value.length){
 				value.push({content:'null'})
 			}
 			commit('getAllUserList',value)
-			state.listLoading = false
 		})
 	}
 };

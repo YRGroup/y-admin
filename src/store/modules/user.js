@@ -1,7 +1,7 @@
-import { login } from '../../api/user';
-import * as types from '../mutation-types';
+import $API from '@/server/api'
 
 const state = {
+  user: null,
 	token:'null',
 };
 const getters = {
@@ -18,6 +18,9 @@ const actions = {
 const mutations = {
 	setToken(state,value){
 		state.token=value
+	},
+	login(state,value){
+		state.user=value
 	},
 };
 export default {

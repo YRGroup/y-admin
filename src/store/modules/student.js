@@ -1,5 +1,4 @@
-import studentAPI from '@/api/student'
-import * as types from '../mutation-types'
+import $API from '@/server/api'
 
 const state = {
 	studentList:[],
@@ -9,13 +8,11 @@ const getters = {
 };
 const actions = {
 	getStudentList({commit,state},para){
-		state.listLoading = true
 		studentAPI.getStudentList(para).then((value)=>{
 			if(!value.length){
 				value.push({content:'null'})
 			}
 			commit('getStudentList',value)
-			state.listLoading = false
 		})
 	},
 };
