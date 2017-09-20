@@ -23,12 +23,10 @@
       <el-table :data="currentData" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
-        <el-table-column prop="id" label="ID" sortable>
-        </el-table-column>
         <el-table-column prop="auther" label="作者" sortable>
         </el-table-column>
-        <el-table-column prop="category" label="类别" sortable>
-        </el-table-column>
+        <!-- <el-table-column prop="category" label="类别" sortable>
+        </el-table-column> -->
         <el-table-column prop="date" label="时间" min-width="100" sortable>
         </el-table-column>
         <el-table-column prop="content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>

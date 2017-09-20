@@ -48,7 +48,7 @@ const actions = {
     commit,
     state
   }, para) {
-    $API.getAllClassDynamic(para).then((value) => {
+    $API.getHomeworkList(para).then((value) => {
       if (!value.length) {
         value.push({
           content: 'null'

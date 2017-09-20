@@ -20,7 +20,7 @@
 
     <!--列表-->
     <template>
-      <el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
+      <el-table :data="currentData" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
         <el-table-column prop="HID" label="ID" sortable>
@@ -35,8 +35,8 @@
         </el-table-column>
         <el-table-column prop="Albums" label="配图">
           <template scope="scope">
-            <el-button type="primary" size="small" v-if="scope.row.Albums.length" @click="handleAlbums(scope.row.albums)">
-              配图 {{scope.row.albums.length}}
+            <el-button type="primary" size="small" v-if="scope.row.Albums.length" @click="handleAlbums(scope.row.Albums)">
+              配图 {{scope.row.Albums.length}}
             </el-button>
           </template>
         </el-table-column>
@@ -182,7 +182,7 @@ export default {
     },
     classList() {
       if (!this.$store.getters.classList.length) {
-        return this.$store.dispatch('getClassList')
+        this.$store.dispatch('getClassList')
       }
       return this.$store.getters.classList
     },
@@ -197,9 +197,6 @@ export default {
       }
       return this.$store.getters.homeworkList.slice(start, end)
     },
-    ...mapGetters({
-      loading: 'listLoading',
-    })
   },
   methods: {
     show(val) {
