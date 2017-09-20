@@ -20,7 +20,7 @@ const getters = {
 };
 const actions = {
 	getAllUserList({commit,state},para){
-		serverAPI.getAllUserList(para).then((value)=>{
+		$API.getAllUserList(para).then((value)=>{
 			if(!value.length){
 				value.push({content:'null'})
 			}

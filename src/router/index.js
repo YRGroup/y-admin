@@ -34,6 +34,10 @@ import parentMain from '../views/parent/main';
 import parentList from '../views/parent/list';
 import parentInfo from '../views/parent/info';
 
+import newExam from '../views/exam/add';
+import examInfo from '../views/exam/exam';
+import examList from '../views/exam/list';
+
 import userList from '../views/sys/list';
 
 Vue.use(Router);
@@ -98,11 +102,33 @@ let routes = [{
       path: '/post/list',
       component: postList,
       name: '动态'
-    },{
+    }, {
       path: '/post/homework',
       component: homework,
       name: '作业'
-    } ],
+    }],
+  },
+  {
+    path: '/exam',
+    component: Home,
+    name: '考试',
+    iconCls: 'fa fa-id-card-o',
+    children: [{
+        path: '/exam/list',
+        component: examList,
+        name: '考试列表'
+      }, {
+        path: '/exam/add',
+        component: newExam,
+        name: '添加考试'
+      },
+      {
+        path: '/exam/info',
+        component: examInfo,
+        name: '考试详情'
+      },
+
+    ]
   },
   {
     path: '/alluser',
@@ -172,6 +198,7 @@ let routes = [{
       },
     ]
   },
+
 
   //   {
   //       path: '/school',

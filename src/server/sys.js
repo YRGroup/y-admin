@@ -165,8 +165,6 @@ API.addTeacher = (params) => {
     axios.post(_APIurl + '/api/User/AddTeacher', params).then((res) => {
       resolve(res.data.Content)
     }).catch((err) => {
-      console.log('获取信息失败：')
-      console.log(err)
       reject(err)
     })
   })
@@ -178,8 +176,17 @@ API.addStudentAccount = (params) => {
     axios.post(_APIurl + '/api/User/AddStudent', params).then((res) => {
       resolve(res.data.Content)
     }).catch((err) => {
-      console.log('获取信息失败：')
-      console.log(err)
+      reject(err)
+    })
+  })
+}
+
+// 查询所有用户
+API.getAllUserList = (params) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + '/api/xxd/GetAllUser', {params: params }).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
       reject(err)
     })
   })

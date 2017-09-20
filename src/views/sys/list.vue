@@ -22,7 +22,7 @@
 	
 		<!--列表-->
 		<template>
-			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;">
+			<el-table :data="currentData" highlight-current-row style="width: 100%;">
 				<el-table-column fixed="left" type="index" width="60">
 				</el-table-column>
 				<el-table-column prop="Meid" label="ID" sortable>
@@ -183,7 +183,6 @@ export default {
 			return this.$store.getters.allUserList.slice(start, end)
 		},
 		...mapGetters({
-			loading: 'listLoading',
 		})
 	},
 	methods: {
