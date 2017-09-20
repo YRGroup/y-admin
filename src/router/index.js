@@ -37,6 +37,7 @@ import parentInfo from '../views/parent/info';
 import newExam from '../views/exam/add';
 import examInfo from '../views/exam/exam';
 import examList from '../views/exam/list';
+import examChart from '../views/exam/chart';
 
 import userList from '../views/sys/list';
 
@@ -127,7 +128,11 @@ let routes = [{
         component: examInfo,
         name: '考试详情'
       },
-
+      {
+        path: '/exam/chart',
+        component: examChart,
+        name: '考试报表'
+      },
     ]
   },
   {

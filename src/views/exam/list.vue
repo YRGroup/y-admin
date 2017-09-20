@@ -34,6 +34,7 @@
             <el-button :type="!i.IsSendMsg?'info':null" @click="sendExamNotice(i.ID)" :disabled="i.IsSendMsg">发通知</el-button>
             <el-button type="success" class="type" @click="$router.push('/exam/info?id='+i.ID)">录入成绩</el-button>
             <el-button type="success" class="type" @click="publishExam(i.ID)" :disabled="i.IsPublished">发布考试</el-button>
+            <el-button type="warning" class="type" @click="$router.push(`/exam/chart?id=${i.ID}&cid=${filters.cid}`)">成绩报表</el-button>
           </div>
         </li>
       </div>
