@@ -19,38 +19,36 @@
     </el-col>
 
     <!--列表-->
-    <template>
-      <el-table :data="currentData" highlight-current-row style="width: 100%;">
-        <el-table-column fixed="left" type="index" width="60">
-        </el-table-column>
-        <el-table-column prop="HID" label="ID" sortable>
-        </el-table-column>
-        <el-table-column prop="AutherName" label="作者" sortable>
-        </el-table-column>
-        <el-table-column prop="CourseName" label="科目" sortable>
-        </el-table-column>
-        <el-table-column prop="Title" label="标题" min-width="100" sortable>
-        </el-table-column>
-        <el-table-column prop="Content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
-        </el-table-column>
-        <el-table-column prop="Albums" label="配图">
-          <template scope="scope">
-            <el-button type="primary" size="small" v-if="scope.row.Albums.length" @click="handleAlbums(scope.row.Albums)">
-              配图 {{scope.row.Albums.length}}
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="CreateTime" label="时间" min-width="100" sortable>
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="200">
-          <template scope="scope">
-            <el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
-            <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDeletePost(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </template>
+    <el-table :data="currentData" highlight-current-row style="width: 100%;">
+      <el-table-column fixed="left" type="index" width="60">
+      </el-table-column>
+      <el-table-column prop="HID" label="ID" sortable>
+      </el-table-column>
+      <el-table-column prop="AutherName" label="作者" sortable>
+      </el-table-column>
+      <el-table-column prop="CourseName" label="科目" sortable>
+      </el-table-column>
+      <el-table-column prop="Title" label="标题" min-width="100" sortable>
+      </el-table-column>
+      <el-table-column prop="Content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
+      </el-table-column>
+      <el-table-column prop="Albums" label="配图">
+        <template scope="scope">
+          <el-button type="primary" size="small" v-if="scope.row.Albums.length" @click="handleAlbums(scope.row.Albums)">
+            配图 {{scope.row.Albums.length}}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="CreateTime" label="时间" min-width="100" sortable>
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" align="center" width="200">
+        <template scope="scope">
+          <el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
+          <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="handleDeletePost(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
     <el-col :span="24" class="toolbar">
       <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
@@ -103,17 +101,8 @@
       <el-row :gutter="20">
         <el-col :span="6" v-for="i in albums" :key="i">
           <div class="pic">
-            <img :src="$server+i">
+            <img style="max-width:100%" :src="i">
           </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
         </el-col>
       </el-row>
     </el-dialog>
@@ -130,7 +119,6 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template scope="scope">
-
             <el-button type="danger" size="small" @click="handleDeleteComment(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>

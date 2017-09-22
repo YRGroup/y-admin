@@ -16,7 +16,7 @@
 		</el-col>
 
 		<!-- 列表 -->
-		<el-table :data="currentUsers" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+		<el-table :data="currentUsers" highlight-current-row  @selection-change="selsChange"
 		style="width: 100%;">
 			<el-table-column type="selection" width="55">
       </el-table-column>
@@ -127,7 +127,6 @@
 				page: 1,
 				pageSize: 10,
 				pageSizes: [10, 20, 30, 50],
-				// listLoading: false,
 
 				// 列表选中列
 				sels: [],
@@ -185,7 +184,6 @@
 			...mapGetters([
 				'users',
 				'total',
-				'listLoading',
 				'editLoading',
 				'addLoading',
 			]),

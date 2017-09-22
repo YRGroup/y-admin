@@ -20,7 +20,7 @@
 	
 		<!--列表-->
 		<template>
-			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;" border>
+			<el-table :data="currentData" highlight-current-row  style="width: 100%;" border>
 				<el-table-column prop="Title" label="ID">
 				</el-table-column>
 				<el-table-column prop="Type" label="类别">

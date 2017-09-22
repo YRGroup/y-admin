@@ -22,7 +22,7 @@
 
 		<!--列表-->
 		<template>
-			<el-table :data="currentData" highlight-current-row v-loading="loading" style="width: 100%;" border>
+			<el-table :data="currentData" highlight-current-row  style="width: 100%;" border>
 				<el-table-column v-show="filters.category==0" :formatter="categoryFormatter" align="center" prop="CategoryID" label="类别" width="100">
 				</el-table-column>
 				<el-table-column prop="Title" label="标题" show-overflow-tooltip>

@@ -23,7 +23,7 @@
 
 		<!--列表-->
 		<template>
-			<el-table :data="dynamicList" highlight-current-row v-loading="loading" style="width: 100%;">
+			<el-table :data="dynamicList" highlight-current-row  style="width: 100%;">
 				<el-table-column type="index" width="60">
 				</el-table-column>
 				<el-table-column prop="id" label="ID" width="60" sortable>
@@ -53,8 +53,6 @@
 					type:0
 				},
 				filtersType:''
-				// loading: false,
-				// users: [],
 			}
 		},
 		computed: {

@@ -28,7 +28,7 @@
 
 		<!--列表-->
 		<template>
-			<el-table :data="studentList" highlight-current-row v-loading="loading" style="width: 100%;">
+			<el-table :data="studentList" highlight-current-row  style="width: 100%;">
 				<el-table-column fixed="left" label="序号" type="index" width="70">
 				</el-table-column>
 				<el-table-column prop="Headimgurl" align="center" label="头像">

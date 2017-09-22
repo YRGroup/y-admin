@@ -26,7 +26,7 @@
         <el-table-column prop="auther" label="作者" sortable>
         </el-table-column>
         <!-- <el-table-column prop="category" label="类别" sortable>
-        </el-table-column> -->
+          </el-table-column> -->
         <el-table-column prop="date" label="时间" min-width="100" sortable>
         </el-table-column>
         <el-table-column prop="content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
@@ -96,17 +96,8 @@
       <el-row :gutter="20">
         <el-col :span="6" v-for="i in albums" :key="i">
           <div class="pic">
-            <img :src="$server+i">
+            <img style="max-width:100%" :src="i">
           </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
         </el-col>
       </el-row>
     </el-dialog>
@@ -215,8 +206,8 @@ export default {
       this.page = val;
     },
     handleAlbums(val) {
-      this.albumsVisible = true
       this.albums = val
+      this.albumsVisible = true
     },
     handleComment(val) {
       this.commentVisible = true
