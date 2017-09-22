@@ -4,9 +4,9 @@
     <el-col :span="24" class="toolbar">
       <el-form :inline="true" :model="filters">
 
-        <el-form-item label="班级">
-          <el-select v-model="filters.cid" placeholder="请选择">
-            <el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
+        <el-form-item label="年级">
+          <el-select v-model="filters.gradeid" placeholder="请选择">
+            <el-option v-for="i in gradeList" :key="i.ID" :label="i.GradeName" :value="i.ID">
             </el-option>
           </el-select>
         </el-form-item>
@@ -19,7 +19,7 @@
     </el-col>
     <el-col>
       <div class="examlist">
-        <li class="item" v-for="(i,index) in data" :key="index">
+        <li class="item" v-for="(i,index) in data" :key="index"  @click="showChildExam===i.ID?showChildExam=0:showChildExam=i.ID">
           <div class="examtitle">{{i.ExamName}}</div>
           <div class="examinfo">
             <span>
@@ -29,12 +29,19 @@
             </span>
           </div>
           <div class="exambtn">
-            <el-button class="delbtn" :plain="true" type="text" @click="delExam(i.ID,i.ExamName)" size="small">
+            <el-button class="delbtn" :plain="true" type="text" @click="delExam(i.ID)" size="small">
               <i class="iconfont">&#xe630;</i> 删除</el-button>
-            <el-button :type="!i.IsSendMsg?'info':null" @click="sendExamNotice(i.ID)" :disabled="i.IsSendMsg">发通知</el-button>
-            <el-button type="success" class="type" @click="$router.push('/exam/info?id='+i.ID)">录入成绩</el-button>
-            <el-button type="success" class="type" @click="publishExam(i.ID)" :disabled="i.IsPublished">发布考试</el-button>
-            <el-button type="warning" class="type" @click="$router.push(`/exam/chart?id=${i.ID}&cid=${filters.cid}`)">成绩报表</el-button>
+            <el-button type="warning" class="type" @click="$router.push(`/exam/chart?id=${i.ID}`)">班级成绩排名</el-button>
+          </div>
+          <div class="childExam">
+            <li class="childExamItem" v-for="j in i.ChildExam" :key="j.ID" v-show="showChildExam===i.ID">
+              <div class="className">{{j.ClassName}}</div>
+              <div class="exambtn">
+                <el-button :type="!j.IsSendMsg?'info':null" @click="sendExamNotice(j.ID,j.ClassID)" :disabled="j.IsSendMsg">发通知</el-button>
+                <el-button type="success" class="type" @click="$router.push('/exam/info?id='+j.ID)">录入成绩</el-button>
+                <el-button type="success" class="type" @click="publishExam(j.ID,j.ClassID)" :disabled="j.IsPublished">发布考试</el-button>
+              </div>
+            </li>
           </div>
         </li>
       </div>
@@ -52,28 +59,15 @@ export default {
       pageSize: 10,
       pageSizes: [10, 20, 30, 50],
       filters: {
-        cid: ''
+        gradeid: ''
       },
+      showChildExam: 0
     }
   },
   computed: {
-    classList() {
-      if (!this.$store.getters.classList.length) {
-        this.$store.dispatch('getClassList')
-      }
-      return this.$store.getters.classList
+    gradeList() {
+      return this.$store.getters.gradeList
     },
-    total() {
-      return this.$store.getters.postList.length
-    },
-    currentData() {
-      let start = (this.page - 1) * this.pageSize;
-      let end = this.page * this.pageSize;
-      if (!this.$store.getters.postList.length) {
-        return this.getData();
-      }
-      return this.$store.getters.postList.slice(start, end)
-    }
   },
   filters: {
     formatExamType(val) {
@@ -98,11 +92,13 @@ export default {
   methods: {
     getData() {
       if (this.$route.query.id) {
-        this.filters.cid = this.$route.query.id
+        this.filters.gradeid = this.$route.query.id
+      } else if (this.gradeList.length) {
+        this.filters.gradeid = this.gradeList[0].ID
       } else {
-        this.filters.cid = this.classList[0].cid
+        this.filters.gradeid = 1
       }
-      this.$API.getClassExamList(this.filters.cid).then(res => {
+      this.$API.getGradeExamList({ gradeid: this.filters.gradeid }).then(res => {
         this.data = res
         if (this.data.length == 0) {
           this.nodataImg = true
@@ -114,12 +110,12 @@ export default {
         }
       })
     },
-    sendExamNotice(id) {
+    sendExamNotice(id, classid) {
       this.$confirm('请确认考试成绩录入完整', '提示', {
         type: 'warning'
       }).then(() => {
         let para = {
-          classid: this.filters.cid,
+          classid: classid,
           examid: id
         }
         this.$API.sendExamSms(para).then(res => {
@@ -130,12 +126,12 @@ export default {
         })
       })
     },
-    publishExam(id) {
+    publishExam(id, classid) {
       this.$confirm('请确认考试成绩录入完整', '提示', {
         type: 'warning'
       }).then(() => {
         let para = {
-          classid: this.filters.cid,
+          classid: classid,
           examid: id
         }
         this.$API.publishExam(para).then(res => {
@@ -146,8 +142,26 @@ export default {
         })
       })
     },
+    delExam(id) {
+      this.$confirm('确定要删除考试吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        let para = {
+          ExamID: id
+        }
+        this.$API.delGradeExam(para).then(res => {
+          this.$message.success('删除成功')
+          this.getData()
+        }).catch(err => {
+          this.$message.error(err.msg)
+        })
+      })
+    }
   },
   created() {
+    if (!this.$store.getters.gradeList.length) {
+      this.$store.dispatch('getGradeList')
+    }
     this.getData()
   },
   mounted() {
@@ -176,7 +190,7 @@ export default {
     padding: 20px 30px;
     position: relative;
     &:hover {
-      background: @border;
+      border: 1px solid @border;
     }
     &:hover .exambtn .delbtn {
       display: inline-block;
@@ -208,6 +222,19 @@ export default {
       .delbtn {
         display: none;
       }
+    }
+  }
+}
+
+.childExam {
+  .childExamItem {
+    position: relative;
+    line-height: 40px;
+    border-bottom: 1px dotted @grey;
+    margin: 10px 0 10px 2em;
+    padding: 1em;
+    .exambtn {
+      top: 12px;
     }
   }
 }

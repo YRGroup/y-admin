@@ -126,11 +126,13 @@ let routes = [{
       {
         path: '/exam/info',
         component: examInfo,
+        hidden: true,
         name: '考试详情'
       },
       {
         path: '/exam/chart',
         component: examChart,
+        hidden: true,
         name: '考试报表'
       },
     ]

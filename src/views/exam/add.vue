@@ -3,9 +3,9 @@
 
     <el-form :model="newExamData" label-width="120px">
       <div>
-        <el-form-item label="所属班级">
-          <el-select v-model="newExamData.ClassID" placeholder="请选择班级" :disabled="true">
-            <el-option :label="i.name" :value="i.id" v-for="i in currentClassList" :key="i.id"></el-option>
+        <el-form-item label="所属年级">
+          <el-select v-model="newExamData.gradeid" placeholder="请选择年级">
+            <el-option :label="i.GradeName" :value="i.ID" v-for="i in gradeList" :key="i.ID"></el-option>
           </el-select>
         </el-form-item>
       </div>
@@ -22,7 +22,7 @@
       </div>
       <div>
         <el-form-item label="考试类型" :rules="[{ required: true}]">
-          <el-radio-group v-model="newExamData.Type" @change="examType" size="small">
+          <el-radio-group v-model="newExamData.Type" @change="changeExamType" size="small">
             <el-radio class="radio" label="0">自订</el-radio>
             <el-radio class="radio" label="1">期中考试</el-radio>
             <el-radio class="radio" label="2">期末考试</el-radio>
@@ -34,8 +34,8 @@
       <div>
         <el-form-item label="学科">
           <el-checkbox-group v-model="newExamData.courses" class="checkbox">
-            <el-checkbox :label="i.CourseId" v-for="i in courseList" :key="i.CourseId" class="item" :disabled="newExamData.Type!=0">
-              {{i.name}}
+            <el-checkbox :label="i.ID" v-for="i in courseList" :key="i.ID" class="item" :disabled="newExamData.Type!=0">
+              {{i.CourseName}}
               <span style="font-size:12px">（总分
                 <el-input v-model="i.FullScore" size="mini" style="width:50px;" placeholder="总分"></el-input>）
               </span>
@@ -45,8 +45,7 @@
       </div>
       <div>
         <el-form-item label="">
-          <el-button type="success" @click.native="addNewExam">确 定</el-button>
-          <el-button @click="showAddExam = false" :plain="true" type="success">取 消</el-button>
+          <el-button type="success" @click.native="addExam">确 定</el-button>
         </el-form-item>
       </div>
     </el-form>
@@ -60,7 +59,7 @@ export default {
       newExamData: {
         Name: '',
         Remark: '',
-        ClassID: '',
+        gradeid: '',
         Type: '4',
         ExamTime: '',
         ExamCourses: [],
@@ -68,11 +67,64 @@ export default {
       },
     }
   },
+  computed: {
+    gradeList() {
+      return this.$store.getters.gradeList
+    },
+    courseList() {
+      return this.$store.getters.courseList
+    }
+  },
   methods: {
+    addExam() {
+      this.newExamData.courses.forEach(o => {
+        let a = this.courseList.find(b => {
+          return b.ID == o
+        })
+        a.CourseId = a.ID
+        this.newExamData.ExamCourses.push(a)
+      })
+      console.log(this.newExamData)
+      if (!this.newExamData.gradeid) {
+        this.$message.error('请选择年级')
+      } else if (!this.newExamData.ExamName) {
+        this.$message.error('请填写考试名称')
+      } else if (!this.newExamData.ExamTime) {
+        this.$message.error('请添加考试时间')
+      } else if (!this.newExamData.ExamCourses.length) {
+        this.$message.error('请选择学科')
+      } else {
+        this.$API.addGradeExam(this.newExamData).then(res => {
+          this.$message.success('添加考试成功')
+          this.$router.push('/exam/list')
+        }).catch(err => {
+          this.$message.error(err.msg)
+          this.newExamData = {
+            Name: '',
+            Remark: '',
+            ClassID: '',
+            Type: '',
+            ExamCourses: [],
+            courses: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+          }
+        })
+      }
+    },
+    changeExamType(val) {
 
+    },
   },
   created() {
+    if (!this.$store.getters.gradeList.length) {
+      this.$store.dispatch('getGradeList').then(
 
+      )
+    }
+    if (!this.$store.getters.courseList.length) {
+      this.$store.dispatch('getCourseList').then(
+
+      )
+    }
   },
   mounted() {
 

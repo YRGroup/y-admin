@@ -6,9 +6,9 @@ let API = {}
 // 获取学科列表
 API.getCourseList = () => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/school/GetCourseList').then((res)=>{
+    axios.get(_APIurl + '/api/school/GetCourseList').then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -17,9 +17,9 @@ API.getCourseList = () => {
 // 获取班级考试列表
 API.getClassExamList = (classId) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/class/GetExamList?classid='+classId).then((res)=>{
+    axios.get(_APIurl + '/api/class/GetExamList?classid=' + classId).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -28,9 +28,9 @@ API.getClassExamList = (classId) => {
 // 获取考试详情
 API.getExamInfo = (examId) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/class/GetExam?examid='+examId).then((res)=>{
+    axios.get(_APIurl + '/api/class/GetExam?examid=' + examId).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -39,9 +39,11 @@ API.getExamInfo = (examId) => {
 // 发送考试成绩通知
 API.sendExamSms = (para) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/class/SendExamScoreMsg',{params:para}).then((res)=>{
+    axios.get(_APIurl + '/api/class/SendExamScoreMsg', {
+      params: para
+    }).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -50,9 +52,9 @@ API.sendExamSms = (para) => {
 // 添加考试
 API.addExam = (data) => {
   return new Promise((resolve, reject) => {
-    axios.post(_APIurl+'/api/class/AddExam',data).then((res)=>{
+    axios.post(_APIurl + '/api/class/AddExam', data).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -62,9 +64,9 @@ API.addExam = (data) => {
 // 删除考试
 API.deleteExam = (data) => {
   return new Promise((resolve, reject) => {
-    axios.post(_APIurl+'/api/class/DeleteExam',data).then((res)=>{
+    axios.post(_APIurl + '/api/class/DeleteExam', data).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -74,9 +76,9 @@ API.deleteExam = (data) => {
 // 添加考试成绩
 API.addExamScore = (data) => {
   return new Promise((resolve, reject) => {
-    axios.post(_APIurl+'/api/class/AddExamScore',data).then((res)=>{
+    axios.post(_APIurl + '/api/class/AddExamScore', data).then((res) => {
       resolve(res)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -85,19 +87,22 @@ API.addExamScore = (data) => {
 // 发布考试
 API.publishExam = (data) => {
   return new Promise((resolve, reject) => {
-    axios.post(_APIurl+'/api/class/publishExam',data).then((res)=>{
+    axios.post(_APIurl + '/api/class/publishExam', data).then((res) => {
       resolve(res)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
 }
 
+
 API.GetSingleCourseScoreByExamID = (para) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/ExamChart/GetSingleCourseScoreByExamID',{params:para}).then((res)=>{
+    axios.get(_APIurl + '/api/ExamChart/GetSingleCourseScoreByExamID', {
+      params: para
+    }).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -105,9 +110,11 @@ API.GetSingleCourseScoreByExamID = (para) => {
 
 API.GetSingleCourseScoreByClassID = (para) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/ExamChart/GetSingleCourseScoreByClassID',{params:para}).then((res)=>{
+    axios.get(_APIurl + '/api/ExamChart/GetSingleCourseScoreByClassID', {
+      params: para
+    }).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
       reject(err)
     })
   })
@@ -115,9 +122,59 @@ API.GetSingleCourseScoreByClassID = (para) => {
 
 API.getChart3Data = (para) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl+'/api/ExamChart/GetSingleCourseRegionByClassID',{params:para}).then((res)=>{
+    axios.get(_APIurl + '/api/ExamChart/GetSingleCourseRegionByClassID', {
+      params: para
+    }).then((res) => {
       resolve(res.data.Content)
-    }).catch((err)=>{
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 添加年级考试
+API.addGradeExam = (para) => {
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl + '/api/school/AddExam', para).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 获取年级考试列表
+API.getGradeExamList = (para) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + '/api/school/GetExamList', {
+      params: para
+    }).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 获取年级考试成绩详情
+API.getGradeExamInfo = (para) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + '/api/ExamChart/GetGradeTotalScore', {
+      params: para
+    }).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 删除年级考试
+API.delGradeExam = (para) => {
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl + '/api/school/DeleteExam', para).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
       reject(err)
     })
   })
