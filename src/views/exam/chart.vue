@@ -2,8 +2,8 @@
   <div>
     <div class="panel">
       <div class="examinfo">
-        <p class="title">{{data.Name}}</p>
-        <p class="examtime">创建时间：{{data.CreateTExamIDime}}</p>
+        <p class="title">{{examName}}</p>
+        <!-- <p class="examtime">创建时间：{{data.CreateTExamIDime}}</p> -->
       </div>
     </div>
 
@@ -18,8 +18,15 @@
     </div>
 
     <div class="panel">
-      <div id="chart1" style="width:100%; height:700px;"></div>
-
+      <div id="chart1" style="width:100%; height:700px;display:none;"></div>
+      <div class="toolBar">
+        <div class="label">切换学科：</div>
+        <el-select v-model="chart2course" size="small" placeholder="请选择学科" style="width:180px" @change="refshchart2Data">
+          <el-option v-for="item in chart2Selector" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+      </div>
+      <div id="chart2" style="width:100%; height:700px;"></div>
     </div>
 
   </div>
@@ -31,11 +38,15 @@ import echarts from 'echarts';
 export default {
   data() {
     return {
+      examName: {},
       data: {},
       chart1: null,
       chart1_yAxis_data: [],
       chart1_series: [],
       chart1_legend: [],
+      chart2: null,
+      chart2_series: [],
+      chart2course: '总分',
     }
   },
   computed: {
@@ -54,12 +65,17 @@ export default {
           return this.$store.state.courseList
         })
       }
+    },
+    chart2Selector() {
+      this.chart1_legend.unshift('总分')
+      return this.chart1_legend
     }
   },
   methods: {
     getData() {
       this.$API.getGradeExamInfo({ examid: this.$route.query.id }).then(res => {
         this.data = res
+        this.examName=res[0].ExamName
         this.chart1_legend = this.data[0].Courses.map(p => { return p.CourseName })
         this.chart1_legend.forEach(o => {
           this.chart1_series.push({
@@ -77,8 +93,10 @@ export default {
         })
         this.data.forEach(o => {
           this.chart1_yAxis_data.push(o.ClassName)
+          this.chart2_series.push(o.AvgCourseTotalScore)
         })
         this.setChart1()
+        this.setChart2()
       })
     },
     setChart1() {
@@ -111,13 +129,59 @@ export default {
         },
         series: this.chart1_series
       })
-    }
+    },
+    setChart2() {
+      this.chart2.setOption({
+        title: {
+          text: '班级各科成绩排名',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+          type: 'category',
+          data: this.chart1_yAxis_data
+        },
+        series: [
+          {
+            name: '2011年',
+            type: 'bar',
+            barMaxWidth: '100',
+            data: this.chart2_series
+          }
+        ]
+      })
+    },
+    refshchart2Data(val) {
+      if (val !== '总分') {
+        this.chart2_series = this.data.map(u => { return u.Courses.find(y => { return y.CourseName === val }).AvgScore })
+        this.setChart2()
+      } else {
+        this.chart2_series = this.data.map(o => { return o.AvgCourseTotalScore })
+        this.setChart2()
+      }
+    },
   },
   created() {
     this.getData()
   },
   mounted() {
     this.chart1 = echarts.init(document.getElementById('chart1'), 'macarons')
+    this.chart2 = echarts.init(document.getElementById('chart2'), 'macarons')
   },
   watch: {
     '$route': 'getData'
@@ -244,12 +308,14 @@ export default {
   }
 }
 
-.scorebox {
-  position: relative;
-  .toolBar {
-    position: absolute;
-    right: 100px;
-    z-index: 100;
+.toolBar {
+  line-height: 50px;
+  border-bottom: 1px solid @main;
+  .label {
+    display: inline-block;
+  }
+  .el-select {
+    display: inline-block;
   }
 }
 </style>

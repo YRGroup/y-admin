@@ -23,10 +23,8 @@
       <div>
         <el-form-item label="考试类型" :rules="[{ required: true}]">
           <el-radio-group v-model="newExamData.Type" @change="changeExamType" size="small">
-            <el-radio class="radio" label="0">自订</el-radio>
             <el-radio class="radio" label="1">期中考试</el-radio>
             <el-radio class="radio" label="2">期末考试</el-radio>
-            <el-radio class="radio" label="3">周考</el-radio>
             <el-radio class="radio" label="4">月考</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -34,7 +32,7 @@
       <div>
         <el-form-item label="学科">
           <el-checkbox-group v-model="newExamData.courses" class="checkbox">
-            <el-checkbox :label="i.ID" v-for="i in courseList" :key="i.ID" class="item" :disabled="newExamData.Type!=0">
+            <el-checkbox :label="i.ID" v-for="i in courseList" :key="i.ID" class="item">
               {{i.CourseName}}
               <span style="font-size:12px">（总分
                 <el-input v-model="i.FullScore" size="mini" style="width:50px;" placeholder="总分"></el-input>）
