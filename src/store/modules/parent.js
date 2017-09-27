@@ -1,4 +1,5 @@
 import $API from '@/server/api'
+import parentAPI from '@/api/parent'
 
 const state = {
 	parentList:[],
