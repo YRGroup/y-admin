@@ -1,14 +1,12 @@
 <template>
 	<section class="chart-container">
 		<el-row>
-			<el-col :span="12"  class="card">
+			<!-- <el-col :span="12"  class="card">
 				<div id="chartBar" style="width:100%; height:400px;"></div>
-			</el-col>
+			</el-col> -->
 			<el-col :span="12"  class="card">
 				<div id="chartColumn" style="width:100%; height:400px;"></div>
 			</el-col>
-		</el-row>
-		<el-row>
 			<el-col :span="12"  class="card">
 				<div id="chartLine" style="width:100%; height:400px;"></div>
 			</el-col>
@@ -45,8 +43,7 @@ export default {
 	methods: {
 		getData() {
 			this.$sysAPI.getChartData().then(res => {
-				console.log(res)
-				this.setChart1()
+				// this.setChart1()
 				if (res.UserActivated.length) {
 					res.UserActivated.forEach(o => {
 						this.chart2_line1.push(o.Activated)
@@ -271,7 +268,7 @@ export default {
 	},
 	mounted() {
 		this.chartColumn = echarts.init(document.getElementById('chartColumn'),'macarons');
-		this.chartBar = echarts.init(document.getElementById('chartBar'),'macarons');
+		// this.chartBar = echarts.init(document.getElementById('chartBar'),'macarons');
 		this.chartLine = echarts.init(document.getElementById('chartLine'),'macarons');
 		this.chartPie = echarts.init(document.getElementById('chartPie'),'macarons');
 	}
