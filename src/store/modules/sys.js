@@ -1,4 +1,5 @@
 import $API from '@/server/api'
+import sysAPI from '@/api/sys'
 
 const state = {
 	allNewsList:[],
