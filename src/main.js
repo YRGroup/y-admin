@@ -79,7 +79,7 @@ axios.interceptors.response.use(
   response => {
     console.log('axios to:'+response.config.url)
     console.log(response)
-    if(response.data.Status==0){
+    if(response.data.Status===0){
         let err = {}
         err.code=response.data.Status
         err.msg=response.data.Msg

@@ -163,7 +163,7 @@ export default {
 				},
 				yAxis: {
 					type: 'category',
-					data: ['老师', '家长', '学生']
+					data: ['学生', '家长', '老师']
 				},
 				series: [
 					{

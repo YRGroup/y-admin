@@ -8,11 +8,11 @@ const getters = {
 	token:state=>state.token,
 };
 const actions = {
-	login({commit,state},para){
-		login(para).then((res)=>{
-			commit('setToken',res.Content.Token)
-		})
-	}
+	// login({commit,state},para){
+	// 	login(para).then((res)=>{
+	// 		commit('setToken',res.Content.Token)
+	// 	})
+	// }
 };
 
 const mutations = {
