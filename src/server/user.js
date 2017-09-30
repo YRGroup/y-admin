@@ -13,6 +13,19 @@ API.logout = () => {
   })
 }
 
+// 管理员登陆
+API.adminLogin = (data) => {
+  document.cookie = "meid=aa;path=/;domain=" + document.domain.match(/[^\.]+\.[^\.]+$/)[0] + ";expires=" + new Date(2011, 1, 1).toGMTString()
+  document.cookie = "meid=aa;path=/;domain=" + document.domain + ";expires=" + new Date(2011, 1, 1).toGMTString()
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl + '/api/Admin/LoginByPwd', data).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
 // 统一登陆
 API.uniLogin = (data) => {
   document.cookie = "meid=aa;path=/;domain=" + document.domain.match(/[^\.]+\.[^\.]+$/)[0] + ";expires=" + new Date(2011, 1, 1).toGMTString()

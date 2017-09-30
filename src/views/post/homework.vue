@@ -45,7 +45,7 @@
         <template scope="scope">
           <el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
           <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="handleDeletePost(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="small" @click="handleDeleteHomework(scope.row.HID)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -247,14 +247,14 @@ export default {
         })
       })
     },
-    handleDeletePost(did) {
+    handleDeleteHomework(hid) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
       }).then(() => {
         let para = {
-          did: did
+          hid: hid
         }
-        this.$postAPI.deletePost(para).then(() => {
+        this.$API.deleteHomework(para).then(() => {
           this.$message({
             message: '删除成功',
             type: 'success',

@@ -56,11 +56,8 @@ export default {
             uid: this.ruleForm2.account,
             pwd: this.ruleForm2.checkPass
           };
-          this.$API.uniLogin(loginParams).then(res => {
+          this.$store.dispatch('login',loginParams).then(res => {
             this.logining = false;
-            this.$store.commit('setToken', res.Token)
-            sessionStorage.setItem('Token', res.Token)
-            sessionStorage.setItem('user', JSON.stringify(res))
             this.$router.push({ path: '/' })
           }).catch(err => {
             this.logining = false;

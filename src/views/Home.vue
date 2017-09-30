@@ -19,24 +19,51 @@
       <aside :class="collapsed ? 'menu-collapsed' : 'menu-expanded'">
         <!--导航菜单-->
         <el-menu :default-active="$route.path" class="el-menu-vertical-demo" theme="dark" @open="handleopen" @close="handleclose" @select="handleselect" unique-opened router v-show="!collapsed">
-          <template v-for="(item, index) in $router.options.routes" v-if="!item.hidden">
-            <el-submenu :index="index+''" v-if="!item.leaf" :key="index">
-              <template slot="title">
-                <i :class="item.iconCls"></i>{{item.name}}</template>
-              <el-menu-item v-for="child in item.children" :key="child.name" :index="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
-            </el-submenu>
-            <el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path" :key="index">
-              <i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
-          </template>
+          <!-- <template v-for="(item, index) in $router.options.routes" v-if="!item.hidden">
+                <el-submenu :index="index+''" v-if="!item.leaf" :key="index">
+                  <template slot="title">
+                    <i :class="item.iconCls"></i>{{item.name}}</template>
+                  <el-menu-item v-for="child in item.children" :key="child.name" :index="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+                </el-submenu>
+                <el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path" :key="index">
+                  <i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
+              </template> -->
           <!-- <template>
-  						<el-collapse>
-  							<el-collapse-item title="debug" name="1">
-  								<p style="text-align:center;" v-for="(i,index) in debug" :key="index"><el-button @click="showInfo(i)" type="warning">{{i}}</el-button></p>
-  							</el-collapse-item>
-  						</el-collapse>
-  						
-  					</template> -->
-
+              						<el-collapse>
+              							<el-collapse-item title="debug" name="1">
+              								<p style="text-align:center;" v-for="(i,index) in debug" :key="index"><el-button @click="showInfo(i)" type="warning">{{i}}</el-button></p>
+              							</el-collapse-item>
+              						</el-collapse>
+              						
+              					</template> -->
+          <el-menu-item index="/">
+            <i class="fa fa-home"></i>主页</el-menu-item>
+          <el-menu-item index="/class/list" v-show="roleList.includes('class')">
+            <i class="fa fa-bank"></i>班级列表</el-menu-item>
+          <el-submenu index="global">
+            <template slot="title">
+              <i class="fa fa-id-card-o"></i>全局内容</template>
+            <el-menu-item index="/news/newsList" v-show="roleList.includes('news')">新闻</el-menu-item>
+            <el-menu-item index="/news/swiperList" v-show="roleList.includes('banner')">轮播图</el-menu-item>
+          </el-submenu>
+          <el-submenu index="class">
+            <template slot="title">
+              <i class="fa el-icon-picture"></i>班级</template>
+            <el-menu-item index="/post/list">动态</el-menu-item>
+            <el-menu-item index="/post/homework">作业</el-menu-item>
+          </el-submenu>
+          <el-submenu index="exam" v-show="roleList.includes('exam')">
+            <template slot="title">
+              <i class="fa fa-id-card-o"></i>考试</template>
+            <el-menu-item index="/exam/list">考试列表</el-menu-item>
+            <el-menu-item index="/exam/add">添加考试</el-menu-item>
+          </el-submenu>
+          <el-submenu index="user">
+            <template slot="title">
+              <i class="fa fa-users"></i>用户</template>
+            <el-menu-item index="/alluser">所有用户</el-menu-item>
+            <el-menu-item index="/adminList" v-show="roleList.includes('super')">管理员</el-menu-item>
+          </el-submenu>
         </el-menu>
 
         <!--导航菜单-折叠后-->
@@ -83,6 +110,7 @@
   </el-row>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -102,6 +130,11 @@ export default {
         desc: '',
       },
     };
+  },
+  computed: {
+    ...mapGetters({
+      roleList: 'roleList'
+    })
   },
   methods: {
     showInfo(val) {
@@ -160,7 +193,7 @@ export default {
     // console.log("user",user);
     if (user) {
       user = JSON.parse(user);
-      this.$store.commit('login', user)
+      this.$store.commit('setUser', user)
       this.sysUserName = user.TrueName || '';
       this.sysUserAvatar = user.Headimgurl || '';
     }

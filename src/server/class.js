@@ -55,8 +55,15 @@ API.addHomework = (data) => {
     })
   })
 }
-// testing
 
+// 删除班级作业
+API.deleteHomework = (data) => {
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl + '/api/Class/DeleteHomeWork', data).then((res) => {
+      resolve(res.data.Content)
+    })
+  })
+}
 
 // 获取单条班级动态
 API.getClassDynamic = (classId, msgId) => {

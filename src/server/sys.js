@@ -184,7 +184,9 @@ API.addStudentAccount = (params) => {
 // 查询所有用户
 API.getAllUserList = (params) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl + '/api/xxd/GetAllUser', {params: params }).then((res) => {
+    axios.get(_APIurl + '/api/xxd/GetAllUser', {
+      params: params
+    }).then((res) => {
       resolve(res.data.Content)
     }).catch((err) => {
       reject(err)
@@ -200,6 +202,54 @@ API.getWXQRcode = () => {
 // 服务端统计
 API.refreshLiveness = () => {
   return axios.get(_APIurl + '/api/User/SaveUserLiveness')
+}
+
+// 查询所有管理员
+API.getAdminList = (params) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + '/api/admin/GetAdminList', {
+      params: params
+    }).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 更新或添加管理员
+API.updateAdminUser = (params) => {
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl + '/api/admin/UpdateAdminUser', params).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 删除管理员
+API.deleteAdminUser = (params) => {
+  return new Promise((resolve, reject) => {
+    axios.post(_APIurl + '/api/admin/DeleteAdminUser', params).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+// 查询权限列表
+API.getPermissionList = (params) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + '/api/admin/getPermissionType', {
+      params: params
+    }).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
 }
 
 // 空API模板

@@ -40,6 +40,7 @@ import examList from '../views/exam/list';
 import examChart from '../views/exam/chart';
 
 import userList from '../views/sys/list';
+import adminList from '../views/sys/adminList';
 
 Vue.use(Router);
 
@@ -140,13 +141,17 @@ let routes = [{
   {
     path: '/alluser',
     component: Home,
-    name: '',
+    name: '用户',
     iconCls: 'fa fa-users',
-    leaf: true, //只有一个节点
+    leaf: false, //只有一个节点
     children: [{
       path: '/alluser',
       component: userList,
       name: '所有用户'
+    }, {
+      path: '/adminList',
+      component: adminList,
+      name: '管理员'
     }]
   },
   {

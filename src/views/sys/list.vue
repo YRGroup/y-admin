@@ -36,13 +36,23 @@
             {{scope.row.Role | formatType}}
           </template>
         </el-table-column>
+        <el-table-column prop="Role" label="激活状态" sortable>
+          <template scope="scope">
+            {{scope.row.IsActive | formatActive }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="Role" label="订阅状态" sortable>
+          <template scope="scope">
+            {{scope.row.IsSubscribe | formatSub}}
+          </template>
+        </el-table-column>
         <el-table-column prop="Headimgurl" align="center" label="头像">
           <template scope="scope">
             <img class="userImg" :src="scope.row.Headimgurl">
             <!-- <el-popover ref="popover2" placement="bottom" title="图片预览" width="200" trigger="click">
-                <img :src="scope.row.Headimgurl">
-              </el-popover>
-              <el-button size="small" v-popover:popover2>头像</el-button> -->
+                      <img :src="scope.row.Headimgurl">
+                    </el-popover>
+                    <el-button size="small" v-popover:popover2>头像</el-button> -->
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230" align="center">
@@ -186,6 +196,20 @@ export default {
         case 4:
           return '管理员'
           break
+      }
+    },
+    formatActive(val){
+      if(val){
+        return '已激活'
+      }else{
+        return '未激活'
+      }
+    },
+    formatSub(val){
+      if(val){
+        return '已关注'
+      }else{
+        return '未关注'
       }
     }
   },
