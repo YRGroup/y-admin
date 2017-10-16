@@ -10,15 +10,7 @@ const getters = {
   adminList: state => state.adminList,
   permissionList: state => state.permissionList,
   _APIurl: () => {
-    if (window.location.host == 'www.test.com') {
-      return 'http://api.test.com'
-    } else if (window.location.host == 'admin.test.com') {
-      return 'http://api.test.com'
-    } else if (window.location.host == 'pc.test.com') {
-      return 'http://api.test.com'
-    } else {
-      return ''
-    }
+    return ''
   }
 };
 const actions = {
