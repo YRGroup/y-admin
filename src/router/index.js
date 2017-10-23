@@ -7,7 +7,6 @@ import Home from '../views/Home.vue';
 import Edit from '../component/Edit.vue';
 import Add from '../component/Add.vue';
 import List from '../component/List.vue';
-import Echarts from '../component/Echarts.vue'
 
 import main from '../views/main/main';
 

@@ -71,25 +71,24 @@ export default {
 					this.setChart3()
 				}
 				if (res.UserType.length) {
+					let chartData = []
 					res.UserType.forEach(o => {
 						let a = {}
 						switch (o.Type) {
 							case '1':
-								a.name = '微信'
+								a.name = '学生'
 								break
 							case '2':
-								a.name = '网页'
+								a.name = '家长'
 								break
 							case '3':
-								a.name = '搜索'
-								break
-							case '4':
-								a.name = '客户端'
+								a.name = '老师'
 								break
 						}
 						a.value = o.Count
-						this.chart4_data.push(a)
+						chartData.push(a)
 					})
+					this.chart4_data= chartData.slice(0,3)
 					this.setChart4()
 				}
 			})
@@ -235,14 +234,14 @@ export default {
 		setChart4() {
 			this.chartPie.setOption({
 				title: {
-					text: '访问来源',
+					text: '所有用户',
 				},
 				tooltip: {
 					trigger: 'item',
 					formatter: '{a} <br/>{b} : {c} ({d}%)',
 				},
 				legend: {
-					data: ['微信', '网页', '搜索引擎', '直接打开', 'APP'],
+					// data: ['微信', '网页', '搜索引擎', '直接打开', 'APP'],
 				},
 				series: [
 					{
