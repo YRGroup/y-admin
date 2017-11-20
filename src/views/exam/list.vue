@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="filters">
 
         <el-form-item label="年级">
-          <el-select v-model="filters.gradeid" placeholder="请选择">
+          <el-select  @change="changeGrade" v-model="filters.gradeid" placeholder="请选择">
             <el-option v-for="i in gradeList" :key="i.ID" :label="i.GradeName" :value="i.ID">
             </el-option>
           </el-select>
@@ -66,7 +66,10 @@ export default {
   },
   computed: {
     gradeList() {
-      return this.$store.getters.gradeList
+      
+        if(this.$store.getters.gradeList[0].ID!=0)
+          this.$store.getters.gradeList.unshift({ID:0,GradeName:'全部'})
+        return this.$store.getters.gradeList
     },
   },
   filters: {
@@ -90,13 +93,19 @@ export default {
     }
   },
   methods: {
-    getData() {
-      if (this.$route.query.id) {
-        this.filters.gradeid = this.$route.query.id
-      } else if (this.gradeList.length) {
-        this.filters.gradeid = this.gradeList[0].ID
-      } else {
-        this.filters.gradeid = 1
+    changeGrade(gid) {
+        this.getData(gid) 
+    },
+    getData(gid) {
+       if(gid){
+        this.filters.gradeid=gid;
+      }
+      else{
+         if (this.$route.query.id) {
+          this.filters.gradeid = this.$route.query.id
+        } else {
+          this.filters.gradeid = 0
+        }
       }
       this.$API.getGradeExamList({ gradeid: this.filters.gradeid }).then(res => {
         this.data = res
@@ -162,7 +171,7 @@ export default {
     if (!this.$store.getters.gradeList.length) {
       this.$store.dispatch('getGradeList')
     }
-    this.getData()
+    this.getData(0)
   },
   mounted() {
 

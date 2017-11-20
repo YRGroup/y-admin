@@ -36,7 +36,7 @@
       <el-table-column label="家长数量" align="center">
         <template scope="scope">
           <el-button type="text" size="small" @click="$router.push('/parent/list?classId='+scope.row.cid)">
-            家长
+            {{scope.row.ParentCount}}
           </el-button>
         </template>
       </el-table-column>

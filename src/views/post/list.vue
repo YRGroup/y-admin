@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="filters">
 
         <el-form-item label="班级">
-          <el-select v-model="filters.cid" placeholder="请选择">
+          <el-select  @change="changeClass" v-model="filters.cid" placeholder="请选择">
             <el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
             </el-option>
           </el-select>
@@ -167,7 +167,12 @@ export default {
       if (!this.$store.getters.classList.length) {
         this.$store.dispatch('getClassList')
       }
-      return this.$store.getters.classList
+      else
+      {
+        if(this.$store.getters.classList[0].cid!=0)
+          this.$store.getters.classList.unshift({cid:0,Name:'全部'})
+        return this.$store.getters.classList
+      }
     },
     total() {
       return this.$store.getters.postList.length
@@ -182,11 +187,19 @@ export default {
     }
   },
   methods: {
-    getData() {
-      if (this.$route.query.id) {
-        this.filters.cid = this.$route.query.id
-      } else {
-        this.filters.cid = this.classList[0].cid
+    changeClass(cid) {
+        this.getData(cid) 
+    },
+    getData(cid) {
+       if(cid){
+        this.filters.cid=cid;
+      }
+      else{
+         if (this.$route.query.id) {
+          this.filters.cid = this.$route.query.id
+        } else {
+          this.filters.cid = 0
+        }
       }
       let para = {
         cid: this.filters.cid,

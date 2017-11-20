@@ -73,7 +73,7 @@ const actions = {
     state
   }, para) {
     $API.getHomeworkList(para).then((value) => {
-      if (!value.length) {
+      if (!value) {
         value.push({
           content: 'null'
         })

@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="filters">
 
         <el-form-item label="班级">
-          <el-select v-model="filters.cid" placeholder="请选择">
+          <el-select @change="changeClass" v-model="filters.cid" placeholder="请选择">
             <el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
             </el-option>
           </el-select>
@@ -137,7 +137,7 @@ export default {
       pageSize: 10,
       pageSizes: [10, 20, 30, 50],
       filters: {
-        cid: '',
+        cid: 0,
         type: 1
       },
       perviewHomeworkData: {},
@@ -162,17 +162,17 @@ export default {
     }
   },
   computed: {
-    data() {
-      if (!this.$store.getters.homeworkList.length) {
-        return this.getData();
-      }
-      return this.$store.getters.homeworkList;
-    },
+    
     classList() {
-      if (!this.$store.getters.classList.length) {
+       if (!this.$store.getters.classList.length) {
         this.$store.dispatch('getClassList')
       }
-      return this.$store.getters.classList
+      else
+      {
+        if(this.$store.getters.classList[0].cid!=0)
+          this.$store.getters.classList.unshift({cid:0,Name:'全部'})
+        return this.$store.getters.classList
+      }
     },
     total() {
       return this.$store.getters.homeworkList.length
@@ -180,9 +180,6 @@ export default {
     currentData() {
       let start = (this.page - 1) * this.pageSize;
       let end = this.page * this.pageSize;
-      if (!this.$store.getters.homeworkList.length) {
-        return this.getData();
-      }
       return this.$store.getters.homeworkList.slice(start, end)
     },
   },
@@ -190,14 +187,19 @@ export default {
     show(val) {
       console.log(val)
     },
-    changeClass(n) {
-
+    changeClass(cid) {
+        this.getData(cid) 
     },
-    getData() {
-      if (this.$route.query.id) {
-        this.filters.cid = this.$route.query.id
-      } else {
-        this.filters.cid = this.classList[0].cid
+    getData(cid) {
+      if(cid){
+        this.filters.cid=cid;
+      }
+      else{
+         if (this.$route.query.id) {
+          this.filters.cid = this.$route.query.id
+        } else {
+          this.filters.cid = 0
+        }
       }
       let para = {
         cid: this.filters.cid,
@@ -295,7 +297,7 @@ export default {
     },
   },
   mounted() {
-    this.getData()
+   this. getData(0);
   },
   watch: {
     "$route": "getData"
