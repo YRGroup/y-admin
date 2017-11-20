@@ -27,7 +27,7 @@ export default {
 			chartColumn: null,
 			chartBar: null,
 			chartLine: null,
-      chartPie: null,
+			chartPie: null,
 			chart1_x: [],
 			chart1_line1: [],
 			chart1_line2: [],
@@ -241,7 +241,7 @@ export default {
 					formatter: '{a} <br/>{b} : {c} ({d}%)',
 				},
 				legend: {
-					// data: ['微信', '网页', '搜索引擎', '直接打开', 'APP'],
+					data: ['老师', '学生', '家长'],
 				},
 				series: [
 					{
