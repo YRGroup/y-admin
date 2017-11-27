@@ -19,7 +19,7 @@
     </el-col>
 
     <!--列表-->
-    <el-table :data="currentData" highlight-current-row style="width: 100%;">
+    <el-table :data="data" highlight-current-row style="width: 100%;">
       <el-table-column fixed="left" type="index" width="60">
       </el-table-column>
       <el-table-column prop="HID" label="ID" sortable>
@@ -51,7 +51,7 @@
     </el-table>
 
     <el-col :span="24" class="toolbar">
-      <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
+      <el-pagination layout="sizes,  prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
 
@@ -159,6 +159,7 @@ export default {
       albums: [],
       commentVisible: false,
       comment: [],
+      data:[],
     }
   },
   computed: {
@@ -175,12 +176,9 @@ export default {
       }
     },
     total() {
-      return this.$store.getters.homeworkList.length
-    },
-    currentData() {
-      let start = (this.page - 1) * this.pageSize;
-      let end = this.page * this.pageSize;
-      return this.$store.getters.homeworkList.slice(start, end)
+      if(this.data.length==this.pageSize)//可能有下一页
+        return this.data.length*this.page+this.pageSize
+      return this.data.length+((this.page-1)*this.pageSize);
     },
   },
   methods: {
@@ -206,7 +204,15 @@ export default {
         pagesize: this.pageSize,
         currentPage: this.page,
       };
-      this.$store.dispatch('getHomeworkList', para);
+      this.$API.getHomeworkList(para).then((res) => {
+        //console.log(res)
+          this.data=res
+        }).catch((err) => {
+          this.$message({
+            message: '加载数据失败!',
+            type: 'error',
+          })
+        })
     },
     handleLook(val) {
       this.perviewHomeworkData = val
@@ -214,9 +220,11 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
+      this.getData(this.filters.cid)
     },
     handleCurrentChange(val) {
       this.page = val;
+      this.getData(this.filters.cid)
     },
     handleAlbums(val) {
       this.albumsVisible = true

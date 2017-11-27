@@ -20,7 +20,7 @@
 
     <!--列表-->
     <template>
-      <el-table :data="currentData" highlight-current-row style="width: 100%;">
+      <el-table :data="data" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
         <el-table-column prop="auther" label="作者" sortable>
@@ -51,7 +51,7 @@
     </template>
 
     <el-col :span="24" class="toolbar">
-      <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
+      <el-pagination layout="sizes, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
 
@@ -154,15 +154,11 @@ export default {
       albums: [],
       commentVisible: false,
       comment: [],
+      data:[],
     }
   },
   computed: {
-    data() {
-      if (!this.$store.getters.postList.length) {
-        return this.getData();
-      }
-      return this.$store.getters.postList;
-    },
+    
     classList() {
       if (!this.$store.getters.classList.length) {
         this.$store.dispatch('getClassList')
@@ -175,19 +171,14 @@ export default {
       }
     },
     total() {
-      return this.$store.getters.postList.length
+      if(this.data.length==this.pageSize)//可能有下一页
+        return this.data.length*this.page+this.pageSize
+      return this.data.length+((this.page-1)*this.pageSize);
     },
-    currentData() {
-      let start = (this.page - 1) * this.pageSize;
-      let end = this.page * this.pageSize;
-      if (!this.$store.getters.postList.length) {
-        return this.getData();
-      }
-      return this.$store.getters.postList.slice(start, end)
-    }
   },
   methods: {
     changeClass(cid) {
+      
         this.getData(cid) 
     },
     getData(cid) {
@@ -206,7 +197,15 @@ export default {
         pagesize: this.pageSize,
         currentPage: this.page
       };
-      this.$store.dispatch('getPostList', para);
+      this.$API.getAllClassDynamic(para).then((res) => {
+        //console.log(res)
+          this.data=res
+        }).catch((err) => {
+          this.$message({
+            message: '加载数据失败!',
+            type: 'error',
+          })
+        })
     },
     handleLook(val) {
       this.perviewPostData = val
@@ -214,9 +213,11 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
+      this.getData(this.filters.cid)
     },
     handleCurrentChange(val) {
       this.page = val;
+      this.getData(this.filters.cid)
     },
     handleAlbums(val) {
       this.albums = val
