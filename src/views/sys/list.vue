@@ -89,7 +89,7 @@
       </el-form>
       <el-form label-width="60px" :inline="true" v-for="(i,index) in addAccountData" :key="index">
         <el-form-item label="手机号">
-          <el-input v-model="i.MobilePhone "></el-input>
+          <el-input v-model="i.MobilePhone"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="i.truename" style="width:100px;"></el-input>
@@ -114,7 +114,7 @@
       </el-form>
       <el-form label-width="80px">
         <el-form-item>
-          <el-button @click.native="addAccountData.push({MobilePhone : '',truename: '',ClassID :'',CourseID:''})" type="text">添加一行</el-button>
+          <el-button @click.native="addAccountData.push({MobilePhone: '',truename: '',ClassID :'',CourseID:''})" type="text">添加一行</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
