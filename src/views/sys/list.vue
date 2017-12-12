@@ -63,9 +63,9 @@
             <el-button type="success" size="small" @click="handleRefreshPw(scope.row)">
               重置密码
             </el-button>
-            <el-button type="danger" size="small" @click.native="handleDeleteuser(scope.row.Meid)">
+            <!-- <el-button type="danger" size="small" @click.native="handleDeleteuser(scope.row.Meid)">
               删除
-            </el-button>
+            </el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -82,7 +82,7 @@
           <el-radio-group v-model="addAccountData_role">
             <el-radio-button :label="1" disabled>学生</el-radio-button>
             <el-radio-button :label="2" disabled>家长</el-radio-button>
-            <el-radio-button :label="3" disabled>老师</el-radio-button>
+            <el-radio-button :label="3">老师</el-radio-button>
             <el-radio-button :label="4">班主任</el-radio-button>
           </el-radio-group>
         </el-form-item>
@@ -279,29 +279,30 @@ export default {
         })
       })
     },
-    handleDeleteuser: function(Meid) {
-      this.$confirm('确认删除该记录吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        let para = {
-          Meid: Meid
-        }
-        this.$teacherAPI.deleteTeacher(para).then(() => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-          })
-          this.getData()
-        }).catch((err) => {
-          console.error('fff>>>>', err);
-          this.$message({
-            message: '删除失败了哦!',
-            type: 'error',
-          })
-        })
-      })
-    },
+    // handleDeleteuser: function(Meid) {
+    //   this.$confirm('确认删除该记录吗?', '提示', {
+    //     type: 'warning'
+    //   }).then(() => {
+    //     let para = {
+    //       Meid: Meid
+    //     }
+    //     this.$teacherAPI.deleteTeacher(para).then(() => {
+    //       this.$message({
+    //         message: '删除成功',
+    //         type: 'success',
+    //       })
+    //       this.getData()
+    //     }).catch((err) => {
+    //       console.error('fff>>>>', err);
+    //       this.$message({
+    //         message: '删除失败了哦!',
+    //         type: 'error',
+    //       })
+    //     })
+    //   })
+    // },
     addAccountSubmit() {
+      console.log(this.addAccountData)
       if (this.addAccountData_role === 0) {
         this.$message.error('请选择身份类别')
       } else if (this.addAccountData.length < 1) {
