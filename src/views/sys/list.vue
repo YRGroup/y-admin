@@ -102,7 +102,7 @@
         </el-form-item>
         <el-form-item>
           <el-select v-model="i.CourseID" placeholder="请选择学科" style="width:120px;">
-            <el-option v-for="i in courseList" :key="i.CourseId" :label="i.name" :value="i.CourseId">
+            <el-option v-for="i in courseList" :key="i.CourseID" :label="i.CourseName" :value="i.CourseID">
             </el-option>
           </el-select>
         </el-form-item>
@@ -138,44 +138,7 @@ export default {
       filters: {
         role: 3,
       },
-      courseList: [
-        {
-          CourseId: 1,
-          name: '语文'
-        },
-        {
-          CourseId: 2,
-          name: '数学'
-        },
-        {
-          CourseId: 3,
-          name: '英语'
-        },
-        {
-          CourseId: 4,
-          name: '物理'
-        },
-        {
-          CourseId: 5,
-          name: '化学'
-        },
-        {
-          CourseId: 6,
-          name: '生物'
-        },
-        {
-          CourseId: 7,
-          name: '历史'
-        },
-        {
-          CourseId: 8,
-          name: '地理'
-        },
-        {
-          CourseId: 9,
-          name: '政治'
-        },
-      ],
+      courseList:[],
       showAddAccount: false,
       addAccountData_role: 4,
       addAccountData: [{ MobilePhone: '', truename: '', ClassID: '', CourseID: '' }]
@@ -229,7 +192,8 @@ export default {
       return this.$store.getters.allUserList.slice(start, end)
     },
     ...mapGetters({
-    })
+    }),
+    
   },
   methods: {
     getData() {
@@ -239,7 +203,6 @@ export default {
       this.$store.dispatch('getAllUserList', para);
     },
     openUserinfo(val) {
-      console.log(val)
       switch (val.Role) {
         case 3:
           this.$router.push('/teacher/info?teacherId=' + val.Meid)
@@ -259,6 +222,7 @@ export default {
       this.page = val;
     },
     handleRefreshPw(val) {
+      console.log(this.courseList)
       this.$confirm('确认重置密码吗?', '提示', {
         type: 'warning'
       }).then(() => {
@@ -277,6 +241,14 @@ export default {
             type: 'error',
           })
         })
+      })
+    },
+    getcourseList() {
+      this.$API.getCourseList().then((res) => {
+        res.forEach((element) => {
+          element.CourseID = element.ID
+        })
+          this.courseList =  res
       })
     },
     // handleDeleteuser: function(Meid) {
@@ -302,7 +274,6 @@ export default {
     //   })
     // },
     addAccountSubmit() {
-      console.log(this.addAccountData)
       if (this.addAccountData_role === 0) {
         this.$message.error('请选择身份类别')
       } else if (this.addAccountData.length < 1) {
@@ -324,6 +295,9 @@ export default {
         })
       }
     }
+  },
+  created() {
+    this.getcourseList()
   },
   mounted() {
   },
