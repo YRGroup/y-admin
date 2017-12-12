@@ -82,7 +82,7 @@
           <el-radio-group v-model="addAccountData_role">
             <el-radio-button :label="1" disabled>学生</el-radio-button>
             <el-radio-button :label="2" disabled>家长</el-radio-button>
-            <el-radio-button :label="3">老师</el-radio-button>
+            <el-radio-button :label="3" >老师</el-radio-button>
             <el-radio-button :label="4">班主任</el-radio-button>
           </el-radio-group>
         </el-form-item>
@@ -309,7 +309,7 @@ export default {
         this.$message.error('至少添加一行')
       } else {
         this.addAccountData.forEach(o => {
-          o.role = 1
+          o.role = this.addAccountData_role===4?1:2
           if (o.MobilePhone == '' || o.truename == '') {
             this.$message.error('资料不完整')
             return
