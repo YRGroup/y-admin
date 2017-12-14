@@ -32,7 +32,7 @@
         <el-table-column prop="content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
         </el-table-column>
         <el-table-column prop="albums" label="配图">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="primary" size="small" v-if="scope.row.albums" @click="handleAlbums(scope.row.albums)">
               配图 {{scope.row.albums.length || 0}}
             </el-button>
@@ -41,7 +41,7 @@
         <el-table-column prop="like" label="点赞" sortable>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="200">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
             <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDeletePost(scope.row.ID)">删除</el-button>
@@ -113,7 +113,7 @@
         <el-table-column prop="addTime" label="时间" sortable>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
 
             <el-button type="danger" size="small" @click="handleDeleteComment(scope.row.id)">删除</el-button>
           </template>

@@ -33,7 +33,7 @@
       <el-table-column prop="Content" label="内容" min-width="200" :show-overflow-tooltip="true" sortable>
       </el-table-column>
       <el-table-column prop="Albums" label="配图">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="primary" size="small" v-if="scope.row.Albums.length" @click="handleAlbums(scope.row.Albums)">
             配图 {{scope.row.Albums.length}}
           </el-button>
@@ -42,7 +42,7 @@
       <el-table-column prop="CreateTime" label="时间" min-width="100" sortable>
       </el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="200">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
           <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
           <el-button type="danger" size="small" @click="handleDeleteHomework(scope.row.HID)">删除</el-button>
@@ -118,7 +118,7 @@
         <el-table-column prop="addTime" label="时间" sortable>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="danger" size="small" @click="handleDeleteComment(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>

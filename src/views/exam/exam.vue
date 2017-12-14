@@ -54,7 +54,7 @@
             <el-table-column prop="Ranking" label="排名" align="center">
             </el-table-column>
             <el-table-column prop="Score" label="操作" width="260" align="center">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <!-- <el-input-number v-show="scoreEdit" size="small" v-model="scope.row.Score" :max="100" :min="0"></el-input-number>  -->
                 <el-input v-show="scoreEdit" :class="(startEdit!=scope.row.ExamCourseID)?'inline':null" size="small" :min="0" :disabled="startEdit!=i.CourseName" v-model="scope.row.Score" :max="i.FullScore" type="number" placeholder="修改分数"></el-input>
                 <el-button type="text" @click.native="startEditOneScore(scope.row)" v-show="startEdit!=i.CourseName">修改</el-button>

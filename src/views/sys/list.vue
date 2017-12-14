@@ -32,22 +32,22 @@
         <el-table-column prop="TrueName" label="名字" sortable>
         </el-table-column>
         <el-table-column prop="Role" label="身份" sortable>
-          <template scope="scope">
+          <template slot-scope="scope">
             {{scope.row.Role | formatType}}
           </template>
         </el-table-column>
         <el-table-column prop="Role" label="激活状态" sortable>
-          <template scope="scope">
+          <template slot-scope="scope">
             {{scope.row.IsActive | formatActive }}
           </template>
         </el-table-column>
         <el-table-column prop="Role" label="订阅状态" sortable>
-          <template scope="scope">
+          <template slot-scope="scope">
             {{scope.row.IsSubscribe | formatSub}}
           </template>
         </el-table-column>
         <el-table-column prop="Headimgurl" align="center" label="头像">
-          <template scope="scope">
+          <template slot-scope="scope">
             <img class="userImg" :src="scope.row.Headimgurl">
             <!-- <el-popover ref="popover2" placement="bottom" title="图片预览" width="200" trigger="click">
                       <img :src="scope.row.Headimgurl">
@@ -56,7 +56,7 @@
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="primary" size="small" @click="openUserinfo(scope.row)">
               详情
             </el-button>

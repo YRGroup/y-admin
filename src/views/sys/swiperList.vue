@@ -30,14 +30,14 @@
         <el-table-column prop="Link" label="链接" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="Albums" label="图片">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="info" size="small">{{scope.row.Albums.length}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="AddTime" label="时间" align="center" width="200">
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="220" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">
               编辑
             </el-button>
@@ -103,7 +103,7 @@
         <el-table-column prop="AddTime" label="时间" sortable>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="danger" size="small" @click="handleDeleteComment(scope.row.ID)">删除</el-button>
           </template>
         </el-table-column>

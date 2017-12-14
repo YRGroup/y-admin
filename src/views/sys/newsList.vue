@@ -44,14 +44,14 @@
 								</template>
 							</el-table-column> -->
 				<el-table-column prop="Comment" label="评论" align="center" width="100">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-button type="info" size="small" @click="handleComment(scope.row.Comments)">{{scope.row.Comments.length}}</el-button>
 					</template>
 				</el-table-column>
 				<el-table-column prop="AddTime" label="时间" align="center" width="200">
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" width="220" align="center">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-button type="success" size="small" @click.native="handleLook(scope.row)">
 							查看
 						</el-button>
@@ -147,7 +147,7 @@
 				<el-table-column prop="AddTime" label="时间" sortable>
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" align="center">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-button type="danger" size="small" @click="handleDeleteComment(scope.row.ID)">删除</el-button>
 					</template>
 				</el-table-column>

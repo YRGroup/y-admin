@@ -32,7 +32,7 @@
 				<el-table-column fixed="left" label="序号" type="index" width="70">
 				</el-table-column>
 				<el-table-column prop="Headimgurl" align="center" label="头像">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<img :src="scope.row.Headimgurl" width="50" height="50">
 					</template>
 				</el-table-column>
@@ -45,7 +45,7 @@
 				<el-table-column prop="ClassName" label="班级">
 				</el-table-column>
 				<el-table-column prop="ParentName" label="家长">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-popover trigger="hover" placement="top">
 							<p>手机号: {{ scope.row.ParentPhone }}</p>
 							<div slot="reference" class="name-wrapper">
@@ -55,7 +55,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="Status" label="状态">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<div>
 							<span v-show="scope.row.Status==0" style="color:grey">未提交</span>
 							<span v-show="scope.row.Status==1" style="color:green">正常</span>
@@ -65,7 +65,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" width="200" align="center">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-button type="primary" size="small" @click.native="$router.push('/student/info?studentId='+scope.row.Meid)">
 							详情
 						</el-button>

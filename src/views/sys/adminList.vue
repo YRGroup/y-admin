@@ -25,21 +25,21 @@
         <el-table-column prop="UserType" label="身份" sortable>
         </el-table-column>
         <el-table-column prop="Grades" label="年级" sortable>
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-tooltip effect="dark" :content="scope.row.Grades|formatGrade(gradeList)">
               <el-button size="small">{{scope.row.Grades.length}}</el-button>
             </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="Permissions" label="权限" sortable>
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-tooltip effect="dark" :content="scope.row.Permissions|formatRole(permissionList)">
               <el-button size="small">{{scope.row.Permissions.length}}</el-button>
             </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="success" size="small" @click="handleEdit(scope.row)">
               编辑
             </el-button>

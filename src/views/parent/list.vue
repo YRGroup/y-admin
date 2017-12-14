@@ -31,7 +31,7 @@
 				<el-table-column prop="ParentType" label="身份" sortable>
 				</el-table-column>
 				<el-table-column prop="ParentHeadimgurl" align="center" label="头像">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-popover
 							ref="popover2"
 							placement="bottom"
@@ -44,7 +44,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column label="学生" sortable>
-					<template scope="scope" >
+					<template slot-scope="scope" >
 						<el-button type="primary" size="small" 
 							@click.native="$router.push('/student/info?studentId='+scope.row.StudentMeid)">
 							{{scope.row.StudentTrueName}}
@@ -52,7 +52,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column fixed="right" label="操作" width="200" align="center">
-					<template scope="scope" >
+					<template slot-scope="scope" >
 						<el-button type="primary" size="small" 
 							@click.native="$router.push('/parent/info?parentId='+scope.row.ParentMeid)">
 							详情

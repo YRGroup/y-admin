@@ -12,14 +12,14 @@
     <!--列表-->
     <el-table :data="currentData" fixed highlight-current-row style="width: 100%;">
       <el-table-column prop="GradeID" label="年级ID" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           {{scope.row.GradeID}}
         </template>
       </el-table-column>
       <el-table-column prop="Name" label="班级名称">
       </el-table-column>
       <el-table-column prop="cid" label="班主任" align="center" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" size="small" v-if="scope.row.AdviserMeid" @click="$router.push('/teacher/info?teacherId='+scope.row.AdviserMeid)">{{scope.row.AdviserTrueName}}</el-button>
           <el-button v-else type="text" size="small">
             暂无
@@ -27,35 +27,35 @@
         </template>
       </el-table-column>
       <el-table-column prop="StudentCount" label="学生数量" align="center" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" size="small" @click="$router.push('/student/list?classId='+scope.row.cid)">
             {{scope.row.StudentCount}}
           </el-button>
         </template>
       </el-table-column>
       <el-table-column label="家长数量" align="center">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" size="small" @click="$router.push('/parent/list?classId='+scope.row.cid)">
             {{scope.row.ParentCount}}
           </el-button>
         </template>
       </el-table-column>
       <el-table-column prop="TeacherCount" label="教师数量" align="center" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" size="small" @click="$router.push('/teacher/list?classId='+scope.row.cid)">
             {{scope.row.TeacherCount}}
           </el-button>
         </template>
       </el-table-column>
       <el-table-column prop="cid" label="班级动态" align="center" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" size="small" @click="$router.push('/post/list?classId='+scope.row.cid)">
             查看
           </el-button>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="250" align="center">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button v-if="scope.row.AdviserMeid" type="warning" size="small" @click="$router.push('/teacher/list?classId=0&setm='+scope.row.cid+'&p=0&key=')">
             更换班主任</el-button>
           <el-button v-else type="success" size="small" @click="$router.push('/teacher/list?classId=0&setm='+scope.row.cid+'&p=0&key=')">

@@ -33,7 +33,7 @@
 				<el-table-column fixed="left" label="序号" type="index" width="65">
 				</el-table-column>
 				<el-table-column prop="Headimgurl" align="center" label="头像">
-					<template scope="scope">				
+					<template slot-scope="scope">				
 						<img :src="scope.row.Headimgurl"  width="50" height="50">		
 					</template>
 				</el-table-column>
@@ -44,27 +44,27 @@
 				<el-table-column prop="Sex" label="性别" >
 				</el-table-column>
 				<el-table-column prop="Classes" label="科目" >
-					<template scope="scope">				
+					<template slot-scope="scope">				
 						<li style="list-style-type:none;" v-for="(item,index) in scope.row.Classes" :key="index" value='CourseName' >{{item.CourseName + (item.Role==1?'/班主任':'')}}</li>	
 				
 					</template>
 				</el-table-column>
 				<el-table-column prop="className" label="班级" >
-					<template scope="scope">				
+					<template slot-scope="scope">				
 						<li style="list-style-type:none;" v-for="(item,index) in scope.row.Classes" :key="index" value='CourseName' >{{item.ClassName}}</li>	
 				
 					</template>
 				</el-table-column>
 				
 				<el-table-column  v-if="filters.setm>0" fixed="right" label="操作" width="200" align="center">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-button type="primary" size="small" @click.native="setClassAdminTeacher(scope.row.Meid)">
 							设为班主任
 						</el-button>
 					</template>
 				</el-table-column>
 				<el-table-column v-else fixed="right" label="操作" width="200" align="center">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<el-button type="primary" size="small" @click.native="$router.push('/teacher/info?teacherId='+scope.row.Meid)">
 							详情
 						</el-button>
