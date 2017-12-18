@@ -19,6 +19,7 @@ export default {
   },
   mounted(){
     
+    
   },
   watch:{
     "$route":"showRouteInfo"
