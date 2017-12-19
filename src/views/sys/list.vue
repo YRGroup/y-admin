@@ -8,15 +8,21 @@
           <el-radio-group v-model="filters.role" @change="getData">
             <el-radio-button :label="1">学生</el-radio-button>
             <el-radio-button :label="2">家长</el-radio-button>
-            <el-radio-button :label="3">老师</el-radio-button>
-            <el-radio-button :label="4">管理员</el-radio-button>
+            <el-radio-button :label="12">老师</el-radio-button>
+            <el-radio-button :label="4">任课教师</el-radio-button>
+            <el-radio-button :label="8">班主任</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item>
           <el-button type="warning" @click="showAddAccount = true">添加账号</el-button>
         </el-form-item>
-
+        <el-form-item class="seach">
+          <el-input type="primary" clearable placeholder="搜索手机号或姓名" v-model="seachText" ></el-input>
+        </el-form-item>
+        <el-form-item >
+          <el-button type="parimary" @click="getData" >搜索</el-button>
+        </el-form-item>
       </el-form>
     </el-col>
 
@@ -25,30 +31,30 @@
       <el-table :data="currentData" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
-        <el-table-column prop="Meid" label="ID" sortable>
+        <el-table-column prop="User.Meid" label="ID" sortable>
         </el-table-column>
-        <el-table-column prop="Mobilephone" label="手机" sortable>
+        <el-table-column prop="User.Mobilephone" label="手机" sortable>
         </el-table-column>
-        <el-table-column prop="TrueName" label="名字" sortable>
+        <el-table-column prop="User.TrueName" label="名字" sortable>
         </el-table-column>
-        <el-table-column prop="Role" label="身份" sortable>
+        <el-table-column prop="User.Role" label="身份" sortable>
           <template slot-scope="scope">
             {{scope.row.Role | formatType}}
           </template>
         </el-table-column>
-        <el-table-column prop="Role" label="激活状态" sortable>
+        <el-table-column prop="User.Role" label="激活状态" sortable>
           <template slot-scope="scope">
             {{scope.row.IsActive | formatActive }}
           </template>
         </el-table-column>
-        <el-table-column prop="Role" label="订阅状态" sortable>
+        <el-table-column prop="User.Role" label="订阅状态" sortable>
           <template slot-scope="scope">
             {{scope.row.IsSubscribe | formatSub}}
           </template>
         </el-table-column>
-        <el-table-column prop="Headimgurl" align="center" label="头像">
+        <el-table-column prop="User.Headimgurl" align="center" label="头像">
           <template slot-scope="scope">
-            <img class="userImg" :src="scope.row.Headimgurl">
+            <img class="userImg" :src="scope.row.User?scope.row.User.Headimgurl:null">
             <!-- <el-popover ref="popover2" placement="bottom" title="图片预览" width="200" trigger="click">
                       <img :src="scope.row.Headimgurl">
                     </el-popover>
@@ -57,10 +63,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="openUserinfo(scope.row)">
+            <el-button type="primary" size="small" @click="openUserinfo(scope.row.User)">
               详情
             </el-button>
-            <el-button type="success" size="small" @click="handleRefreshPw(scope.row)">
+            <el-button type="success" size="small" @click="handleRefreshPw(scope.row.User)">
               重置密码
             </el-button>
             <!-- <el-button type="danger" size="small" @click.native="handleDeleteuser(scope.row.Meid)">
@@ -72,7 +78,12 @@
     </template>
 
     <el-col :span="24" class="toolbar">
-      <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
+      <el-pagination layout="sizes, total, prev, pager, next"
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange"
+        :page-sizes="pageSizes"
+        :total="total"
+        style="float:right;">
       </el-pagination>
     </el-col>
 
@@ -128,6 +139,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+
 export default {
   name: 'userList',
   data() {
@@ -135,8 +147,9 @@ export default {
       page: 1,
       pageSize: 10,
       pageSizes: [10, 20, 30, 50],
+      seachText:'',
       filters: {
-        role: 3,
+        role: 1,
       },
       courseList:[],
       showAddAccount: false,
@@ -178,27 +191,27 @@ export default {
   },
   computed: {
     classList() {
-      return this.$store.getters.classList
+      return this.$store.getters.classList;
     },
     total() {
-      return this.$store.getters.allUserList.length
+        if (!this.$store.getters.total) {
+          this. open();
+      }
+      return this.$store.getters.total;
     },
     currentData() {
-      let start = (this.page - 1) * this.pageSize;
-      let end = this.page * this.pageSize;
-      if (!this.$store.getters.allUserList.length) {
-        return this.getData();
-      }
-      return this.$store.getters.allUserList.slice(start, end)
+      return this.$store.getters.allUserList;
     },
     ...mapGetters({
     }),
-    
   },
   methods: {
     getData() {
-      let para = {
+    let para={
+        key:this.seachText,
         role: this.filters.role,
+        currentPage:this.page,
+        pageSize:this.pageSize
       }
       this.$store.dispatch('getAllUserList', para);
     },
@@ -215,14 +228,24 @@ export default {
           break
       }
     },
+    //切换每页数据量
     handleSizeChange(val) {
       this.pageSize = val;
+      this.getData();
     },
+    //切换页码
     handleCurrentChange(val) {
       this.page = val;
+      console.log(this.page)
+      this.getData();
+    },
+    open() {
+      this.$message({
+          message:'提示：没有查询到数据，请检查输入是否有误',
+          // type:'waring'
+        });
     },
     handleRefreshPw(val) {
-      console.log(this.courseList)
       this.$confirm('确认重置密码吗?', '提示', {
         type: 'warning'
       }).then(() => {
@@ -297,7 +320,8 @@ export default {
     }
   },
   created() {
-    this.getcourseList()
+    this.getcourseList();
+    this.getData();
   },
   mounted() {
   },
@@ -308,10 +332,14 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+
 .userImg {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+}
+.seach{
+  margin-left: 10%;
 }
 </style>
