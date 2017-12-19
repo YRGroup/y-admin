@@ -2,11 +2,13 @@ import $API from '@/server/api'
 
 const state = {
   allUserList: [],
+  total:1,
   adminList: [],
   permissionList: [],
 };
 const getters = {
   allUserList: state => state.allUserList,
+  total: state=>state.total,
   adminList: state => state.adminList,
   permissionList: state => state.permissionList,
   _APIurl: () => {
@@ -19,10 +21,11 @@ const actions = {
     state
   }, para) {
     $API.getAllUserList(para).then((value) => {
-      if (!value.length) {
-        value.push({
+      if (!value.Total) {
+        value.ModelList.push({
           content: 'null'
         })
+        value.ModelList=[];
       }
       commit('setAllUserList', value)
     })
@@ -67,8 +70,10 @@ const actions = {
 
 const mutations = {
   setAllUserList(state, value) {
-    state.allUserList = value
+    state.allUserList = value.ModelList
+    state.total=value.Total
   },
+
   setAdminList(state, value) {
     state.adminList = value
   },

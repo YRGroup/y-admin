@@ -184,7 +184,7 @@ API.addStudentAccount = (params) => {
 // 查询所有用户
 API.getAllUserList = (params) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl + '/api/xxd/GetAllUser', {
+    axios.get(_APIurl + '/api/Admin/GetUserList', {
       params: params
     }).then((res) => {
       resolve(res.data.Content)
