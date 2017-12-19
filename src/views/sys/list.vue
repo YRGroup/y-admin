@@ -280,7 +280,7 @@ export default {
         this.$message.error('至少添加一行')
       } else {
         this.addAccountData.forEach(o => {
-          o.role = this.addAccountData_role===4?1:2
+          o.role = this.addAccountData_role===4?8:4
           if (o.MobilePhone == '' || o.truename == '') {
             this.$message.error('资料不完整')
             return
