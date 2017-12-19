@@ -44,12 +44,13 @@
         </el-table-column>
         <el-table-column prop="User.Role" label="激活状态" sortable>
           <template slot-scope="scope">
-            {{scope.row.IsActive | formatActive }}
+            <span :class="[scope.row.IsActive?'success':'waring']">{{scope.row.IsActive | formatActive }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="User.Role" label="订阅状态" sortable>
           <template slot-scope="scope">
-            {{scope.row.IsSubscribe | formatSub}}
+            <span :class="[scope.row.IsActive?'success':'waring']">{{scope.row.IsSubscribe | formatSub}}</span>
+            
           </template>
         </el-table-column>
         <el-table-column prop="User.Headimgurl" align="center" label="头像">
@@ -194,8 +195,8 @@ export default {
       return this.$store.getters.classList;
     },
     total() {
-        if (!this.$store.getters.total) {
-          this. open();
+      if (!this.$store.getters.total) {
+        this. open();
       }
       return this.$store.getters.total;
     },
@@ -342,4 +343,10 @@ export default {
 .seach{
   margin-left: 10%;
 }
+.waring{
+  color:#E6A23C;
+}
+.success{
+  colo:#67C23A;
+} 
 </style>

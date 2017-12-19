@@ -2,7 +2,7 @@ import $API from '@/server/api'
 
 const state = {
   allUserList: [],
-  total:0,
+  total:1,
   adminList: [],
   permissionList: [],
 };
