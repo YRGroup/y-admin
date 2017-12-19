@@ -42,15 +42,14 @@
             {{scope.row.Role | formatType}}
           </template>
         </el-table-column>
-        <el-table-column prop="User.Role" label="激活状态">
+        <el-table-column prop="User.isActive" label="激活状态">
           <template slot-scope="scope">
-            <span :class="[scope.row.IsActive?'success':'waring']">{{scope.row.IsActive | formatActive }}</span>
+            <span :class="[scope.row.User.IsActive?'success':'waring']">{{scope.row.User.IsActive | formatActive }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="User.Role" label="订阅状态">
+        <el-table-column prop="User.isAuth" label="订阅状态">
           <template slot-scope="scope">
-            <span :class="[scope.row.IsActive?'success':'waring']">{{scope.row.IsSubscribe | formatSub}}</span>
-            
+            <span :class="[scope.row.User.IsAuth?'success':'waring']">{{scope.row.User.IsAuth | formatSub}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="User.Headimgurl" align="center" label="头像">
@@ -119,9 +118,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="text" :plain="true" @click.native="addAccountData.splice(index,1)">
-            X
-          </el-button>
+          <el-button type="primary" :plain="true" @click.native="addAccountData.splice(index,1)">移除</el-button>
         </el-form-item>
       </el-form>
       <el-form label-width="80px">
@@ -347,6 +344,6 @@ export default {
   color:#E6A23C;
 }
 .success{
-  colo:#67C23A;
+  color:#67C23A;
 } 
 </style>
