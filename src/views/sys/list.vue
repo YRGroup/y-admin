@@ -31,23 +31,23 @@
       <el-table :data="currentData" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
-        <el-table-column prop="User.Meid" label="ID" sortable>
+        <el-table-column prop="User.Meid" label="ID">
         </el-table-column>
-        <el-table-column prop="User.Mobilephone" label="手机" sortable>
+        <el-table-column prop="User.Mobilephone" label="手机">
         </el-table-column>
-        <el-table-column prop="User.TrueName" label="名字" sortable>
+        <el-table-column prop="User.TrueName" label="名字">
         </el-table-column>
-        <el-table-column prop="User.Role" label="身份" sortable>
+        <el-table-column prop="User.Role" label="身份">
           <template slot-scope="scope">
             {{scope.row.Role | formatType}}
           </template>
         </el-table-column>
-        <el-table-column prop="User.Role" label="激活状态" sortable>
+        <el-table-column prop="User.Role" label="激活状态">
           <template slot-scope="scope">
             <span :class="[scope.row.IsActive?'success':'waring']">{{scope.row.IsActive | formatActive }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="User.Role" label="订阅状态" sortable>
+        <el-table-column prop="User.Role" label="订阅状态">
           <template slot-scope="scope">
             <span :class="[scope.row.IsActive?'success':'waring']">{{scope.row.IsSubscribe | formatSub}}</span>
             
