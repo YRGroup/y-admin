@@ -21,7 +21,7 @@
           <el-input type="primary" clearable placeholder="搜索手机号或姓名" v-model="seachText" ></el-input>
         </el-form-item>
         <el-form-item >
-          <el-button type="parimary" @click="getData" >搜索</el-button>
+          <el-button type="primary" @click="getData" >搜索</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -94,8 +94,8 @@
           <el-radio-group v-model="addAccountData_role">
             <el-radio-button :label="1" disabled>学生</el-radio-button>
             <el-radio-button :label="2" disabled>家长</el-radio-button>
-            <el-radio-button :label="3" >老师</el-radio-button>
-            <el-radio-button :label="4">班主任</el-radio-button>
+            <el-radio-button :label="4">任课老师</el-radio-button>
+            <el-radio-button :label="8">班主任</el-radio-button>
           </el-radio-group>
         </el-form-item>
       </el-form>
