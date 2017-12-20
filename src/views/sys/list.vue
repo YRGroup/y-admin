@@ -37,9 +37,9 @@
         </el-table-column>
         <el-table-column prop="User.TrueName" label="名字">
         </el-table-column>
-        <el-table-column prop="User.Role" label="身份">
+        <el-table-column prop="CurrentClass.Role" label="身份">
           <template slot-scope="scope">
-            {{scope.row.Role | formatType}}
+            {{scope.row.CurrentClass.Role | formatType}}
           </template>
         </el-table-column>
         <el-table-column prop="User.isActive" label="激活状态">
@@ -63,10 +63,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="openUserinfo(scope.row.User)">
+            <el-button type="primary" size="small" @click="openUserinfo(scope.row.CurrentClass)">
               详情
             </el-button>
-            <el-button type="success" size="small" @click="handleRefreshPw(scope.row.User)">
+            <el-button type="success" size="small" @click="handleRefreshPw(scope.row.CurrentClass)">
               重置密码
             </el-button>
             <!-- <el-button type="danger" size="small" @click.native="handleDeleteuser(scope.row.Meid)">
@@ -164,11 +164,14 @@ export default {
         case 2:
           return '家长'
           break
-        case 3:
-          return '老师'
+        case 12:
+          return '教师'
           break
         case 4:
-          return '管理员'
+          return '任课教师'
+          break
+        case 8:
+          return '班主任'
           break
       }
     },
@@ -215,7 +218,7 @@ export default {
     },
     openUserinfo(val) {
       switch (val.Role) {
-        case 3:
+        case 4:case 8:case 12:
           this.$router.push('/teacher/info?teacherId=' + val.Meid)
           break
         case 2:
@@ -234,13 +237,11 @@ export default {
     //切换页码
     handleCurrentChange(val) {
       this.page = val;
-      console.log(this.page)
       this.getData();
     },
     open() {
       this.$message({
-          message:'提示：没有查询到数据，请检查输入是否有误',
-          // type:'waring'
+          message:'提示：没有查询到数据，请检查输入是否有误'
         });
     },
     handleRefreshPw(val) {
@@ -264,6 +265,7 @@ export default {
         })
       })
     },
+    //获取学科列表
     getcourseList() {
       this.$API.getCourseList().then((res) => {
         res.forEach((element) => {
@@ -272,6 +274,7 @@ export default {
           this.courseList =  res
       })
     },
+
     // handleDeleteuser: function(Meid) {
     //   this.$confirm('确认删除该记录吗?', '提示', {
     //     type: 'warning'
@@ -301,7 +304,8 @@ export default {
         this.$message.error('至少添加一行')
       } else {
         this.addAccountData.forEach(o => {
-          o.role = this.addAccountData_role===4?8:4
+          // o.role = this.addAccountData_role===4?8:4
+          o.role = this.addAccountData_role
           if (o.MobilePhone == '' || o.truename == '') {
             this.$message.error('资料不完整')
             return
@@ -320,6 +324,10 @@ export default {
   created() {
     this.getcourseList();
     this.getData();
+    //获取班级列表
+    if (!this.$store.getters.classList.length) {
+      this.$store.dispatch('getClassList');
+    }
   },
   mounted() {
   },
