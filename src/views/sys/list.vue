@@ -37,9 +37,9 @@
         </el-table-column>
         <el-table-column prop="User.TrueName" label="名字">
         </el-table-column>
-        <el-table-column prop="User.Role" label="身份">
+        <el-table-column prop="CurrentClass.Role" label="身份">
           <template slot-scope="scope">
-            {{scope.row.Role | formatType}}
+            {{scope.row.CurrentClass.Role | formatType}}
           </template>
         </el-table-column>
         <el-table-column prop="User.isActive" label="激活状态">
@@ -63,10 +63,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="openUserinfo(scope.row.User)">
+            <el-button type="primary" size="small" @click="openUserinfo(scope.row.CurrentClass)">
               详情
             </el-button>
-            <el-button type="success" size="small" @click="handleRefreshPw(scope.row.User)">
+            <el-button type="success" size="small" @click="handleRefreshPw(scope.row.CurrentClass)">
               重置密码
             </el-button>
             <!-- <el-button type="danger" size="small" @click.native="handleDeleteuser(scope.row.Meid)">
@@ -164,11 +164,14 @@ export default {
         case 2:
           return '家长'
           break
-        case 3:
-          return '老师'
+        case 12:
+          return '教师'
           break
         case 4:
-          return '管理员'
+          return '任课教师'
+          break
+        case 8:
+          return '班主任'
           break
       }
     },
@@ -214,10 +217,12 @@ export default {
       this.$store.dispatch('getAllUserList', para);
     },
     openUserinfo(val) {
+      console.log(val.Role)
       switch (val.Role) {
-        case 3:
+        case 4:case 8:case 12:
           this.$router.push('/teacher/info?teacherId=' + val.Meid)
           break
+      
         case 2:
           this.$router.push('/parent/info?parentId=' + val.Meid)
           break
