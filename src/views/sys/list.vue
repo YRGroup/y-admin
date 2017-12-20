@@ -217,7 +217,6 @@ export default {
       this.$store.dispatch('getAllUserList', para);
     },
     openUserinfo(val) {
-      console.log(val.Role)
       switch (val.Role) {
         case 4:case 8:case 12:
           this.$router.push('/teacher/info?teacherId=' + val.Meid)
@@ -244,8 +243,7 @@ export default {
     },
     open() {
       this.$message({
-          message:'提示：没有查询到数据，请检查输入是否有误',
-          // type:'waring'
+          message:'提示：没有查询到数据，请检查输入是否有误'
         });
     },
     handleRefreshPw(val) {
