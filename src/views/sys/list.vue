@@ -274,16 +274,6 @@ export default {
           this.courseList =  res
       })
     },
-    //获取年级列表
-    getGradeList() {
-      this.$API.getGradeList().then((res) => {
-        // res.forEach((element) => {
-        //   element.CourseID = element.ID
-        // })
-        //   this.courseList =  res
-        console.log(res)
-      })
-    },
 
     // handleDeleteuser: function(Meid) {
     //   this.$confirm('确认删除该记录吗?', '提示', {
