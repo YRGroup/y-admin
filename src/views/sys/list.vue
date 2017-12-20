@@ -265,6 +265,7 @@ export default {
         })
       })
     },
+    //获取学科列表
     getcourseList() {
       this.$API.getCourseList().then((res) => {
         res.forEach((element) => {
@@ -273,6 +274,17 @@ export default {
           this.courseList =  res
       })
     },
+    //获取年级列表
+    getGradeList() {
+      this.$API.getGradeList().then((res) => {
+        // res.forEach((element) => {
+        //   element.CourseID = element.ID
+        // })
+        //   this.courseList =  res
+        console.log(res)
+      })
+    },
+
     // handleDeleteuser: function(Meid) {
     //   this.$confirm('确认删除该记录吗?', '提示', {
     //     type: 'warning'
@@ -302,7 +314,8 @@ export default {
         this.$message.error('至少添加一行')
       } else {
         this.addAccountData.forEach(o => {
-          o.role = this.addAccountData_role===4?8:4
+          // o.role = this.addAccountData_role===4?8:4
+          o.role = this.addAccountData_role
           if (o.MobilePhone == '' || o.truename == '') {
             this.$message.error('资料不完整')
             return
@@ -321,6 +334,10 @@ export default {
   created() {
     this.getcourseList();
     this.getData();
+    //获取班级列表
+    if (!this.$store.getters.classList.length) {
+      this.$store.dispatch('getClassList');
+    }
   },
   mounted() {
   },
