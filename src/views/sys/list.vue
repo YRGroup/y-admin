@@ -18,7 +18,7 @@
           <el-button type="warning" @click="showAddAccount = true">添加账号</el-button>
         </el-form-item>
         <el-form-item class="seach">
-          <el-input type="primary" clearable placeholder="搜索手机号或姓名" v-model="seachText" ></el-input>
+          <el-input clearable type="primary"  placeholder="搜索手机号或姓名" v-model="seachText" ></el-input>
         </el-form-item>
         <el-form-item >
           <el-button type="primary" @click="getData" >搜索</el-button>
@@ -87,7 +87,7 @@
       </el-pagination>
     </el-col>
 
-    <el-dialog title="添加账号" v-model="showAddAccount" :close-on-click-modal="false">
+    <el-dialog  width="70%" title="添加账号" v-model="showAddAccount" :close-on-click-modal="false">
       <el-form label-width="80px">
         <el-form-item label="身份">
           <el-radio-group v-model="addAccountData_role">
@@ -98,7 +98,7 @@
           </el-radio-group>
         </el-form-item>
       </el-form>
-      <el-form label-width="60px" :inline="true" v-for="(i,index) in addAccountData" :key="index">
+      <el-form class="addItem" label-width="60px" :inline="true" v-for="(i,index) in addAccountData" :key="index">
         <el-form-item label="手机号">
           <el-input v-model="i.MobilePhone"></el-input>
         </el-form-item>
@@ -118,12 +118,12 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :plain="true" @click.native="addAccountData.splice(index,1)">移除</el-button>
+          <el-button type="warning" round @click.native="addAccountData.splice(index,1)">移除</el-button>
         </el-form-item>
       </el-form>
       <el-form label-width="80px">
         <el-form-item>
-          <el-button @click.native="addAccountData.push({MobilePhone: '',truename: '',ClassID :'',CourseID:''})" type="text">添加一行</el-button>
+          <el-button class="addCol" type="primary" @click.native="addAccountData.push({MobilePhone: '',truename: '',ClassID :'',CourseID:''})">添加一行</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -346,4 +346,14 @@ export default {
 .success{
   color:#67C23A;
 } 
+.addItem{
+  border-left: 5px solid #67C23A;
+  height: 35px;
+  padding-left: 20px;
+  margin: 20px 0;
+}
+.addCol{
+  display: inline-block;
+  margin-top: 30px;
+}
 </style>
