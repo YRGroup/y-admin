@@ -49,7 +49,7 @@
         </el-table-column>
         <el-table-column prop="User.isAuth" label="订阅状态">
           <template slot-scope="scope">
-            <span :class="[scope.row.User.IsAuth?'success':'waring']">{{scope.row.User.IsAuth | formatSub}}</span>
+            <span :class="[scope.row.User.IsSubscribe?'success':'waring']">{{scope.row.User.IsSubscribe | formatSub}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="User.Headimgurl" align="center" label="头像">
@@ -341,7 +341,7 @@ export default {
   margin-left: 10%;
 }
 .waring{
-  color:#E6A23C;
+  color:red;
 }
 .success{
   color:#67C23A;
