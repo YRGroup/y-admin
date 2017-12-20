@@ -221,7 +221,6 @@ export default {
         case 4:case 8:case 12:
           this.$router.push('/teacher/info?teacherId=' + val.Meid)
           break
-      
         case 2:
           this.$router.push('/parent/info?parentId=' + val.Meid)
           break
@@ -238,7 +237,6 @@ export default {
     //切换页码
     handleCurrentChange(val) {
       this.page = val;
-      console.log(this.page)
       this.getData();
     },
     open() {
