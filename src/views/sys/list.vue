@@ -341,7 +341,7 @@ export default {
   margin-left: 10%;
 }
 .waring{
-  color:red;
+  color:#F56C6C;
 }
 .success{
   color:#67C23A;
