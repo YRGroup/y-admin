@@ -76,7 +76,6 @@
         </el-table-column>
       </el-table>
     </template>
-
     <el-col :span="24" class="toolbar">
       <el-pagination layout="sizes, total, prev, pager, next"
         @size-change="handleSizeChange" 
@@ -314,7 +313,8 @@ export default {
         this.$sysAPI.addTeacherAccount(this.addAccountData).then(res => {
           this.$message.success('添加成功')
           this.showAddAccount = false
-          this.getData()
+          this.getData();
+          this.addAccountData=[{ MobilePhone: '', truename: '', ClassID: '', CourseID: '' }];
         }).catch(err => {
           this.$message.error(err.msg)
         })
@@ -356,8 +356,8 @@ export default {
 } 
 .addItem{
   border-left: 5px solid #67C23A;
-  height: 35px;
   padding-left: 20px;
+  padding-top: 20px;
   margin: 20px 0;
 }
 .addCol{
