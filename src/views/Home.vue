@@ -38,13 +38,13 @@
               					</template> -->
           <el-menu-item index="/">
             <i class="fa fa-home"></i>主页</el-menu-item>
-          <el-menu-item index="/class/list" v-show="roleList.includes('class')">
+          <el-menu-item index="/class/list" v-if="roleList.includes('class')">
             <i class="fa fa-bank"></i>班级列表</el-menu-item>
           <el-submenu index="global">
             <template slot="title">
               <i class="fa fa-id-card-o"></i>全局内容</template>
-            <el-menu-item index="/news/newsList" v-show="roleList.includes('news')">新闻</el-menu-item>
-            <el-menu-item index="/news/swiperList" v-show="roleList.includes('banner')">轮播图</el-menu-item>
+            <el-menu-item index="/news/newsList" v-if="roleList.includes('news')">新闻</el-menu-item>
+            <el-menu-item index="/news/swiperList" v-if="roleList.includes('banner')">轮播图</el-menu-item>
           </el-submenu>
           <el-submenu index="class">
             <template slot="title">
@@ -52,7 +52,7 @@
             <el-menu-item index="/post/list">动态</el-menu-item>
             <el-menu-item index="/post/homework">作业</el-menu-item>
           </el-submenu>
-          <el-submenu index="exam" v-show="roleList.includes('exam')">
+          <el-submenu index="exam" v-if="roleList.includes('exam')">
             <template slot="title">
               <i class="fa fa-id-card-o"></i>考试</template>
             <el-menu-item index="/exam/list">考试列表</el-menu-item>
@@ -62,7 +62,7 @@
             <template slot="title">
               <i class="fa fa-users"></i>用户</template>
             <el-menu-item index="/alluser">所有用户</el-menu-item>
-            <el-menu-item index="/adminList" v-show="roleList.includes('super')">管理员</el-menu-item>
+            <el-menu-item index="/adminList" v-if="roleList.includes('super')">管理员</el-menu-item>
           </el-submenu>
         </el-menu>
 
@@ -189,6 +189,7 @@ export default {
     },
   },
   mounted() {
+    
     var user = sessionStorage.getItem('user');
     // console.log("user",user);
     if (user) {

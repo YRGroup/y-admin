@@ -83,7 +83,7 @@
         <el-form-item label="权限">
           <el-checkbox-group v-model="newAdminData.Permissions" class="checkbox">
             <el-checkbox :label="i.Role" v-for="i in permissionList" :key="i.ID" class="item">
-              {{i.RoleName}}
+              <!-- {{i.RoleName}} -->
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
