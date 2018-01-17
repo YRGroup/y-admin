@@ -64,6 +64,11 @@
             <el-menu-item index="/alluser">所有用户</el-menu-item>
             <el-menu-item index="/adminList" v-if="roleList.includes('super')">管理员</el-menu-item>
           </el-submenu>
+          <el-submenu index="video">
+            <template slot="title">
+              <i class="fa fa-users"></i>视频课程</template>
+            <el-menu-item index="/video/list">视频列表</el-menu-item>
+          </el-submenu>
         </el-menu>
 
         <!--导航菜单-折叠后-->

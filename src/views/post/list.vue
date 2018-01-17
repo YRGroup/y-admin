@@ -43,7 +43,7 @@
         <el-table-column fixed="right" label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button type="success" size="small" @click.native="handleLook(scope.row)">查看</el-button>
-            <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button>
+            <!-- <el-button type="primary" size="small" @click.native="handleEdit(scope.row)">编辑</el-button> -->
             <el-button type="danger" size="small" @click="handleDeletePost(scope.row.ID)">删除</el-button>
           </template>
         </el-table-column>

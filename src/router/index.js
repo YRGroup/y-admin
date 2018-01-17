@@ -41,6 +41,8 @@ import examChart from '../views/exam/chart';
 import userList from '../views/sys/list';
 import adminList from '../views/sys/adminList';
 
+
+import videoList from '../views/video/list'
 Vue.use(Router);
 
 let routes = [{
@@ -193,6 +195,19 @@ let routes = [{
     ]
   },
   {
+    path: '/video',
+    component: Home,
+    name: '视频课程',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
+    children: [{
+        path: '/video/list',
+        component: videoList,
+        name: '视频列表'
+      }
+    ]
+  },
+  {
     path: '/parent',
     component: Home,
     name: '家长',
@@ -210,6 +225,7 @@ let routes = [{
       },
     ]
   },
+
 
 
   //   {

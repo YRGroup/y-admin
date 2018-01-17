@@ -72,7 +72,7 @@
               <el-button size="small" type="primary">点击上传</el-button>
             </span>
             <span slot="tip" class="el-upload__tip">
-              <span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
+              <span style="color:red"> 建议宽高比为2:1</span></span>
           </el-upload>
         </el-form-item>
       </el-form>
