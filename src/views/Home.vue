@@ -66,7 +66,7 @@
           </el-submenu>
           <el-submenu index="video">
             <template slot="title">
-              <i class="fa fa-users"></i>视频课程</template>
+              <i class="iconfont">&#xe705;</i>视频课程</template>
             <el-menu-item index="/video/list">视频列表</el-menu-item>
           </el-submenu>
         </el-menu>

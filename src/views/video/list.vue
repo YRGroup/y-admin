@@ -21,7 +21,7 @@
           <el-input clearable type="primary"  placeholder="输入关键字" v-model="seachText" ></el-input>
         </el-form-item>
         <el-form-item >
-          <el-button type="primary" @click="getData" >搜索</el-button>
+          <el-button type="primary" @click="getData()" >搜索</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -46,6 +46,9 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="230">
           <template slot-scope="scope">
+            <el-button type="warm" size="small" @click.native="handleInfoVideo(scope.row)">
+              详情
+            </el-button>
             <el-button type="danger" size="small" @click.native="handleDeleteVideo(scope.row.AliyunCateID)">
               删除
             </el-button>
@@ -77,7 +80,7 @@ export default {
       },
       categoryList: [],
       gradeList:[],
-      currentData:[],
+      currentData: []
     }
   },
   computed: {
@@ -125,10 +128,14 @@ export default {
       this.page = val;
       this.getData();
     },
-    open() {
-      this.$message({
-          message:'提示：没有查询到数据，请检查输入是否有误'
-        });
+    //查看视频
+    handleInfoVideo(val){
+      this.$router.push({
+        path:`/video/info`,
+        query:{
+          info:val
+        }
+      })
     },
     //删除视频
     handleDeleteVideo(val){

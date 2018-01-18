@@ -43,6 +43,8 @@ import adminList from '../views/sys/adminList';
 
 
 import videoList from '../views/video/list'
+import videoInfo from '../views/video/info'
+
 Vue.use(Router);
 
 let routes = [{
@@ -204,6 +206,11 @@ let routes = [{
         path: '/video/list',
         component: videoList,
         name: '视频列表'
+      },
+      {
+        path:'/video/info',
+        component:videoInfo,
+        name:'视频详情'
       }
     ]
   },

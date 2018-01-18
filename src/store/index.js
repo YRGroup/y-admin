@@ -10,7 +10,7 @@ import student from './modules/student';
 import parent from './modules/parent';
 import server from './modules/server';
 import sys from './modules/sys';
-
+import video from './modules/video';
 
 Vue.use(Vuex);
 
@@ -26,7 +26,8 @@ export default new Vuex.Store({
 		student,
 		parent,
 		server,
-		sys,
+    sys,
+    video,
 	},
 	actions,
 	mutations,
