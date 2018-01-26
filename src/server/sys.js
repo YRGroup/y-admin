@@ -124,8 +124,18 @@ API.getNewsList = params => {
     }).then(res => {
       resolve(res.data.Content)
     }).catch((err) => {
-      console.log('获取信息失败：')
-      console.log(err)
+      reject(err)
+    })
+  })
+}
+//获取轮播图
+API.getSwiperList = params => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + `/api/School/GetArticleList`, {
+      params: params
+    }).then(res => {
+      resolve(res.data.Content)
+    }).catch((err) => {
       reject(err)
     })
   })

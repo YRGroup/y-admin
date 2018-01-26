@@ -45,8 +45,8 @@
 								</template>
 							</el-table-column> -->
 				<el-table-column prop="Comment" label="评论" align="center" width="100">
-					<template slot-scope="scope" v-if="scope.row.Comments">
-						<el-button type="info" size="small" @click="handleComment(scope.row.Comments)">{{scope.row.Comments.length}}</el-button>
+					<template slot-scope="scope">
+						<el-button type="info" size="small" @click="handleComment(scope.row.Comments)">{{scope.row.Comments?scope.row.Comments.length:0}}</el-button>
 					</template>
 				</el-table-column>
 				<el-table-column prop="AddTime" label="时间" align="center" width="200">
@@ -196,9 +196,9 @@ export default {
 			isLook: false,
 			attachList: [],
 			albumsList: [],
-			page: 1,
-			pageSize: 10,
-			pageSizes: [10, 20, 30, 50],
+		  page: 1,
+      pageSize: 10,
+      pageSizes: [10, 20, 30, 50],
 			showEditForm: false,
 			showAddWXnew: false,
 			websiteURL:'',
@@ -214,8 +214,9 @@ export default {
 		},
 		currentData() {
 			let start = (this.page - 1) * this.pageSize;
-			let end = this.page * this.pageSize;
-			return this.$store.getters.allNewsList.slice(start, end)
+      let end = this.page * this.pageSize;
+      return this.$store.getters.allNewsList.slice(start, end)
+    
 		},
 		...mapGetters({
 			loading: 'listLoading',

@@ -70,15 +70,15 @@ axios.interceptors.request.use(config => {
     config.headers.sign = sigh
     return config
 }, err => {
-    console.log('error')
-    console.log(err)
+    // console.log('error')
+    // console.log(err)
     return Promise.reject(err)
 });
 // response拦截器，log信息
 axios.interceptors.response.use(
   response => {
-    console.log('axios to:'+response.config.url)
-    console.log(response)
+    // console.log('axios to:'+response.config.url)
+    // console.log(response)
     if(response.data.Status===0){
         let err = {}
         err.code=response.data.Status
@@ -89,8 +89,8 @@ axios.interceptors.response.use(
     }
   },
   error => {
-    console.log('发生错误：')
-    console.log(error)
+    // console.log('发生错误：')
+    // console.log(error)
     Message({
       showClose: true,
       message: error.response.statusText,

@@ -211,12 +211,6 @@ export default {
 						})
 					})
 					this.getData()
-				}).catch((err) => {
-					console.error('fff>>>>', err);
-					this.$message({
-						message: err.msg,
-						type: 'error',
-					})
 				})
 			})
 		},

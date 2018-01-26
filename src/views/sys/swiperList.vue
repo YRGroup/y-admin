@@ -11,7 +11,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item style="float:right">
-          <el-button type="success" @click="startAddNews">
+          <el-button type="success" @click="addSwiper">
             <span>添加轮播图</span>
           </el-button>
         </el-form-item>
@@ -21,17 +21,18 @@
     <!--列表-->
     <template>
       <el-table :data="currentData" highlight-current-row style="width: 100%;" border>
-        <el-table-column prop="Title" label="ID">
+        <el-table-column prop="ID" label="ID" width="80" align="center">
         </el-table-column>
-        <el-table-column prop="Type" label="类别">
+        <el-table-column prop="Title" label="名称" width="300" align="center">
         </el-table-column>
-        <el-table-column prop="Title" label="标题" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="Link" label="链接" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="Albums" label="图片">
+        <el-table-column prop="Link" label="指向链接" width="400"  show-overflow-tooltip align="center">
           <template slot-scope="scope">
-            <el-button type="info" size="small">{{scope.row.Albums.length}}</el-button>
+            <a :href="scope.row.Link">{{scope.row.Link}}</a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ImgUrl" label="图片" align="center">
+          <template slot-scope="scope">
+            <img class="viewImg" @click="showBigImg(scope.row.ImgUrl)" :src="scope.row.ImgUrl" alt="">
           </template>
         </el-table-column>
         <el-table-column prop="AddTime" label="时间" align="center" width="200">
@@ -50,64 +51,41 @@
           </template>
         </el-table-column>
       </el-table>
+
     </template>
 
     <el-col :span="24" class="toolbar">
       <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
-
     <el-dialog :visible.sync="showEditForm" title="轮播图" size="small">
       <el-form label-width="80px">
-        <el-form-item label="类型">
-          <el-radio-group v-model="data.Type">
-            <el-radio :label="1">站内链接</el-radio>
-            <el-radio :label="2">站外链接</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="标题">
+        <el-form-item label="图片标题">
           <el-input v-model="data.Title" :disabled="isLook"></el-input>
+        </el-form-item>    
+        <el-form-item label="指向链接">
+          <el-input v-model="data.Link" placeholder="jkyr.yearnedu.com"><template slot="prepend">Http://</template></el-input>
         </el-form-item>
-        <el-form-item label="站内链接" v-show="data.Type==1">
-          <el-input v-model="data.Link"></el-input>
-        </el-form-item>
-        <el-form-item label="站外链接" v-show="data.Type==2">
-          <el-input v-model="data.Url"></el-input>
-        </el-form-item>
-        <el-form-item label="题图">
-          <el-upload class="uploadAlbum" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleImageSuccess">
+        <el-form-item label="上传图片">
+          <el-upload class="uploadAlbum"  list-type="picture" ref="upImg" :action="$store.getters._APIurl+'/api/Upload/ImageUpload'" :on-success="handleImageSuccess">
             <span>
               <el-button size="small" type="primary">点击上传</el-button>
             </span>
             <span slot="tip" class="el-upload__tip">
-              <span style="color:red"> 尺寸200*120</span> 只能上传jpg/png文件，且不超过500kb</span>
+              <span style="color:red"> 建议宽高比为2:1</span></span>
           </el-upload>
         </el-form-item>
       </el-form>
-
       <span slot="footer" class="dialog-footer">
         <el-button @click="showEditForm = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确认发布</el-button>
+        <el-button type="primary" @click="submit">上传</el-button>
       </span>
-
     </el-dialog>
 
-    <el-dialog title="查看评论" v-model="commentVisible" :close-on-click-modal="false">
-      <el-table :data="comment" highlight-current-row>
-        <el-table-column fixed="left" type="index" width="60">
-        </el-table-column>
-        <el-table-column prop="UserName" label="作者" sortable>
-        </el-table-column>
-        <el-table-column prop="Content" label="内容" sortable>
-        </el-table-column>
-        <el-table-column prop="AddTime" label="时间" sortable>
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button type="danger" size="small" @click="handleDeleteComment(scope.row.ID)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+    <el-dialog :visible.sync="showViewImg" id="imgDialog">
+      <div style="text-align:center">
+          <img :src="showImg" alt="">
+      </div> 
     </el-dialog>
 
   </section>
@@ -124,7 +102,6 @@ export default {
     return {
       data: {
         Title: '',
-        Link: '',
         Url: '',
         Type: 1,
         ImgUrl: ''
@@ -140,8 +117,11 @@ export default {
       pageSizes: [10, 20, 30, 50],
       showEditForm: false,
       filters: {
-        category: 1,
+        category: 3,
       },
+      swiperList:[],
+      showImg:'',
+      showViewImg:false
     }
   },
   computed: {
@@ -151,23 +131,27 @@ export default {
     currentData() {
       let start = (this.page - 1) * this.pageSize;
       let end = this.page * this.pageSize;
-      return this.$store.getters.allNewsList.slice(start, end)
+      return this.swiperList.slice(start, end)
     },
     ...mapGetters({
       loading: 'listLoading',
     })
   },
   methods: {
-    startAddNews() {
+    showBigImg(e){
+      this.showViewImg=true
+      this.showImg=e;
+    },
+    addSwiper() {
       this.showEditForm = true
       this.isEdit = false
       this.isLook = false
       this.data = {
         Title: '',
         Link: '',
-        Url: '',
         Type: 1,
-        ImgUrl: ''
+        ImgUrl: '',
+        CategoryID: this.filters.category,
       }
     },
     handleImageAdded: function(file, Editor, cursorLocation) {
@@ -186,41 +170,6 @@ export default {
           this.$message.error(err)
         })
     },
-    handleAttachRemove(file, filelist) {
-      if (file.response.Content) {
-        let a = this.data.Attachs.findIndex(o => {
-          return o.FilePath == file.response.Content[0]
-        })
-        this.data.Attachs.splice(a, 1)
-        this.$message.warning('附件删除成功！')
-      }
-    },
-    handleAttachSuccess(file, fileList) {
-      if (file.Content) {
-        let j = {}
-        j.FilePath = file.Content[0]
-        j.FileName = fileList.name
-        this.data.Attachs.push(j)
-        this.$message.success('附件上传成功！')
-      }
-    },
-    handleAlbumRemove(file, filelist) {
-      if (file.response.Content) {
-        let a = this.data.Albums.findIndex(o => {
-          return o.FilePath == file.response.Content[0]
-        })
-        this.data.Albums.splice(a, 1)
-        this.$message.warning('图片删除成功！')
-      }
-    },
-    handleAlbumSuccess(file, fileList) {
-      if (file.Content) {
-        let o = {}
-        o.OriginalPath = file.Content[0]
-        this.data.Albums.push(o)
-        this.$message.success('图片上传成功！')
-      }
-    },
     handleImageSuccess(file, fileList) {
       if (file.Content) {
         this.data.ImgUrl = file.Content[0]
@@ -228,27 +177,28 @@ export default {
       }
     },
     submit() {
-      if (this.data.Title == '') {
+      if (!this.data.Title) {
         this.$message.error('标题不能为空！')
-      } else if (this.data.Content == '') {
-        this.$message.error('内容不能为空！')
-      } else if (this.data.Describtion == '') {
-        this.$message.error('摘要不能为空！')
-      } else {
-        this.$sysAPI.addNews(this.data).then(() => {
-          this.$message.success('添加校园新闻成功！')
-          let para = {
-            category: this.data.CategoryID,
-            currentPage: 1,
-            pagesize: 10,
-          }
-          this.$store.dispatch('getNewsList', para);
-          this.showEditForm = false
-        }).catch(err => {
-          this.$message.error(err.msg)
-        })
+        return
       }
+      if (!this.data.Link) {
+        this.$message.error('链接不能为空！')
+        return
+      }
+      if (!this.data.ImgUrl) {
+        this.$message.error('图片不能为空！')
+        return
+      }
+    
 
+      this.$sysAPI.addNews(this.data).then(() => {
+        this.$message.success('添加成功')
+        this.getData()
+        this.$refs.upImg.clearFiles()
+        this.showEditForm = false
+      }).catch(err => {
+        this.$message.error(err.msg)
+      }) 
     },
     getData() {
       let para = {
@@ -257,7 +207,11 @@ export default {
         pagesize: this.pageSize,
         IsDelete: this.filters.category == 0
       }
-      this.$store.dispatch('getNewsList', para);
+      this.$API.getSwiperList(para).then((res) => {
+        this.swiperList=res;
+      }).catch((err) => {
+
+      })
     },
     handleSizeChange(val) {
       this.pageSize = val;
@@ -293,7 +247,6 @@ export default {
           })
           this.getData()
         }).catch((err) => {
-          console.error('fff>>>>', err);
           this.$message({
             message: '下架失败了哦!',
             type: 'error',
@@ -323,33 +276,6 @@ export default {
         })
       })
     },
-    handleComment(val) {
-      this.commentVisible = true
-      this.comment = val
-    },
-    handleDeleteComment(id) {
-      this.$confirm('确认删除该评论吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        let para = {
-          ID: id
-        }
-        this.$sysAPI.deleteNewsComment(para).then(() => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-          })
-          this.commentVisible = false
-          this.getData()
-        }).catch((err) => {
-          console.error('fff>>>>', err);
-          this.$message({
-            message: '删除失败了哦!',
-            type: 'error',
-          })
-        })
-      })
-    }
   },
   mounted() {
     this.getData()
@@ -362,5 +288,10 @@ export default {
 </script>
 
 <style scoped>
-
+  .viewImg{
+    height:40px;
+  }
+  #imgDialog img{
+    width: 100%;
+  }
 </style>
