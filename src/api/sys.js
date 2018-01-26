@@ -19,6 +19,12 @@ sysAPI.addNews = params => {
     `${base}/api/School/ModifyOrAddArticle`, params).then(res => res.data.Content)
 }
 
+// 添加公众号文章
+sysAPI.addWXnews = params => {
+  return axios.post(
+    `${base}/api/school/ImportWeiXinArticle`, params).then(res => res.data.Content)
+}
+
 // 添加校园新闻
 sysAPI.fileUpLoad = params => {
   return axios.post(

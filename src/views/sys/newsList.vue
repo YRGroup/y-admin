@@ -12,6 +12,7 @@
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item style="float:right">
+					<el-button type="primary" @click="showAddWXnew = true" >导入公众号新闻</el-button>
 					<el-button type="success" @click="startAddNews" v-show="filters.category!==0">
 						<span v-show="filters.category==1">添加新闻</span>
 						<span v-show="filters.category==2">添加资料</span>
@@ -44,7 +45,7 @@
 								</template>
 							</el-table-column> -->
 				<el-table-column prop="Comment" label="评论" align="center" width="100">
-					<template slot-scope="scope">
+					<template slot-scope="scope" v-if="scope.row.Comments">
 						<el-button type="info" size="small" @click="handleComment(scope.row.Comments)">{{scope.row.Comments.length}}</el-button>
 					</template>
 				</el-table-column>
@@ -128,6 +129,17 @@
 
 		</el-dialog>
 
+		<el-dialog :visible.sync="showAddWXnew" title="导入公众号新闻">
+			<el-form label-width="120px">
+				<el-form-item label="请输入网址">
+					<el-input v-model="websiteURL" style="max-width:500px"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="AddWXnews" :loading="addloading">提交</el-button>
+				</el-form-item>
+			</el-form>
+		</el-dialog>
+
 		<el-dialog title="查看新闻" v-model="newsVisible" :close-on-click-modal="false">
 			<div class="newsContainer" v-if="newsPreviewData!=={}">
 				<div class="title">{{newsPreviewData.Title}}</div>
@@ -188,6 +200,9 @@ export default {
 			pageSize: 10,
 			pageSizes: [10, 20, 30, 50],
 			showEditForm: false,
+			showAddWXnew: false,
+			websiteURL:'',
+			addloading:false,
 			filters: {
 				category: 1,
 			},
@@ -214,6 +229,23 @@ export default {
 				return '资料'
 			} else if (row.CategoryID == 3) {
 				return '轮播图'
+			}
+		},
+		// 添加公众号文章
+		AddWXnews() {
+			if(!this.websiteURL){
+				this.$message.error("网址不能为空~！")
+			}else{
+				this.addloading = true
+				this.$sysAPI.addWXnews({url:this.websiteURL}).then(() => {
+						this.showAddWXnew = false
+						this.websiteURL = ""
+						this.addloading = false
+						this.getData()
+						this.$message.success('文章导入成功！')
+					}).catch(err => {
+						this.$message.error(err.msg)
+					})
 			}
 		},
 		startAddNews() {
