@@ -45,6 +45,10 @@ import adminList from '../views/sys/adminList';
 import videoList from '../views/video/list'
 import videoInfo from '../views/video/info'
 
+import noteList from '../views/note/list'
+import noteInfo from '../views/note/info'
+
+
 Vue.use(Router);
 
 let routes = [{
@@ -195,8 +199,7 @@ let routes = [{
         name: '学生详情'
       },
     ]
-  },
-  {
+  },{
     path: '/video',
     component: Home,
     name: '视频课程',
@@ -213,8 +216,24 @@ let routes = [{
         name:'视频详情'
       }
     ]
-  },
-  {
+  },{
+    path: '/note',
+    component: Home,
+    name: '短信统计',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
+    children: [{
+        path: '/note/list',
+        component: noteList,
+        name: '短信列表'
+      },
+      {
+        path:'/note/info',
+        component:noteInfo,
+        name:'短信详情'
+      }
+    ]
+  },{
     path: '/parent',
     component: Home,
     name: '家长',

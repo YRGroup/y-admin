@@ -72,6 +72,11 @@ sysAPI.getChartData = params => {
   return axios.get(`${base}/api/School/GetChartData`).then(res => res.data.Content)
 }
 
+//获取短信统计列表
+sysAPI.getNoteList = params => {
+  return axios.get(`${base}/api/school/getsmsloglist`).then(res => res.data.Content)
+
+}
 // 重置密码
 sysAPI.resetPassword = params => {
   return axios.post(
