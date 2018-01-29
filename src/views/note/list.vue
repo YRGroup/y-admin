@@ -2,7 +2,7 @@
   <section>
 
     <!--工具条-->
-    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+    <!-- <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true">
         <el-form-item label="年级">
           <el-select v-model="filter.grade" placeholder="请选择">
@@ -16,12 +16,14 @@
           <el-button type="primary" @click="getData()" >搜索</el-button>
         </el-form-item>
       </el-form>
-    </el-col>
+    </el-col> -->
  
     <!--列表-->
     <template>
       <el-table :data="currentData" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
+        </el-table-column>
+        <el-table-column prop="SMS.CreateTime" label="发送时间" align="center" width="150">
         </el-table-column>
         <el-table-column prop="SMS.TemplateName" label="短信主题" align="center" width="200">
         </el-table-column>
@@ -38,16 +40,6 @@
             </el-button>
           </template>
         </el-table-column>
-        <!-- <el-table-column fixed="right" label="操作" width="230">
-          <template slot-scope="scope">
-            <el-button type="warm" size="small" @click.native="handleInfoVideo(scope.row)">
-              详情
-            </el-button>
-            <el-button type="danger" size="small" @click.native="handleDeleteVideo(scope.row.AliyunCateID)">
-              删除
-            </el-button>
-          </template>
-        </el-table-column> -->
       </el-table>
     </template>
     <el-col :span="24" class="toolbar">
@@ -65,7 +57,7 @@ export default {
   data() {
     return {
       page: 1,
-      pageSize: 12,
+      pageSize: 10,
       pageSizes: [10, 20, 30, 50],
       seachText:'',
       filter: {
@@ -104,20 +96,14 @@ export default {
     handleCurrentChange(val) {
       this.page = val;
     },
-      //年级列表
-    getGradeList() {
-      this.$API.getGradeList().then(res => {
-        this.gradeList = res
-      });
-    },
     getData(){
       this.$API.getNoteList().then(res => {
+        console.log(res)
         this.noteList = res
       });
     }
   },
   created() {
-    this.getGradeList()
     this.getData()
   },
   mounted() {

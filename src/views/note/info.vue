@@ -1,5 +1,16 @@
 <template>
   <div>
+    <!--工具条-->
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+      <el-form  :inline="true">
+        <el-form-item>
+          <el-input clearable type="primary"  placeholder="输入手机号或ID" v-model="searchText" @change="searchData"></el-input>
+        </el-form-item>
+        <el-form-item >
+          <el-button type="warn" @click="$router.back()" >返回</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
     <el-table :data="currentData" style="width: 100%;margin-top:20px;">
       <el-table-column prop="Key" label="接收人ID" align="center" width="200">
         </el-table-column>
@@ -24,20 +35,27 @@
 export default {
   data(){
     return{
-      phoneList:[],
+      phoneList:[],   //存原数组
       page: 1,
-      pageSize: 12,
-      pageSizes: [10, 20, 30, 50]
+      pageSize: 10,
+      pageSizes: [10, 20, 30, 50],
+      searchText:'',
+      currentPhoneList:[]   //存查找的数组
     }
   },
   computed:{
-    currentData() {
-      let start = (this.page - 1) * this.pageSize
-      let end = this.page * this.pageSize
-      return this.phoneList.slice(start, end)
+    currentData:{
+      get(){
+         let start = (this.page - 1) * this.pageSize
+        let end = this.page * this.pageSize
+        return this.currentPhoneList.slice(start, end)
+      },
+      set(val){
+        return val
+      }
     },
     total(){
-      return this.phoneList.length
+      return this.currentPhoneList.length
     }
   },
   methods:{
@@ -52,7 +70,22 @@ export default {
     getQuery(){
       if(this.$route.query.info){
         this.phoneList=JSON.parse(this.$route.query.info)
+        this.currentPhoneList= this.phoneList
       }
+    },
+    searchData(){
+      let str=this.searchText.replace(/\s+/g,"")
+      if(!str){
+        this.currentPhoneList=this.phoneList
+        return
+      }
+      let array=[]
+      this.phoneList.forEach((el) => {
+        if(el.Value.includes(str)||el.Key.includes(str)){
+          array.push(el)
+        }
+      })
+      this.currentPhoneList=array
     }
   },
   created(){
