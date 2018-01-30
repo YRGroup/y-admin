@@ -2,12 +2,12 @@
   <div>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-      <el-form  :inline="true">
+      <el-form  :inline="true" class="clearfix">
         <el-form-item>
           <el-input clearable type="primary"  placeholder="输入手机号或ID" v-model="searchText" @change="searchData"></el-input>
         </el-form-item>
-        <el-form-item >
-          <el-button type="warn" @click="$router.back()" >返回</el-button>
+        <el-form-item class="right">
+          <el-button type="warning" @click="$router.back()" >返回</el-button>
         </el-form-item>
       </el-form>
     </el-col>
