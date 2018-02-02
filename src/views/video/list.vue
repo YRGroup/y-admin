@@ -104,12 +104,14 @@ export default {
     getCategoryList() {
       this.$API.getCategeryList().then(res => {
         this.categoryList=res
+        this.categoryList.unshift({ CateName: "全部", CateID: -1 })
       });
     },
     //年级列表
     getGradeList() {
       this.$API.getGradeList().then(res => {
         this.gradeList = res
+        this.gradeList.unshift({ GradeName: "全部", ID: -1 })
       });
     },
     //视频列表
