@@ -5,9 +5,9 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item label="类别">
-          <el-radio-group v-model="filters.category" @change="getData">
-            <el-radio-button :label="3">轮播图</el-radio-button>
-            <el-radio-button :label="0">回收站</el-radio-button>
+          <el-radio-group v-model="filters.isDelete" @change="getData">
+            <el-radio-button :label="false">轮播图</el-radio-button>
+            <el-radio-button :label="true">回收站</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item style="float:right">
@@ -20,14 +20,16 @@
 
     <!--列表-->
     <template>
-      <el-table :data="currentData" highlight-current-row style="width: 100%;" border>
+      <el-table :data="currentData"  highlight-current-row style="width: 100%;" border>
+        <el-table-column type="index" width="50">
+    </el-table-column>
         <el-table-column prop="ID" label="ID" width="80" align="center">
         </el-table-column>
         <el-table-column prop="Title" label="名称" width="300" align="center">
         </el-table-column>
         <el-table-column prop="Link" label="指向链接" width="400"  show-overflow-tooltip align="center">
           <template slot-scope="scope">
-            <a :href="scope.row.Link">{{scope.row.Link}}</a>
+            <a :href="scope.row.Link">{{scope.row.Link&&scope.row.Link.indexOf('http://')!=-1?scope.row.Link.replace('http://',''):scope.row.Link}}</a>
           </template>
         </el-table-column>
         <el-table-column prop="ImgUrl" label="图片" align="center">
@@ -58,12 +60,12 @@
       <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
-    <el-dialog :visible.sync="showEditForm" title="轮播图" size="small">
+    <el-dialog  :visible.sync="showEditForm" title="轮播图" size="small">
       <el-form label-width="80px">
         <el-form-item label="图片标题">
           <el-input v-model="data.Title" :disabled="isLook"></el-input>
         </el-form-item>    
-        <el-form-item label="指向链接">
+        <el-form-item label="指向链接" v-if="data">
           <el-input v-model="data.Link" placeholder="jkyr.yearnedu.com"><template slot="prepend">Http://</template></el-input>
         </el-form-item>
         <el-form-item label="上传图片">
@@ -118,6 +120,7 @@ export default {
       showEditForm: false,
       filters: {
         category: 3,
+        isDelete:false
       },
       swiperList:[],
       showImg:'',
@@ -138,6 +141,9 @@ export default {
     })
   },
   methods: {
+    resetPage(){
+      this.page=1;
+    },
     showBigImg(e){
       this.showViewImg=true
       this.showImg=e;
@@ -205,13 +211,12 @@ export default {
         category: this.filters.category,
         currentPage: this.page,
         pagesize: this.pageSize,
-        IsDelete: this.filters.category == 0
+        IsDelete: this.filters.isDelete
       }
       this.$API.getSwiperList(para).then((res) => {
-        this.swiperList=res;
-      }).catch((err) => {
-
-      })
+        this.swiperList=res
+        this.resetPage()
+      }).catch()
     },
     handleSizeChange(val) {
       this.pageSize = val;
@@ -281,7 +286,12 @@ export default {
     this.getData()
   },
   watch: {
-    "$route": "getData"
+    "$route": "getData",
+    data:function(val){
+      if(this.data.Link.indexOf('http://')!=-1){
+        this.data.Link=this.data.Link.replace('http://','')
+      }
+    }
   },
 };
 
