@@ -56,7 +56,10 @@
         </el-table-column>
       </el-table>
     </template>
-
+    <el-col :span="24" class="toolbar">
+      <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
+      </el-pagination>
+    </el-col>
 
   </section>
 </template>
@@ -69,7 +72,7 @@ export default {
   data() {
     return {
       page: 1,
-      pageSize: 12,
+      pageSize: 10,
       pageSizes: [10, 20, 30, 50],
       currentPage:1,
       seachText:'',
@@ -80,7 +83,7 @@ export default {
       },
       categoryList: [],
       gradeList:[],
-      currentData: []
+      videoList:[]
     }
   },
   computed: {
@@ -88,25 +91,27 @@ export default {
       return this.$store.getters.classList;
     },
     total() {
-      if (!this.$store.getters.total) {
-        this. open();
-      }
-      return this.$store.getters.total;
+      return this.videoList.length
     },
-    ...mapGetters({
-    }),
+    currentData() {
+      let start = (this.page - 1) * this.pageSize
+      let end = this.page * this.pageSize
+      return this.videoList.slice(start, end)
+    }
   },
   methods: {
     //视频分类列表
     getCategoryList() {
       this.$API.getCategeryList().then(res => {
         this.categoryList=res
+        this.categoryList.unshift({ CateName: "全部", CateID: -1 })
       });
     },
     //年级列表
     getGradeList() {
       this.$API.getGradeList().then(res => {
         this.gradeList = res
+        this.gradeList.unshift({ GradeName: "全部", ID: -1 })
       });
     },
     //视频列表
@@ -115,19 +120,10 @@ export default {
       para.currentPage=this.currentPage
       para.pageSize=this.pageSize
       this.$API.getVideoList(para).then(res => {
-        this.currentData=res
+        this.videoList=res
       })
     },
-    //切换每页数据量
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.getData();
-    },
-    //切换页码
-    handleCurrentChange(val) {
-      this.page = val;
-      this.getData();
-    },
+  
     //查看视频
     handleInfoVideo(val){
       this.$router.push({
@@ -155,6 +151,16 @@ export default {
 					this.getData()
 				})
 			})
+    },
+    //切换每页数据量
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getData();
+    },
+    //切换页码
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getData();
     }
   },
   created() {

@@ -69,6 +69,11 @@
               <i class="iconfont">&#xe705;</i>视频课程</template>
             <el-menu-item index="/video/list">视频列表</el-menu-item>
           </el-submenu>
+          <el-submenu index="note">
+            <template slot="title">
+              <i class="iconfont">&#xe61b;</i>短信统计</template>
+            <el-menu-item index="/note/list">短信列表</el-menu-item>
+          </el-submenu>
         </el-menu>
 
         <!--导航菜单-折叠后-->

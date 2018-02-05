@@ -261,6 +261,18 @@ API.getPermissionList = (params) => {
     })
   })
 }
+// 查询权限列表
+API.getNoteList = (params) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl + '/api/school/getsmsloglist', {
+      params: params
+    }).then((res) => {
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
 
 // 空API模板
 API.test = () => {
