@@ -106,7 +106,6 @@
         </el-col>
       </el-row>
     </el-dialog>
-
     <el-dialog title="查看评论" v-model="commentVisible" :close-on-click-modal="false">
       <el-table :data="comment" highlight-current-row>
         <el-table-column fixed="left" type="index" width="60">
@@ -124,7 +123,6 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-
   </section>
 </template>
 <script>
