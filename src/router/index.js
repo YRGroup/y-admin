@@ -48,6 +48,8 @@ import videoInfo from '../views/video/info'
 import noteList from '../views/note/list'
 import noteInfo from '../views/note/info'
 
+import noticeList from '../views/notice/list'
+import makkeNotice from '../views/notice/form'
 
 Vue.use(Router);
 
@@ -231,6 +233,23 @@ let routes = [{
         path:'/note/info',
         component:noteInfo,
         name:'短信详情'
+      }
+    ]
+  },{
+    path: '/notice',
+    component: Home,
+    name: '校园通知',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
+    children: [{
+        path: '/notice/list',
+        component: noticeList,
+        name: '已发通知'
+      },
+      {
+        path: '/notice/form',
+        component: makkeNotice,
+        name: '发布通知'
       }
     ]
   },{

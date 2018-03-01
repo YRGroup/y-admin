@@ -2,16 +2,14 @@ import axios from 'axios';
 
 import base from './config'
 
-let examAPI = {}
+let API = {}
 
 // 指定班级班主任
-examAPI.setClassAdminTeacher = params => { 
+API.makeNotice = params => { 
   return axios.post(
-      `${base}/api/Class/SetAdviserTeacher`,
+      `${base}/api/Notify/AddNotify`,
       params
   ).then(res => res.data.Content)
 }
 
-
-
-export default examAPI
+export default API
