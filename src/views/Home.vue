@@ -38,31 +38,33 @@
               					</template> -->
           <el-menu-item index="/">
             <i class="fa fa-home"></i>主页</el-menu-item>
-          <el-menu-item index="/class/list" v-if="roleList.includes('class')">
-            <i class="fa fa-bank"></i>班级列表</el-menu-item>
+         
           <el-submenu index="global">
             <template slot="title">
               <i class="fa fa-id-card-o"></i>全局内容</template>
             <el-menu-item index="/news/newsList" v-if="roleList.includes('news')">新闻</el-menu-item>
             <el-menu-item index="/news/swiperList" v-if="roleList.includes('banner')">轮播图</el-menu-item>
           </el-submenu>
-          <el-submenu index="class">
+          <!-- <el-submenu index="class">
             <template slot="title">
               <i class="fa el-icon-picture"></i>班级</template>
             <el-menu-item index="/post/list">动态</el-menu-item>
             <el-menu-item index="/post/homework">作业</el-menu-item>
+          </el-submenu> -->
+          <el-submenu index="user">
+            <template slot="title">
+              <i class="fa fa-users"></i>用户管理</template>
+            <el-menu-item index="/alluser">所有用户</el-menu-item>
+            <el-menu-item index="/adminList" v-if="roleList.includes('super')">管理员</el-menu-item>
           </el-submenu>
           <el-submenu index="exam" v-if="roleList.includes('exam')">
             <template slot="title">
-              <i class="fa fa-id-card-o"></i>考试</template>
+              <i class="fa fa-id-card-o"></i>班级管理</template>
+            <el-menu-item index="/class/list" v-if="roleList.includes('class')"> 班级列表</el-menu-item>
+            <el-menu-item index="/post/list">班级动态</el-menu-item>
+            <el-menu-item index="/post/homework">作业</el-menu-item> 
             <el-menu-item index="/exam/list">考试列表</el-menu-item>
             <el-menu-item index="/exam/add">添加考试</el-menu-item>
-          </el-submenu>
-          <el-submenu index="user">
-            <template slot="title">
-              <i class="fa fa-users"></i>用户</template>
-            <el-menu-item index="/alluser">所有用户</el-menu-item>
-            <el-menu-item index="/adminList" v-if="roleList.includes('super')">管理员</el-menu-item>
           </el-submenu>
           <el-submenu index="video">
             <template slot="title">
@@ -71,14 +73,15 @@
           </el-submenu>
           <el-submenu index="note">
             <template slot="title">
-              <i class="iconfont">&#xe61b;</i>短信统计</template>
+              <i class="iconfont">&#xe61b;</i>短信通知</template>
             <el-menu-item index="/note/list">短信列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="notice">
-            <template slot="title">
-              <i class="iconfont">&#xe61b;</i>校园通知</template>
             <el-menu-item index="/notice/list">已发通知</el-menu-item>
           </el-submenu>
+          <!-- <el-submenu index="notice">
+            <template slot="title">
+              <i class="iconfont">&#xe61b;</i>校园通知</template>
+          
+          </el-submenu> -->
         </el-menu>
 
         <!--导航菜单-折叠后-->
@@ -125,56 +128,63 @@
   </el-row>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      debug: ['this', 'router', 'vuex', 'cookie', 'localStorage', 'sessionStorage'],
-      sysName: '智慧校园管理后台',
+      debug: [
+        "this",
+        "router",
+        "vuex",
+        "cookie",
+        "localStorage",
+        "sessionStorage"
+      ],
+      sysName: "智慧校园管理后台",
       collapsed: false,
-      sysUserName: '',
-      sysUserAvatar: '',
+      sysUserName: "",
+      sysUserAvatar: "",
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
         delivery: false,
         type: [],
-        resource: '',
-        desc: '',
-      },
+        resource: "",
+        desc: ""
+      }
     };
   },
   computed: {
     ...mapGetters({
-      roleList: 'roleList'
+      roleList: "roleList"
     })
   },
   methods: {
     showInfo(val) {
-      if (val === 'this') {
-        console.log(val)
-        console.log(this)
-      } else if (val === 'router') {
-        console.log(val)
-        console.log(this.$route.params)
-      } else if (val === 'vuex') {
-        console.log(val)
-        console.log(this.$store.state)
-      } else if (val === 'cookie') {
-        console.log(val)
-        console.log(document.cookie)
-      } else if (val === 'localStorage') {
-        console.log(val)
-        console.log(localStorage)
-      } else if (val === 'sessionStorage') {
-        console.log(val)
-        console.log(sessionStorage)
+      if (val === "this") {
+        console.log(val);
+        console.log(this);
+      } else if (val === "router") {
+        console.log(val);
+        console.log(this.$route.params);
+      } else if (val === "vuex") {
+        console.log(val);
+        console.log(this.$store.state);
+      } else if (val === "cookie") {
+        console.log(val);
+        console.log(document.cookie);
+      } else if (val === "localStorage") {
+        console.log(val);
+        console.log(localStorage);
+      } else if (val === "sessionStorage") {
+        console.log(val);
+        console.log(sessionStorage);
       }
     },
     onSubmit() {
-      console.log('submit!');
+      console.log("submit!");
     },
     handleopen() {
       //console.log('handleopen');
@@ -182,17 +192,16 @@ export default {
     handleclose() {
       //console.log('handleclose');
     },
-    handleselect: function(a, b) {
-    },
+    handleselect: function(a, b) {},
     // 退出登录
     logout() {
       var _this = this;
-      this.$confirm('确认退出吗?', '提示', {
-      }).then(() => {
-        sessionStorage.removeItem('user');
-        _this.$router.push('/login');
-      }).catch(() => {
-      });
+      this.$confirm("确认退出吗?", "提示", {})
+        .then(() => {
+          sessionStorage.removeItem("user");
+          _this.$router.push("/login");
+        })
+        .catch(() => {});
     },
 
     // 折叠导航栏
@@ -200,24 +209,25 @@ export default {
       this.collapsed = !this.collapsed;
     },
     showMenu(i, status) {
-      this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
-    },
+      this.$refs.menuCollapsed.getElementsByClassName(
+        "submenu-hook-" + i
+      )[0].style.display = status ? "block" : "none";
+    }
   },
   mounted() {
-    
-    var user = sessionStorage.getItem('user');
+    var user = sessionStorage.getItem("user");
     // console.log("user",user);
     if (user) {
       user = JSON.parse(user);
-      this.$store.commit('setUser', user)
-      this.sysUserName = user.TrueName || '';
-      this.sysUserAvatar = user.Headimgurl || '';
+      this.$store.commit("setUser", user);
+      this.sysUserName = user.TrueName || "";
+      this.sysUserAvatar = user.Headimgurl || "";
     }
   }
-}
+};
 </script>
 <style scoped lang="scss">
-@import '~scss_vars';
+@import "~scss_vars";
 
 .container {
   position: absolute;
@@ -267,7 +277,7 @@ export default {
       width: 230px;
     }
     .logo-collapse-width {
-      width: 60px
+      width: 60px;
     }
     .tools {
       padding: 0px 23px;
