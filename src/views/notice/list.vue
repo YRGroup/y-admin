@@ -4,7 +4,7 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true">
 
-        <el-form-item label="年级">
+        <!-- <el-form-item label="年级">
           <el-select v-model="filter.grade" placeholder="请选择">
             <el-option v-for="item in gradeList" :key="item.ID" :label="item.GradeName" :value="item.ID"></el-option>
         </el-select>
@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item >
           <el-button type="primary" @click="getData()" >搜索</el-button>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item >
           <el-button type="warning"  @click="$router.push('/notice/form');" >发布通知</el-button>
         </el-form-item>
@@ -29,7 +29,7 @@
         <el-table-column prop="CreateTime" label="上传时间" align="center">
           <template slot-scope="scope">
             <span>
-              {{scope.row.CreateTime.replace('T','  ')}}
+              {{scope.row.CreateTime.slice(0,scope.row.CreateTime .indexOf('.')).replace('T',' ')}}
             </span>
           </template>
         </el-table-column>
@@ -122,17 +122,22 @@ export default {
     },
     //删除通知
     deleNotice(id){
-      this.$API.deleNotice(id).then(res=>{
-        console.log (res)
-        if(res.Status==1){
-          this.$message.success({
-            message:'删除成功'
+      this.$confirm('确定删除通知?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$API.deleNotice(id).then(res=>{
+          if(res.Status==1){
+            this.$message.success({
+              message:'删除成功'
+            })
+            this.getData()
+          }
+        }).catch(err=>{
+          this.$message.error({
+            message:'删除失败'
           })
-          this.getData()
-        }
-      }).catch(err=>{
-        this.$message.error({
-          message:'删除失败'
         })
       })
     },
