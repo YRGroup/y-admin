@@ -178,8 +178,8 @@
 
 <style lang="less" scoped>
 .box-card {
-   	.item{
-		//    min-height:200px;
-	   }
+  .item{
+  //    min-height:200px;
+    }
   }
 </style>
