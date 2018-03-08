@@ -31,19 +31,19 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="Permissions" label="权限" sortable>
+        <el-table-column prop="Permissions" label="权限" width="100" sortable>
           <template slot-scope="scope">
             <el-tooltip effect="dark" :content="scope.row.Permissions|formatRole(permissionList)">
               <el-button size="small">{{scope.row.Permissions.length}}</el-button>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="230" align="center">
+        <el-table-column fixed="right" label="操作" width="300" align="center">
           <template slot-scope="scope">
-            <el-button type="success" size="small" @click="handleEdit(scope.row)">
+            <el-button type="success" size="small" @click.native="handleEdit(scope.row)">
               编辑
             </el-button>
-            <el-button type="success" size="small" @click="handleRefreshPw(scope.row)">
+            <el-button type="success" size="small" @click.native="handleRefreshPw(scope.row)">
               重置密码
             </el-button>
             <el-button type="danger" size="small" @click.native="handleDeleteAdmin(scope.row.Meid)">
@@ -59,7 +59,7 @@
       </el-pagination>
     </el-col>
 
-    <el-dialog :title="isEdit?'编辑账号':'添加账号'" v-model="showAddAccount" :close-on-click-modal="false">
+    <el-dialog :title="isEdit?'编辑账号':'添加账号'" :visible.sync="showAddAccount" :close-on-click-modal="false">
       <el-form label-width="60px">
         <el-form-item label="Meid" v-show="isEdit">
           <el-input v-model="newAdminData.Meid" :disabled="true" style="width:200px;"></el-input>
