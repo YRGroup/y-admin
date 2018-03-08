@@ -125,7 +125,7 @@
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
 						<span style="line-height: 36px;">就学信息</span>
-						<el-button style="float: right;" type="primary" @click.native="$router.push('/class/info?classId='+klass.ID)">查看班级</el-button>
+						<!-- <el-button style="float: right;" type="primary" @click.native="$router.push('/class/info?classId='+klass.ID)">查看班级</el-button> -->
 					</div>
 					<div class="item">
 						<p>所在学校：{{school.Name}}</p>
