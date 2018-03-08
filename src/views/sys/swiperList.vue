@@ -60,7 +60,7 @@
       <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
-    <el-dialog  :visible.sync="showEditForm" title="轮播图" size="small">
+    <el-dialog  :visible.sync="showEditForm" title="轮播图">
       <el-form label-width="80px">
         <el-form-item label="图片标题">
           <el-input v-model="data.Title" :disabled="isLook"></el-input>

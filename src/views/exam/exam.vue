@@ -65,7 +65,7 @@
 
       </el-tabs>
 
-      <el-dialog title="修改成绩" :visible.sync="showEditOneScore" size="tiny">
+      <el-dialog title="修改成绩" :visible.sync="showEditOneScore">
         <el-form label-width="120px">
           <el-form-item label="当前考试">
             <el-input v-model="data.Name" :disabled="true" style="width:300px"></el-input>
