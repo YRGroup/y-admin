@@ -54,13 +54,13 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="250" align="center">
+      <el-table-column fixed="right" label="操作" width="350" align="center">
         <template slot-scope="scope">
+          <el-button type="primary" size="small" @click="$router.push('/class/info?classId='+scope.row.cid+'')">班级详情</el-button>
           <el-button v-if="scope.row.AdviserMeid" type="warning" size="small" @click="$router.push('/teacher/list?classId=0&setm='+scope.row.cid+'&p=0&key=')">
             更换班主任</el-button>
           <el-button v-else type="success" size="small" @click="$router.push('/teacher/list?classId=0&setm='+scope.row.cid+'&p=0&key=')">
             添加班主任</el-button>
-
           <el-button type="danger" size="small" @click="handleDeleteClass(scope.row.cid)">删除</el-button>
         </template>
       </el-table-column>
