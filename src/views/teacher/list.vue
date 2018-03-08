@@ -84,7 +84,7 @@
 			</el-pagination>
 		</el-col>
 	
-		<el-dialog title="编辑教师信息" v-model="editTeacherVisible" :close-on-click-modal="false">
+		<el-dialog title="编辑教师信息" :visible.sync="editTeacherVisible" :close-on-click-modal="false">
 			<el-form :model="editTeacherData" label-width="80px" ref="editTeacherDom">
 				<el-form-item label="教师Id">
 					<el-input v-model="editTeacherData.Meid" :disabled="true"></el-input>

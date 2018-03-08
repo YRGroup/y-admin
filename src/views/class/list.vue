@@ -71,7 +71,7 @@
       </el-pagination>
     </el-col>
 
-    <el-dialog title="编辑" v-model="editClassVisible" :close-on-click-modal="false">
+    <el-dialog title="编辑" :visible.sync="editClassVisible" :close-on-click-modal="false">
       <el-form :model="editClassData" label-width="80px" ref="editClassDom">
         <el-form-item label="班级Id" prop="cid">
           <el-input v-model="editClassData.cid" :disabled="true"></el-input>
@@ -89,7 +89,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="添加班级" v-model="addClassVisible" :close-on-click-modal="false">
+    <el-dialog title="添加班级" :visible.sync="addClassVisible" :close-on-click-modal="false">
       <el-form :model="addClassData" label-width="80px" :rules="addClassRules" ref="addClassDom">
         <el-form-item l>
           <label style="fontsize:18">请选择要添加的班级所属的年级，比如选择初一，如果当前初一有2个班级，则新加一个班级名字为初一3班</label>
@@ -108,7 +108,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="指定班主任" v-model="showSetClassAdminTeacher" :close-on-click-modal="false">
+    <el-dialog title="指定班主任" :visible.sync="showSetClassAdminTeacher" :close-on-click-modal="false">
       <el-form :model="setClassAdminTeacherData" label-width="80px" ref="addClassDom">
         <el-form-item label="班级名字" prop="ClassID">
           <el-input v-model="setClassAdminTeacherData.Name" :disabled="true"></el-input>

@@ -55,7 +55,7 @@
       </el-pagination>
     </el-col>
 
-    <el-dialog title="查看动态" v-model="perviewPostVisible" :close-on-click-modal="false">
+    <el-dialog title="查看动态" :visible.sync="perviewPostVisible" :close-on-click-modal="false">
       <div class="postContainer" v-if="perviewPostData!=={}">
         <div class="userFace" @click="openUserPage(i)">
           <img :src="perviewPostData.userImg">
@@ -70,7 +70,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="新增动态" v-model="addPostVisible" :close-on-click-modal="false">
+    <el-dialog title="新增动态" :visible.sync="addPostVisible" :close-on-click-modal="false">
       <el-form :model="addPostData" label-width="80px" :rules="addPostRules" ref="addPostDom">
         <el-form-item label="作者" prop="auther">
           <el-input v-model="addPostData.auther"></el-input>
@@ -92,7 +92,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="查看配图" v-model="albumsVisible" :close-on-click-modal="false">
+    <el-dialog title="查看配图" :visible.sync="albumsVisible" :close-on-click-modal="false">
       <el-row :gutter="20">
         <el-col :span="6" v-for="i in albums" :key="i">
           <div class="pic">
@@ -102,7 +102,7 @@
       </el-row>
     </el-dialog>
 
-    <el-dialog title="查看评论" v-model="commentVisible" :close-on-click-modal="false">
+    <el-dialog title="查看评论" :visible.sync="commentVisible" :close-on-click-modal="false">
       <el-table :data="comment" highlight-current-row>
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>

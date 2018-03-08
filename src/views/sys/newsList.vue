@@ -26,7 +26,7 @@
 			<el-table :data="currentData" highlight-current-row  style="width: 100%;" border>
 				<el-table-column v-show="filters.category==0" :formatter="categoryFormatter" align="center" prop="CategoryID" label="类别" width="100">
 				</el-table-column>
-				<el-table-column prop="Title" label="标题" show-overflow-tooltip>
+				<el-table-column prop="Title" label="标题" show-overflow-tooltip >
 				</el-table-column>
 				<!-- <el-table-column prop="content" label="内容" show-overflow-tooltip>
 							</el-table-column> -->
@@ -51,18 +51,18 @@
 				</el-table-column>
 				<el-table-column prop="AddTime" label="时间" align="center" width="200">
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" width="220" align="center">
+				<el-table-column fixed="right" label="操作" width="250" align="center">
 					<template slot-scope="scope">
-						<el-button type="success" size="small" @click.native="handleLook(scope.row)">
+						<el-button type="success" size="mini" @click.native="handleLook(scope.row)">
 							查看
 						</el-button>
-						<el-button type="primary" size="small" @click.native="handleEdit(scope.row)">
+						<el-button type="primary" size="mini" @click.native="handleEdit(scope.row)">
 							编辑
 						</el-button>
-						<el-button v-if="scope.row.IsDelete" type="danger" size="small" @click.native="handleUnDeleteNews(scope.row.ID)">
+						<el-button v-if="scope.row.IsDelete" type="danger" size="mini" @click.native="handleUnDeleteNews(scope.row.ID)">
 							上架
 						</el-button>
-						<el-button v-else type="warning" size="small" @click.native="handleDeleteNews(scope.row.ID)">
+						<el-button v-else type="warning" size="mini" @click.native="handleDeleteNews(scope.row.ID)">
 							下架
 						</el-button>
 					</template>
@@ -75,7 +75,7 @@
 			</el-pagination>
 		</el-col>
 
-		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'" size="large">
+		<el-dialog :visible.sync="showEditForm" :title="isLook?'查看新闻':'添加新闻'">
 			<el-form label-width="80px">
 				<el-form-item label="类型" v-show="!isLook">
 					<el-radio-group v-model="data.CategoryID">
@@ -148,7 +148,7 @@
 			</div>
 		</el-dialog>
 
-		<el-dialog title="查看评论" v-model="commentVisible" :close-on-click-modal="false">
+		<el-dialog title="查看评论" :visible.sync="commentVisible">
 			<el-table :data="comment" highlight-current-row>
 				<el-table-column fixed="left" type="index" width="60">
 				</el-table-column>
@@ -360,8 +360,10 @@ export default {
 			this.page = val;
 		},
 		handleLook(val) {
+      console.log(val)
 			this.newsPreviewData = val
-			this.newsVisible = true
+      this.newsVisible = true
+      console.log(this.newsVisible)
 		},
 		handleEdit(val) {
 			this.data = val

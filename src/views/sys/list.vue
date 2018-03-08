@@ -86,7 +86,7 @@
       </el-pagination>
     </el-col>
 
-    <el-dialog  width="70%" title="添加账号" v-model="showAddAccount" :close-on-click-modal="false">
+    <el-dialog  width="70%" title="添加账号" :visible.sync="showAddAccount" :close-on-click-modal="false">
       <el-form label-width="80px">
         <el-form-item label="身份">
           <el-radio-group v-model="addAccountData_role">

@@ -3,18 +3,6 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true">
-
-        <!-- <el-form-item label="年级">
-          <el-select v-model="filter.grade" placeholder="请选择">
-            <el-option v-for="item in gradeList" :key="item.ID" :label="item.GradeName" :value="item.ID"></el-option>
-        </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-input clearable type="primary"  placeholder="输入关键字" v-model="seachText" ></el-input>
-        </el-form-item>
-        <el-form-item >
-          <el-button type="primary" @click="getData()" >搜索</el-button>
-        </el-form-item> -->
         <el-form-item >
           <el-button type="warning"  @click="$router.push('/notice/form');" >发布通知</el-button>
         </el-form-item>
@@ -26,7 +14,7 @@
       <el-table :data="tableData" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
-        <el-table-column prop="CreateTime" label="上传时间" align="center">
+        <el-table-column prop="CreateTime" label="上传时间" align="center" width="180">
           <template slot-scope="scope">
             <span>
               {{scope.row.CreateTime.slice(0,scope.row.CreateTime .indexOf('.')).replace('T',' ')}}
@@ -35,9 +23,9 @@
         </el-table-column>
         <el-table-column prop="TypeName" label="通知类型" align="center" width="100">
         </el-table-column>
-        <el-table-column prop="Title" label="通知标题" align="center" :show-overflow-tooltip="true">
+        <el-table-column prop="Title" label="通知标题" align="center" >
         </el-table-column>
-        <el-table-column prop="Content" label="通知内容" align="center" :show-overflow-tooltip="true">
+        <el-table-column prop="Content" label="通知内容" align="center" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="ExtraName" label="年级/班级" align="center" width="150">
           <template slot-scope="scope">
