@@ -85,6 +85,10 @@ let routes = [{
       path: '/class/list',
       component: classList,
       name: '班级列表'
+    }, {
+      path: '/class/info',
+      component: classInfo,
+      name: '班级详情'
     }, ],
   },
   {

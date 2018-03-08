@@ -1,6 +1,5 @@
 <template>
 	<section>
-
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item label="学生ID">
@@ -119,7 +118,7 @@
 			</el-col>
 		</el-card>
 
-		</br>
+		</br> 
 
 		<el-row :gutter="20">
 			<el-col :span="6">
