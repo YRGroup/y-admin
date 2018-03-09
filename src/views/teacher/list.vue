@@ -49,17 +49,17 @@
 				
 					</template>
 				</el-table-column>
-				<el-table-column prop="className" label="班级" >
+				<!-- <el-table-column prop="className" label="班级" >
 					<template slot-scope="scope">				
 						<li style="list-style-type:none;" v-for="(item,index) in scope.row.Classes" :key="index" value='CourseName' >{{item.ClassName}}</li>	
 				
 					</template>
-				</el-table-column>
+				</el-table-column> -->
 				
 				<el-table-column  v-if="filters.setm>0" fixed="right" label="操作" width="200" align="center">
 					<template slot-scope="scope">
-						<el-button type="primary" size="small" @click.native="setClassAdminTeacher(scope.row.Meid)">
-							设为班主任
+						<el-button type="primary" size="small" @click.native="setClassAdminTeacher(scope.row.Meid)" plain>
+							设为 <span class="className">{{className}}</span> 班主任
 						</el-button>
 					</template>
 				</el-table-column>
@@ -138,7 +138,8 @@ export default {
 			classList:[{Name:'全部',cid:0}],
 			searchInput:'',
 			teacherList:[],
-			total :0,
+      total :0,
+      className:''
 		}
 	},
 	computed: {
@@ -149,14 +150,13 @@ export default {
 	},
 	methods: {
 		getData() {
-			console.log( this.$route.query.i );
-
+			console.log( this.$route.query);
+      this.className=this.$route.query.name;
 			this.filters.cid = this.$route.query.classId||'0';
 			this.filters.key = this.$route.query.key||'';
 			this.filters.p = this.$route.query.p||'0';
 			this.filters.setm = this.$route.query.setm || 0,
 			this.getNowData();
-
 		},
 		getNowData(){
 			let start = (this.filters.p - 1) * this.pageSize;
@@ -258,6 +258,8 @@ export default {
 
 </script>
 
-<style scoped>
-
+<style scoped lang='less'>
+  .className{
+    color: #F56C6C;
+  }
 </style>
