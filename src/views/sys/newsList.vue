@@ -128,7 +128,13 @@
 			</span>
 
 		</el-dialog>
-
+    <el-dialog title="查看新闻" :visible.sync="newsVisible" :close-on-click-modal="false">
+			<div class="newsContainer" v-if="newsPreviewData!=={}">
+				<div class="title">{{newsPreviewData.Title}}</div>
+				<div class="time">{{newsPreviewData.AddTime}}</div>
+				<div class="content" v-html="newsPreviewData.content"></div>
+			</div>
+		</el-dialog>
 		<el-dialog :visible.sync="showAddWXnew" title="导入公众号新闻">
 			<el-form label-width="120px">
 				<el-form-item label="请输入网址">
@@ -138,14 +144,6 @@
 					<el-button type="primary" @click="AddWXnews" :loading="addloading">提交</el-button>
 				</el-form-item>
 			</el-form>
-		</el-dialog>
-
-		<el-dialog title="查看新闻" v-model="newsVisible" :close-on-click-modal="false">
-			<div class="newsContainer" v-if="newsPreviewData!=={}">
-				<div class="title">{{newsPreviewData.Title}}</div>
-				<div class="time">{{newsPreviewData.AddTime}}</div>
-				<div class="content" v-html="newsPreviewData.content"></div>
-			</div>
 		</el-dialog>
 
 		<el-dialog title="查看评论" :visible.sync="commentVisible">
@@ -358,19 +356,29 @@ export default {
 		},
 		handleCurrentChange(val) {
 			this.page = val;
-		},
+    },
+    //获取新闻内容
+    getNewInfo(id,success){
+      this.$API.getNewsInfo(id).then(res=>{
+        success&&success(res)
+      })
+    },
+    //查看
 		handleLook(val) {
-      console.log(val)
-			this.newsPreviewData = val
-      this.newsVisible = true
-      console.log(this.newsVisible)
-		},
+      this.getNewInfo({articleid:val.ID},res=>{
+        this.newsVisible = true
+        this.newsPreviewData = res
+      }) 
+    },
+    //编辑
 		handleEdit(val) {
-			this.data = val
-			this.data.CategoryID = this.filters.category
-			this.showEditForm = true
-			this.isEdit = true
-			this.isLook = false
+      this.getNewInfo({articleid:val.ID},res=>{
+        this.data = res
+			  this.data.CategoryID = this.filters.category
+        this.showEditForm = true
+        this.isEdit = true
+        this.isLook = false
+      }) 
 		},
 		handleDeleteNews: function(id) {
 			this.$confirm('确认下架该记录吗?', '提示', {
