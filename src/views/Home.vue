@@ -33,7 +33,7 @@
             <i class="fa fa-home"></i>
             <span slot="title">主页</span>
             </el-menu-item>
-          <el-submenu index="global">
+          <el-submenu index="global"  v-if="cardRole">
             <template slot="title">
               <i class="fa fa-id-card-o"></i>
               <span slot="title">全局内容</span>
@@ -41,13 +41,13 @@
             <el-menu-item index="/news/newsList" v-if="roleList.includes('news')">新闻</el-menu-item>
             <el-menu-item index="/news/swiperList" v-if="roleList.includes('banner')">轮播图</el-menu-item>
           </el-submenu>
-          <el-submenu index="user">
+          <el-submenu index="user"  v-if="cardRole">
             <template slot="title">
               <i class="fa fa-users"></i> <span slot="title">用户管理</span></template>
             <el-menu-item index="/alluser">所有用户</el-menu-item>
             <el-menu-item index="/adminList" v-if="roleList.includes('super')">管理员</el-menu-item>
           </el-submenu>
-          <el-submenu index="exam" v-if="roleList.includes('exam')">
+          <el-submenu index="exam" v-if="cardRole">
             <template slot="title">
               <i class="fa fa-id-card-o"></i> <span slot="title">班级管理</span></template>
             <el-menu-item index="/class/list" v-if="roleList.includes('class')"> 班级列表</el-menu-item>
@@ -56,17 +56,21 @@
             <el-menu-item index="/exam/list">考试列表</el-menu-item>
             <el-menu-item index="/exam/add">添加考试</el-menu-item>
           </el-submenu>
-          <el-submenu index="video">
+          <el-submenu index="video"  v-if="cardRole">
             <template slot="title">
               <i class="iconfont">&#xe705;</i> <span slot="title">视频课程</span></template>
             <el-menu-item index="/video/list">视频列表</el-menu-item>
           </el-submenu>
-          <el-submenu index="note">
+          <el-submenu index="note" v-if="cardRole">
             <template slot="title">
               <i class="iconfont">&#xe61b;</i> <span slot="title">短信通知</span></template>
             <el-menu-item index="/note/list">短信列表</el-menu-item>
             <el-menu-item index="/notice/list">校园通知</el-menu-item>
           </el-submenu>
+          <el-menu-item index="/schoolCard">
+            <i class="fa fa-home"></i>
+            <span slot="title">一卡通</span>
+            </el-menu-item>
         </el-menu>
         <el-button class="colBtn" size="mini" @click="collapse()">
           <span v-show="!collapsed"><i class="iconfont">&#xe933;</i></span>
@@ -126,6 +130,10 @@ export default {
     };
   },
   computed: {
+    cardRole() {
+      let phone = this.$store.state.user.user.Mobilephone
+      return (phone == 13100001001) ? false : true
+    },
     asideWidth(){
         return this.collapsed?'60px':'230px'
     },

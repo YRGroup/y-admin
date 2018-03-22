@@ -41,10 +41,12 @@ API.uniLogin = (data) => {
 
 // 登陆
 API.login = (logData) => {
+  console.log(logData)
   document.cookie = "meid=aa;path=/;domain="+document.domain.match(/[^\.]+\.[^\.]+$/)[0]+";expires=" +new Date(2011,1,1).toGMTString()
   document.cookie = "meid=aa;path=/;domain="+document.domain+";expires=" +new Date(2011,1,1).toGMTString()
   return new Promise((resolve, reject) => {
     axios.post(_APIurl + '/api/User/LoginByPhone', logData).then((res) => {
+      
       resolve(res.data.Content)
     }).catch((err) => {
       reject(err)

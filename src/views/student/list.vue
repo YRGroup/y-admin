@@ -120,6 +120,7 @@ export default {
       let end = this.filters.p * this.pageSize;
 
       console.log(this.filters.cid + "aaa" + this.filters.key);
+      console.log(this.filters)
       this.$studentAPI.getStudentList(this.filters).then(res => {
         this.total = res.Total;
         this.studentList = res.ModelList;

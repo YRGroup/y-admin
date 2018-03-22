@@ -51,6 +51,8 @@ import noteInfo from '../views/note/info'
 import noticeList from '../views/notice/list'
 import makkeNotice from '../views/notice/form'
 
+import schoolCard from '../views/schoolCard/index'
+
 Vue.use(Router);
 
 let routes = [{
@@ -122,6 +124,17 @@ let routes = [{
       component: homework,
       name: '作业'
     }],
+  },
+  {
+    path: '/schoolCard',
+    component: Home,
+    iconCls: 'fa fa-id-card-o',
+    children: [{
+        path: '/schoolCard',
+        component: schoolCard,
+        name: '一卡通'
+      }
+    ],
   },
   {
     path: '/exam',
@@ -239,7 +252,8 @@ let routes = [{
         name:'短信详情'
       }
     ]
-  },{
+  },
+  {
     path: '/notice',
     component: Home,
     name: '校园通知',
