@@ -28,7 +28,7 @@
 
     <!--列表-->
     <template>
-      <el-table :data="currentData" highlight-current-row style="width: 100%;">
+      <el-table :data="videoList" highlight-current-row style="width: 100%;">
         <el-table-column fixed="left" type="index" width="60">
         </el-table-column>
         <el-table-column prop="CreateTime" label="上传时间" align="center">
@@ -57,7 +57,7 @@
       </el-table>
     </template>
     <el-col :span="24" class="toolbar">
-      <el-pagination layout="sizes, total, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total" style="float:right;">
+      <el-pagination layout="sizes, prev, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes"  style="float:right;">
       </el-pagination>
     </el-col>
 
@@ -159,7 +159,8 @@ export default {
     },
     //切换页码
     handleCurrentChange(val) {
-      this.page = val;
+      console.log(val)
+      this.currentPage = val;
       this.getData();
     }
   },

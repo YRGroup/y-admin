@@ -35,7 +35,7 @@
             <el-checkbox :label="i.ID" v-for="i in courseList" :key="i.ID" class="item">
               {{i.CourseName}}
               <span style="font-size:12px">（总分
-                <el-input v-model="i.FullScore" size="mini" style="width:50px;" placeholder="总分"></el-input>）
+                <el-input v-model="i.FullScore" size="mini" style="width:55px;" placeholder="总分"></el-input>）
               </span>
             </el-checkbox>
           </el-checkbox-group>

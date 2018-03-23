@@ -479,7 +479,7 @@ export default {
 		line-height: 2em;
 		text-indent: 2em;
 		text-align: left;
-		overflow: hidden;
+    overflow: hidden;
 	}
 }
 </style>
