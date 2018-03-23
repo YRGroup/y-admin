@@ -18,7 +18,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-input clearable type="primary"  placeholder="输入关键字" v-model="seachText" ></el-input>
+          <el-input clearable type="primary"  placeholder="输入关键字" v-model="filter.key" ></el-input>
         </el-form-item>
         <el-form-item >
           <el-button type="primary" @click="getData()" >搜索</el-button>
@@ -57,7 +57,7 @@
       </el-table>
     </template>
     <el-col :span="24" class="toolbar">
-      <el-pagination layout="sizes, prev, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes"  style="float:right;">
+      <el-pagination layout="sizes, prev,pager, next,total" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes" :total="total"  style="float:right;">
       </el-pagination>
     </el-col>
 
@@ -75,7 +75,6 @@ export default {
       pageSize: 10,
       pageSizes: [10, 20, 30, 50],
       currentPage:1,
-      seachText:'',
       filter: {
         key: '',
         cateid: '',
@@ -83,7 +82,8 @@ export default {
       },
       categoryList: [],
       gradeList:[],
-      videoList:[]
+      videoList:[],
+      total:0
     }
   },
   computed: {
@@ -120,7 +120,8 @@ export default {
       para.currentPage=this.currentPage
       para.pageSize=this.pageSize
       this.$API.getVideoList(para).then(res => {
-        this.videoList=res
+        this.videoList=res.ModelList
+        this.total=res.Total
       })
     },
   
