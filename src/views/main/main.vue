@@ -49,6 +49,8 @@ export default {
 						this.chart2_line1.push(o.Activated)
 						this.chart2_line2.push(o.UnActivated)
 					})
+					this.chart2_line1.reverse()
+					this.chart2_line2.reverse()
 					this.setChart2()
 				}
 				if (res.MonthlyActivity.length > 1) {
