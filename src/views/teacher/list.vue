@@ -63,7 +63,7 @@
 						</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column v-else fixed="right" label="操作" width="200" align="center">
+				<el-table-column v-else fixed="right" label="操作" width="300" align="center">
 					<template slot-scope="scope">
 						<el-button type="primary" size="small" @click.native="$router.push('/teacher/info?teacherId='+scope.row.Meid)">
 							详情
