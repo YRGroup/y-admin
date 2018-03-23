@@ -131,7 +131,7 @@ export default {
   },
   computed: {
     cardRole() {
-      let phone = this.$store.state.user.user.Mobilephone
+      let phone = this.$store.state.user.Mobilephone
       return (phone == 13100001001) ? false : true
     },
     asideWidth(){

@@ -90,9 +90,6 @@ export default {
     classList() {
       return this.$store.getters.classList;
     },
-    total() {
-      return this.videoList.length
-    },
     currentData() {
       let start = (this.page - 1) * this.pageSize
       let end = this.page * this.pageSize
@@ -160,7 +157,6 @@ export default {
     },
     //切换页码
     handleCurrentChange(val) {
-      console.log(val)
       this.currentPage = val;
       this.getData();
     }

@@ -30,7 +30,7 @@
 				</el-table-column>
 				<el-table-column prop="TrueName" label="名字" >
 				</el-table-column>
-				<el-table-column prop="Mobilephone" label="手机" >
+				<el-table-column prop="Mobilephone?Mobilephone:''" label="手机" >
 				</el-table-column>
 				<el-table-column prop="Sex" label="性别" >
 				</el-table-column>
