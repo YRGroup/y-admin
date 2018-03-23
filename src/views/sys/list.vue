@@ -13,15 +13,20 @@
             <el-radio-button :label="8">班主任</el-radio-button>
           </el-radio-group>
         </el-form-item>
-
-        <el-form-item>
-          <el-button type="warning" @click="showAddAccount = true">添加账号</el-button>
+        <el-form-item >
+          <el-select @change="getData"  v-model="filters.cid" placeholder="选择班级">
+            <el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item class="seach">
           <el-input clearable type="primary"  placeholder="搜索手机号或姓名" v-model="seachText" ></el-input>
         </el-form-item>
         <el-form-item >
           <el-button type="primary" @click="getData" >搜索</el-button>
+        </el-form-item>
+          <el-form-item>
+          <el-button type="warning" @click="showAddAccount = true">添加账号</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -147,6 +152,7 @@ export default {
       seachText:'',
       filters: {
         role: 4,
+        cid:null
       },
       courseList:[],
       showAddAccount: false,
@@ -191,7 +197,15 @@ export default {
   },
   computed: {
     classList() {
-      return this.$store.getters.classList;
+      if (!this.$store.getters.classList.length) {
+        this.$store.dispatch('getClassList')
+      }
+      else
+      {
+        if(this.$store.getters.classList[0].cid!=0)
+          this.$store.getters.classList.unshift({cid:0,Name:'全部'})
+        return this.$store.getters.classList
+      }
     },
     total() {
       if (!this.$store.getters.total) {
@@ -211,7 +225,8 @@ export default {
         key:this.seachText,
         role: this.filters.role,
         currentPage:this.page,
-        pageSize:this.pageSize
+        pageSize:this.pageSize,
+        cid:this.filters.cid
       }
       this.$store.dispatch('getAllUserList', para);
     },
@@ -324,10 +339,6 @@ export default {
   created() {
     this.getcourseList();
     this.getData();
-    //获取班级列表
-    if (!this.$store.getters.classList.length) {
-      this.$store.dispatch('getClassList');
-    }
   },
   mounted() {
   },

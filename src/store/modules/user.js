@@ -6,7 +6,8 @@ const state = {
 };
 const getters = {
   token: state => state.token,
-  roleList:state=>state.user.AdminRole.Roles
+  roleList:state=> state.user?state.user.AdminRole.Roles:''
+
 };
 const actions = {
   login({
