@@ -6,23 +6,19 @@
 		<el-form :inline="true" :model="filters">
 
 				<el-form-item label="班级">
-					<el-select v-model="selected"  placeholder="全部">
+					<el-select v-model="filters.cid"  placeholder="全部">
+            <el-option label="全部" value="0">
+						</el-option>
 						<el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
 						</el-option>
 					</el-select>
 				</el-form-item>
-	
-				<el-form-item>
-					<el-button type="primary"  @click="$router.push('/teacher/list?classId='+selected+'&op='+filters.op +'&p=0&key=')">查询</el-button>
-				
-				</el-form-item>
 				<el-form-item label="教师姓名/手机号">
-					<el-input v-model="searchInput" placeholder="请输入教师姓名或者手机号"></el-input>
-					
+					<el-input v-model="filters.key" placeholder="请输入教师姓名或者手机号"></el-input>	
 				</el-form-item>
 
 				<el-form-item>
-					<el-button type="primary" @click="$router.push('/teacher/list?classId=0&p=0&key='+searchInput+'&setm='+filters.setm)">查询</el-button>
+					<el-button type="primary" @click="getData()">查询</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -63,7 +59,7 @@
 						</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column v-else fixed="right" label="操作" width="200" align="center">
+				<el-table-column v-else fixed="right" label="操作" width="250" align="center">
 					<template slot-scope="scope">
 						<el-button type="primary" size="small" @click.native="$router.push('/teacher/info?teacherId='+scope.row.Meid)">
 							详情
@@ -121,10 +117,10 @@ export default {
 			pageSize: 10,
 			pageSizes: [10],
 			filters: {
-				cid: this.$route.query.classId||'0',
-				key : this.$route.query.key||'',
-				p : this.$route.query.p || '0',
-				setm : this.$route.query.setm || 0,
+				cid: 0,
+				key : '',
+				p : 0,
+				setm : '',
 			},
 			editTeacherVisible: false,
 			editTeacherData: {
@@ -150,19 +146,13 @@ export default {
 	},
 	methods: {
 		getData() {
-			console.log( this.$route.query);
       this.className=this.$route.query.name;
-			this.filters.cid = this.$route.query.classId||'0';
-			this.filters.key = this.$route.query.key||'';
-			this.filters.p = this.$route.query.p||'0';
 			this.filters.setm = this.$route.query.setm || 0,
 			this.getNowData();
 		},
 		getNowData(){
 			let start = (this.filters.p - 1) * this.pageSize;
 			let end =this.filters.p * this.pageSize;
-			
-			console.log(this.filters.cid +'aaa'+this.filters.key);
 			this.$teacherAPI.getTeacherList(this.filters).then(
 				res=>{
 					this.total = res.Total;
