@@ -84,14 +84,18 @@ export default {
 							case '2':
 								a.name = '家长'
 								break
-							case '3':
-								a.name = '老师'
+							case '4':
+                a.name = '普通教师'
+                break
+              case '8':
+                a.name = '班主任'
 								break
 						}
 						a.value = o.Count
 						chartData.push(a)
 					})
-					this.chart4_data= chartData.slice(0,3)
+          this.chart4_data= chartData
+          console.log(this.chart4_data)
 					this.setChart4()
 				}
 			})
@@ -143,7 +147,7 @@ export default {
 		setChart2() {
 			this.chartColumn.setOption({
 				title: {
-					text: '用户信息',
+					text: '激活信息',
 				},
 				tooltip: {
 					trigger: 'axis',
@@ -165,7 +169,7 @@ export default {
 				},
 				yAxis: {
 					type: 'category',
-					data: ['学生', '家长', '老师'] 
+					data: ['学生', '家长', '普通教师','班主任'] 
 				},
 				series: [
 					{
@@ -175,7 +179,7 @@ export default {
 						label: {
 							normal: {
 								show: true,
-								position: 'insideRight'
+								position: 'inside'
 							}
 						},
 						data: this.chart2_line1
@@ -187,7 +191,7 @@ export default {
 						label: {
 							normal: {
 								show: true,
-								position: 'insideRight'
+								position: 'inside'
 							}
 						},
 						data: this.chart2_line2
@@ -237,18 +241,18 @@ export default {
 		setChart4() {
 			this.chartPie.setOption({
 				title: {
-					text: '所有用户',
+					text: '用户类型分布',
 				},
 				tooltip: {
 					trigger: 'item',
 					formatter: '{a} <br/>{b} : {c} ({d}%)',
 				},
 				legend: {
-					data: ['老师', '学生', '家长'],
+					data: [ '学生', '家长','普通教师','班主任'],
 				},
 				series: [
 					{
-						name: '访问来源',
+						name:'数量',
 						type: 'pie',
 						radius: '55%',
 						center: ['50%', '60%'],
