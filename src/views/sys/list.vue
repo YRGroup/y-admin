@@ -13,12 +13,12 @@
             <el-radio-button :label="8">班主任</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item >
+        <!-- <el-form-item >
           <el-select @change="getData"  v-model="filters.cid" placeholder="选择班级">
             <el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item class="seach">
           <el-input clearable type="primary"  placeholder="搜索手机号或姓名" v-model="seachText" ></el-input>
         </el-form-item>
@@ -41,6 +41,11 @@
         <el-table-column prop="User.Mobilephone" label="手机">
         </el-table-column>
         <el-table-column prop="User.TrueName" label="名字">
+        </el-table-column>
+        <el-table-column prop="CurrentClass.ClassName" label="班级">
+          <template slot-scope="scope">
+            <el-tag type="success">{{scope.row.CurrentClass.ClassName}}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column prop="CurrentClass.Role" label="身份">
           <template slot-scope="scope">
@@ -151,8 +156,7 @@ export default {
       pageSizes: [10, 20, 30, 50],
       seachText:'',
       filters: {
-        role: 4,
-        cid:null
+        role: 4
       },
       courseList:[],
       showAddAccount: false,
@@ -225,8 +229,7 @@ export default {
         key:this.seachText,
         role: this.filters.role,
         currentPage:this.page,
-        pageSize:this.pageSize,
-        cid:this.filters.cid
+        pageSize:this.pageSize
       }
       this.$store.dispatch('getAllUserList', para);
     },

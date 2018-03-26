@@ -43,7 +43,8 @@ export default {
 	methods: {
 		getData() {
 			this.$sysAPI.getChartData().then(res => {
-				// this.setChart1()
+        // this.setChart1()
+        console.log(res)
 				if (res.UserActivated.length) {
 					res.UserActivated.forEach(o => {
 						this.chart2_line1.push(o.Activated)
@@ -164,7 +165,7 @@ export default {
 				},
 				yAxis: {
 					type: 'category',
-					data: ['学生', '家长', '老师']
+					data: ['学生', '家长', '老师'] 
 				},
 				series: [
 					{
