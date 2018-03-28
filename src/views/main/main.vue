@@ -44,14 +44,16 @@ export default {
 		getData() {
 			this.$sysAPI.getChartData().then(res => {
         // this.setChart1()
-        // console.log(res)
+        let roles=[8,4,2,1]
 				if (res.UserActivated.length) {
-					res.UserActivated.forEach(o => {
-						this.chart2_line1.push(o.Activated)
-						this.chart2_line2.push(o.UnActivated)
-					})
-					this.chart2_line1.reverse()
-					this.chart2_line2.reverse()
+          roles.forEach(i=>{
+            	this.chart2_line1.push(res.UserActivated.find(item=>{
+                return item.Role==i
+              }).Activated)
+            this.chart2_line2.push(res.UserActivated.find(item=>{
+                return item.Role==i
+              }).UnActivated)
+          })
 					this.setChart2()
 				}
 				if (res.MonthlyActivity.length > 1) {
@@ -95,7 +97,6 @@ export default {
 						chartData.push(a)
 					})
           this.chart4_data= chartData
-          // console.log(this.chart4_data) 
 					this.setChart4()
 				}
 			})
