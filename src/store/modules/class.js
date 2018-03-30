@@ -7,7 +7,8 @@ const state = {
   homeworkList: [],
   courseList: [],
   schoolYear:null,
-  classListPlus:[]
+  classListPlus:[],
+  schoolYearList:[]
 };
 const getters = {
   gradeList: state => state.gradeList,
@@ -20,7 +21,8 @@ const getters = {
     let arr=state.classList.concat();
     arr.unshift({cid:0,Name:'全部'})
     return arr
-  }
+  },
+  schoolYearList:state => state.schoolYearList,
 };
 const actions = {
   getGradeList({
@@ -122,6 +124,9 @@ const mutations = {
   },
   setSchoolYear(state,value){
     state.schoolYear=value
+  },
+  setSchoolYearList(state,value){
+    state.schoolYearList=value
   }
 };
 export default {

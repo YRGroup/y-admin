@@ -114,14 +114,8 @@
 export default {
   data() {
     return {
-      schoolYearList: [{
-        value: 2017,
-        label: '2017学年'
-        }, {
-          value: 2018,
-          label: '2018学年'
-      }],
-      schoolYear:2018,
+      schoolYear:new Date().getMonth()+1>6?new Date().getFullYear():new Date().getFullYear()-1,
+      schoolYearList: [],
       debug: [
         "this",
         "router",
@@ -142,7 +136,7 @@ export default {
         delivery: false,
         type: [],
         resource: "",
-        desc: ""
+        desc: "",
       },
     };
   },
@@ -156,19 +150,39 @@ export default {
     },
     roleList(){
       return this.$store.getters.roleList
-    },
-    // ...mapGetters({
-    //   roleList: "roleList"
-    // })
+    }
   },
   created(){
+    //生成学年列表
+    this.getSchoolYearList()
+    this.$store.commit('setSchoolYearList',this.schoolYearList)
+    //切换学年
     this.$store.commit('setSchoolYear',this.schoolYear)
-    console.log(this.$store.getters.schoolYear)
   },
   methods: {
+    getSchoolYearList(){
+      //初始学年2017
+      let arr=[{
+        value: 2017,
+        label: '2017学年'
+        }]
+      let currentYear=new Date().getMonth()+1>6?new Date().getFullYear():new Date().getFullYear()-1     //当前学年
+      let length=currentYear-arr[0].value
+      if(length){
+        for(let i=1;i<=length;i++){
+          let y=arr[0].value+i
+          arr.push({
+            value: y,
+            label: ''+y+'学年'
+          })
+        }
+      }
+      this.schoolYearList=arr;
+    },
     setSchoolYear(){
+      console.log(this.schoolYear)
       this.$store.commit('setSchoolYear',this.schoolYear)
-     this.$store.commit('setClassList',[])
+      this.$store.commit('setClassList',[])
       this.$router.push('/')
     },
     showInfo(val) {
