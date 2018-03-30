@@ -6,6 +6,8 @@ const state = {
   postList: [],
   homeworkList: [],
   courseList: [],
+  schoolYear:null,
+  classListPlus:[]
 };
 const getters = {
   gradeList: state => state.gradeList,
@@ -13,6 +15,12 @@ const getters = {
   postList: state => state.postList,
   homeworkList: state => state.homeworkList,
   courseList: state => state.courseList,
+  schoolYear:state => state.schoolYear,
+  classListPlus:state=> {
+    let arr=state.classList.concat();
+    arr.unshift({cid:0,Name:'全部'})
+    return arr
+  }
 };
 const actions = {
   getGradeList({
@@ -38,8 +46,8 @@ const actions = {
   getClassList({
     commit,
     state
-  }, para) {
-    $API.getClassList(para).then(value => {
+  }) {
+    $API.getClassList(state.schoolYear).then(value => {
       if (value.length === 0) {
         let a = {
           cid: -1,
@@ -112,6 +120,9 @@ const mutations = {
   setCourseList(state, value) {
     state.courseList = value
   },
+  setSchoolYear(state,value){
+    state.schoolYear=value
+  }
 };
 export default {
   state,

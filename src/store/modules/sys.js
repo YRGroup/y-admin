@@ -3,11 +3,12 @@ import sysAPI from '@/api/sys'
 
 const state = {
 	allNewsList:[],
-	currentEditData:{},
+  currentEditData:{},
+ 
 };
 const getters = {
 	allNewsList:state => state.allNewsList,
-	currentEditData:state => state.currentEditData,
+  currentEditData:state => state.currentEditData,
 };
 const actions = {
 	getNewsList({commit,state},para){
@@ -17,7 +18,8 @@ const actions = {
 			}
 			commit('getNewsList',value)
 		})
-	}
+  }
+ 
 };
 
 const mutations = {

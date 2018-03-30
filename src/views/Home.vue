@@ -4,7 +4,7 @@
       <el-col :span="4" class="logo" :class="collapsed ? 'logo-collapse-width':'logo-width'">
       {{sysName}}
       </el-col>
-      <el-col :span="4" class="userinfo">
+      <el-col :span="3" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-lick userinfo-inner">
             <img :src="this.sysUserAvatar" /> {{sysUserName}}
@@ -13,6 +13,16 @@
             <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+      </el-col>
+      <el-col :span="2" style="float:right">
+        <el-select @change="setSchoolYear()" v-model="schoolYear"  placeholder="选择学年">
+            <el-option
+            v-for="item in schoolYearList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+          </el-select>
       </el-col>
     </el-header>
     <el-container>
@@ -82,7 +92,6 @@
           <el-col class="breadcrumb-container">
             <strong class="title">{{$route.name}}</strong>
             <el-breadcrumb separator="/" class="breadcrumb-inner">
-
               <!-- 路由记录生成面包屑 -->
               <el-breadcrumb-item v-for="item in $route.matched" :key="item.name">
                 {{ item.name }}
@@ -100,11 +109,19 @@
   </el-container>
 </template>
 <script>
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
+      schoolYearList: [{
+        value: 2017,
+        label: '2017学年'
+        }, {
+          value: 2018,
+          label: '2018学年'
+      }],
+      schoolYear:2018,
       debug: [
         "this",
         "router",
@@ -137,11 +154,23 @@ export default {
     asideWidth(){
         return this.collapsed?'60px':'230px'
     },
-    ...mapGetters({
-      roleList: "roleList"
-    })
+    roleList(){
+      return this.$store.getters.roleList
+    },
+    // ...mapGetters({
+    //   roleList: "roleList"
+    // })
+  },
+  created(){
+    this.$store.commit('setSchoolYear',this.schoolYear)
+    console.log(this.$store.getters.schoolYear)
   },
   methods: {
+    setSchoolYear(){
+      this.$store.commit('setSchoolYear',this.schoolYear)
+     this.$store.commit('setClassList',[])
+      this.$router.push('/')
+    },
     showInfo(val) {
       if (val === "this") {
         console.log(val);

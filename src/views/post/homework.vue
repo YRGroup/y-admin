@@ -161,16 +161,11 @@ export default {
     }
   },
   computed: {
-    
     classList() {
-       if (!this.$store.getters.classList.length) {
+      if (!this.$store.getters.classList.length) {
         this.$store.dispatch('getClassList')
-      }
-      else
-      {
-        if(this.$store.getters.classList[0].cid!=0)
-          this.$store.getters.classList.unshift({cid:0,Name:'全部'})
-        return this.$store.getters.classList
+      } else{
+        return this.$store.getters.classListPlus
       }
     },
     total() {

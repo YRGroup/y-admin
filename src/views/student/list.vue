@@ -97,13 +97,19 @@ export default {
         p: this.$route.query.p || "0"
       },
       selected: 0,
-      classList: [{ Name: "全部", cid: 0 }],
       searchInput: "",
       studentList: [],
       total: 0
     };
   },
   computed: {
+    classList() {
+      if (!this.$store.getters.classList.length) {
+        this.$store.dispatch('getClassList')
+      } else{
+        return this.$store.getters.classListPlus
+      }
+    },
     ...mapGetters({
       loading: "listLoading"
     })
@@ -131,12 +137,6 @@ export default {
             o.ParentMeid = o.Parents[0].Meid;
           }
         });
-      });
-    },
-    getClassList() {
-      this.$classAPI.getClassList().then(res => {
-        this.classList = res;
-        // this.classList.splice(0, 0, { Name: '全部', cid: 0 });
       });
     },
     handleSizeChange(val) {
@@ -176,7 +176,6 @@ export default {
     }
   },
   mounted() {
-    this.getClassList();
     this.getData();
   },
   watch: {

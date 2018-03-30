@@ -13,6 +13,11 @@
         <el-option v-for="(item,index) in gradeList" :key="index" :label="item.GradeName" :value="item.ID"></el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="班级" prop="ExtraID" v-if="showClassList">
+      <el-select v-model="formData.ExtraID" placeholder="请选择班级">
+        <el-option v-for="(item,index) in classList" :key="index" :label="item.Name" :value="item.cid"></el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="通知内容" prop="Content">
       <el-input v-model="formData.Content" placeholder="请输入通知内容"></el-input>
     </el-form-item>
@@ -51,7 +56,6 @@ export default {
         ],
       },
       gradeList: [],
-      classList: [],
       noticeType: [
         { type: "全校通知", value: 1 },
         { type: "年级通知", value: 2 },
@@ -70,11 +74,17 @@ export default {
     },
     showClassList() {
       return this.formData.Type == 3 ? true : false;
-    }
+    },
+    classList() {
+      if (!this.$store.getters.classList.length) {
+        this.$store.dispatch('getClassList')
+      } else{
+        return this.$store.getters.classList
+      }
+    },
   },
   created() {
     this.getGradeList();
-    this.getClassList();
   },
   methods: {
     resetForm(formName) {
@@ -120,12 +130,6 @@ export default {
     getGradeList() {
       this.$API.getGradeList().then(res => {
         this.gradeList = res;
-      });
-    },
-    //班级列表
-    getClassList() { 
-      this.$API.getClassList().then(res => {
-        this.classList = res;
       });
     }
   }

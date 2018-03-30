@@ -203,9 +203,9 @@ API.addClassTeacher = (data) => {
 }
 
 // 获取班级列表
-API.getClassList = () => {
+API.getClassList = (data) => {
   return new Promise((resolve, reject) => {
-    axios.get(_APIurl + '/api/Class/GetClassList').then((res) => {
+    axios.get(_APIurl + '/api/Class/GetClassList?schoolYear='+data).then((res) => {
       resolve(res.data.Content)
     })
   })

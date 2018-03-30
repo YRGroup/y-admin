@@ -102,11 +102,12 @@
 				return this.$store.getters.parentList.length
 			},
 			classList() {
-				if (!this.$store.getters.classList.length) {
-					return this.$store.dispatch('getClassList')
-				}
-				return this.$store.getters.classList
-			},
+        if (!this.$store.getters.classList.length) {
+          this.$store.dispatch('getClassList')
+        } else{
+          return this.$store.getters.classListPlus
+        }
+      },
 			currentData(){
 				let start = (this.page - 1) * this.pageSize;
 				let end = this.page * this.pageSize;
@@ -120,12 +121,6 @@
 			})
 		},
 		methods: {
-			getClassList() {
-			  this.$classAPI.getClassList().then(res => {
-						this.classList = res;
-						// this.classList.splice(0,0,{Name:'全部',cid:0});				
-				});
-			},
 			getData() {
 				if(this.$route.query.classId){
 					this.filters.classId=this.$route.query.classId
@@ -165,7 +160,6 @@
 			},
 		},
 		mounted(){
-			this.getClassList();
 		},
 		watch:{
 			"$route": "getData"

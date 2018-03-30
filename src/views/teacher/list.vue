@@ -6,9 +6,8 @@
 		<el-form :inline="true" :model="filters">
 
 				<el-form-item label="班级">
-					<el-select v-model="filters.cid"  placeholder="全部">
-            <el-option label="全部" value="0">
-						</el-option>
+					<el-select v-model="filters.cid"  placeholder="选择班级">
+
 						<el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
 						</el-option>
 					</el-select>
@@ -131,7 +130,6 @@ export default {
 				Headimgurl: '',
 			},
 			selected :0,
-			classList:[{Name:'全部',cid:0}],
 			searchInput:'',
 			teacherList:[],
       total :0,
@@ -139,7 +137,13 @@ export default {
 		}
 	},
 	computed: {
-	
+  	classList() {
+      if (!this.$store.getters.classList.length) {
+        this.$store.dispatch('getClassList')
+      } else{
+        return this.$store.getters.classListPlus
+      }
+    },
 		...mapGetters({
 			loading: 'listLoading',
 		})
@@ -159,14 +163,6 @@ export default {
 					this.teacherList = res.ModelList
 				}
 			)
-		},
-
-
-		getClassList() {
-			  this.$classAPI.getClassList().then(res => {
-							  this.classList = res;
-							  // this.classList.splice(0,0,{Name:'全部',cid:0});				
-				});
 		},
 		handleSizeChange(val) {
 			this.filters.p = val;
@@ -238,7 +234,6 @@ export default {
 			}
 	},
 	mounted() {
-		this.getClassList();
 		this.getData();
 	},
 	watch: {
