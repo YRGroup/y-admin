@@ -11,6 +11,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import md5 from 'js-md5'
 import { Message } from 'element-ui';
 import axios from 'axios'
+import utils from './utils/utils'
 
 import API from '@/server/api'
 Vue.prototype.$API = API
@@ -77,9 +78,12 @@ axios.interceptors.request.use(config => {
 });
 // response拦截器，log信息
 axios.interceptors.response.use(
+  
   response => {
-    // console.log('axios to:'+response.config.url)
-    // console.log(response)
+    //认证信息错误时重登陆
+    if(utils.getCookie('role')!='admin'){
+      reLogin()
+    }
     if(response.data.Status===0){
         let err = {}
         err.code=response.data.Status
@@ -90,28 +94,30 @@ axios.interceptors.response.use(
     }
   },
   error => {
-    // console.log('发生错误：')
-    // console.log(error)
     Message({
       showClose: true,
       message: error.response.statusText,
       type: 'error',
       duration: 2 * 1000
     })
+    console.log(error)
     // 401未登录时跳转到登陆
-    if(error.response.status==401){
-      Message({
-        showClose: true,
-        message: '身份认证失败，请重新登陆',
-        type: 'error',
-        duration: 2 * 1000
-      })
-      router.push('/login')
+    if(error.response.status==401||utils.getCookie('role')!='admin'){
+      reLogin()
     }
     return Promise.reject(error)
   }
 )
-
+//认证信息错误时重登陆
+function reLogin(){
+  Message({
+    showClose: true,
+    message: '身份认证失败，请重新登陆',
+    type: 'error',
+    duration: 2 * 1000
+  })
+  router.push('/login')
+}
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     sessionStorage.removeItem('user');

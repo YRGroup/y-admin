@@ -43,6 +43,7 @@ export default {
 	methods: {
 		getData() {
 			this.$sysAPI.getChartData().then(res => {
+        console.log(res)
         // this.setChart1()
         let roles=[8,4,2,1]
 				if (res.UserActivated.length) {
@@ -201,6 +202,7 @@ export default {
 			});
 		},
 		setChart3() {
+      
 			this.chartLine.setOption({
 				title: { text: '用户活跃度' },
 				tooltip: { trigger: 'axis' },
