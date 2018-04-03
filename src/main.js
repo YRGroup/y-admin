@@ -81,7 +81,8 @@ axios.interceptors.response.use(
   
   response => {
     //认证信息错误时重登陆
-    if(utils.getCookie('role')!='admin'){
+    let role=utils.getCookie('role')
+    if(role&&role!='admin'){
       reLogin()
     }
     if(response.data.Status===0){

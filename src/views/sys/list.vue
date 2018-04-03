@@ -116,7 +116,7 @@
         </el-form-item>
         <el-form-item>
           <el-select v-model="i.ClassID" placeholder="请选择班级" style="width:120px;">
-            <el-option v-for="i in classList" :key="i.cid" :label="i.Name" :value="i.cid">
+            <el-option v-for="i in $store.getters.classList" :key="i.cid" :label="i.Name" :value="i.cid">
             </el-option>
           </el-select>
         </el-form-item>
