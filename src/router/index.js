@@ -51,6 +51,11 @@ import noteInfo from '../views/note/info'
 import noticeList from '../views/notice/list'
 import makkeNotice from '../views/notice/form'
 
+import liveList from '../views/live/list'
+import liveConfig from '../views/live/config'
+import liveProgram from '../views/live/program'
+import liveInfo from '../views/live/info'
+
 import schoolCard from '../views/schoolCard/index'
 
 Vue.use(Router);
@@ -268,6 +273,33 @@ let routes = [{
         path: '/notice/form',
         component: makkeNotice,
         name: '发布通知'
+      }
+    ]
+  },{
+    path: '/live',
+    component: Home,
+    name: '视频直播',
+    hidden: true,
+    iconCls: 'fa fa-id-card-o',
+    children: [{
+        path: '/live/list',
+        component: liveList,
+        name: '直播间列表'
+      },
+      {
+        path: '/live/config/:id',
+        component: liveConfig,
+        name: '直播间配置'
+      },
+      {
+        path: '/live/program/:id',
+        component: liveProgram,
+        name: '节目列表'
+      },
+      {
+        path: '/live/info/:id',
+        component: liveInfo,
+        name: '节目信息'
       }
     ]
   },{

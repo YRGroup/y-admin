@@ -7,6 +7,8 @@ import teacherAPI from'./teacher'
 import userAPI from'./user'
 import videoAPI from'./video'
 import schoolAPI from'./school'
-let API = Object.assign(sysAPI,userAPI,classAPI,contactAPI,studentAPI,teacherAPI,examAPI,videoAPI,schoolAPI)
+import liveAPI from'./live'
+
+let API = Object.assign(sysAPI,userAPI,classAPI,contactAPI,studentAPI,teacherAPI,examAPI,videoAPI,schoolAPI,liveAPI)
 
 export default API

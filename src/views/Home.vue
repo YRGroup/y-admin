@@ -77,6 +77,14 @@
             <el-menu-item index="/note/list">短信列表</el-menu-item>
             <el-menu-item index="/notice/list">校园通知</el-menu-item>
           </el-submenu>
+
+          <el-submenu index="live" v-if="cardRole">
+            <template slot="title">
+              <i class="iconfont">&#xe61b;</i> <span slot="title">视频直播</span></template>
+            <el-menu-item index="/live/list">直播列表</el-menu-item>
+            <!-- <el-menu-item index="/notice/list">校园通知</el-menu-item> -->
+          </el-submenu>
+
           <el-menu-item index="/schoolCard">
             <i class="fa fa-home"></i>
             <span slot="title">一卡通</span>

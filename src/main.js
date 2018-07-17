@@ -89,6 +89,11 @@ axios.interceptors.response.use(
         let err = {}
         err.code=response.data.Status
         err.msg=response.data.Msg
+        this.$message({
+          message: err.msg,
+          type: "error"
+        });
+        console.log( err.msg)
         return Promise.reject(err)
     }else{
         return response
