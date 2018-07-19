@@ -7,30 +7,47 @@
           <el-input v-model="formData.PushUrl" disabled=""></el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="12"> <el-form-item label="播放地址" >
+      <el-col :span="12"> <el-form-item label="播放源：" >
       <el-input v-model="formData.PlayUrl" disabled=""></el-input>
     </el-form-item></el-col>
     </el-row>
     <el-row>
-      <el-col :span="12"> <el-form-item label="直播间标题" prop="Title">
+      <el-col :span="12"> <el-form-item label="直播间标题：" prop="Title">
       <el-input v-model="formData.Title" placeholder="请输入通知标题"></el-input>
     </el-form-item></el-col>
-      <el-col :span="12">  <el-form-item label="微信分享描述" prop="WXShareContent">
+      <el-col :span="12">  <el-form-item label="微信分享描述：" prop="WXShareContent">
       <el-input v-model="formData.WXShareContent" placeholder="请输入通知标题"></el-input>
     </el-form-item></el-col>
     </el-row>
     <el-row>
-      <el-col :span="12"><el-form-item label="微信分享图片">
+      <el-col :span="12"><el-form-item label="微信分享图片：">
       <el-upload
         class="avatar-uploader"
         :action="$store.getters._APIurl+'/api/Upload/ImageUpload'"
         :show-file-list="false"
         :on-success="handleWxImg">
-        <img v-if="formData.WXSharePic" :src="formData.WXSharePic" class="avatar">
+        <div 
+          v-if="formData.WXSharePic" 
+          :style="{backgroundImage:`url(${formData.WXSharePic})`}"
+          class="preview">
+        </div>
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </el-form-item></el-col>
-      <el-col :span="12"></el-col>
+      <el-col :span="12"><el-form-item label="宣传图：">
+      <el-upload
+        class="avatar-uploader"
+        :action="$store.getters._APIurl+'/api/Upload/ImageUpload'"
+        :show-file-list="false"
+        :on-success="handleCoverImg"> 
+        <div 
+          v-if="formData.CoverImg" 
+          :style="{backgroundImage:`url(${formData.CoverImg})`}"
+          class="preview">
+        </div>
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </el-form-item></el-col>
     </el-row>
     <el-form-item label="活动内容" prop="Introduction">
       <vue-editor v-model="formData.Introduction"  useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
@@ -98,6 +115,11 @@ export default {
     handleWxImg(file, fileList) {
       if (file.Content) {
         this.formData.WXSharePic = file.Content[0];
+      }
+    },
+    handleCoverImg(file, fileList) {
+      if (file.Content) {
+        this.formData.CoverImg = file.Content[0];
       }
     },
     resetForm(formName) {
@@ -181,9 +203,13 @@ export default {
   text-align: center;
   border: 1px dashed #ddd;
 }
-.avatar {
+.preview {
   width: 350px;
   height: 178px;
   display: block;
+  background-repeat: no-repeat;
+  background-size:  auto 100%;
+  background-position: 50%;
+  background-color: #f1f1f1;
 }
 </style>
