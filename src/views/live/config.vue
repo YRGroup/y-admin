@@ -1,21 +1,26 @@
 <template>
 
   <el-form :model="formData" v-loading="loading" :rules="rules" ref="form" label-width="150px" class="form">
-    <el-form-item label="推流地址" >
-      <el-input v-model="formData.PushUrl" disabled=""></el-input>
-    </el-form-item>
-    <el-form-item label="播放地址" >
+    <el-row>
+      <el-col :span="12">
+        <el-form-item label="推流地址" >
+          <el-input v-model="formData.PushUrl" disabled=""></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12"> <el-form-item label="播放地址" >
       <el-input v-model="formData.PlayUrl" disabled=""></el-input>
-    </el-form-item>
-    <el-form-item label="直播间标题" prop="Title">
+    </el-form-item></el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12"> <el-form-item label="直播间标题" prop="Title">
       <el-input v-model="formData.Title" placeholder="请输入通知标题"></el-input>
-    </el-form-item>
-
-    <el-form-item label="微信分享描述" prop="WXShareContent">
+    </el-form-item></el-col>
+      <el-col :span="12">  <el-form-item label="微信分享描述" prop="WXShareContent">
       <el-input v-model="formData.WXShareContent" placeholder="请输入通知标题"></el-input>
-    </el-form-item>
-
-    <el-form-item label="微信分享图片">
+    </el-form-item></el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12"><el-form-item label="微信分享图片">
       <el-upload
         class="avatar-uploader"
         :action="$store.getters._APIurl+'/api/Upload/ImageUpload'"
@@ -24,43 +29,9 @@
         <img v-if="formData.WXSharePic" :src="formData.WXSharePic" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
-    </el-form-item>
-
-    <!-- <el-form-item label="开启节目投票">
-      <el-switch v-model="formData.IsVote"></el-switch>
-    </el-form-item> -->
-
-    <!-- <transition name="el-fade-in">
-      <el-form-item v-if="formData.openVote" label="投票节目列表：">
-        <div v-for="(item,index) in formData.programList" :key="index" class="flexBox">
-          <el-input placeholder="节目名称" v-model="item.title"></el-input>
-          <el-input placeholder="表演者" v-model="item.actor"></el-input>
-          <el-button type="text" size="mini"  icon="el-icon-close" @click.native="removeProgram(index)"></el-button>
-        </div>
-        <div>
-          <el-button plain  type="primary" icon="el-icon-plus" @click.native="addProgram"></el-button>
-        </div>
-      </el-form-item>
-    </transition> -->
-<!--     
-    <el-form-item label="直播间" prop="Type">
-      <el-select v-model="formData.Type" placeholder="请选择活动区域">
-        <el-option v-for="(item,index) in noticeType" :key='index' :label="item.type" :value="item.value"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="年级" prop="ExtraID" v-if="showGradeList">
-      <el-select v-model="formData.ExtraID" placeholder="请选择年级">
-        <el-option v-for="(item,index) in gradeList" :key="index" :label="item.GradeName" :value="item.ID"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="班级" prop="ExtraID" v-if="showClassList">
-      <el-select v-model="formData.ExtraID" placeholder="请选择班级">
-        <el-option v-for="(item,index) in classList" :key="index" :label="item.Name" :value="item.cid"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="通知内容" prop="Content">
-      <el-input v-model="formData.Content" placeholder="请输入通知内容"></el-input>
-    </el-form-item> -->
+    </el-form-item></el-col>
+      <el-col :span="12"></el-col>
+    </el-row>
     <el-form-item label="活动内容" prop="Introduction">
       <vue-editor v-model="formData.Introduction"  useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
     </el-form-item>
@@ -96,9 +67,7 @@ export default {
   components: {
     VueEditor
   },
-  computed: {
-
-  },
+  computed: {},
   created() {
     this.id = this.$route.params.id;
     if (this.id) {
@@ -154,20 +123,20 @@ export default {
       }).then(() => {
         this.loading = true;
         let para = {
-          Introduction:this.formData.Introduction,
-          Title:this.formData.Title,
-          WXShareContent:this.formData.WXShareContent,
-          WXSharePic:this.formData.WXSharePic
-        }
+          Introduction: this.formData.Introduction,
+          Title: this.formData.Title,
+          WXShareContent: this.formData.WXShareContent,
+          WXSharePic: this.formData.WXSharePic
+        };
         this.$API.updateLiveRoom(this.formData).then(res => {
           this.loading = false;
-          console.log(res)
+          console.log(res);
           if (res.Status == 1) {
             this.$message({
               message: "发布成功",
               type: "success"
             });
-            this.$router.back()
+            this.$router.back();
           } else {
             this.$message.error("发布失败，请重试");
           }
@@ -181,7 +150,8 @@ export default {
 <style lang="less" scoped>
 .form {
   margin-top: 30px;
-  max-width: 800px;
+  max-width: 1200px;
+  min-width: 800px;
   .flexBox {
     display: flex;
     flex-wrap: nowrap;

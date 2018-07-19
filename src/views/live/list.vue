@@ -25,14 +25,13 @@
           <template slot-scope="scope">
             <el-popover
             placement="top-start"
-            title="微信分享"
             trigger="hover"
             :content="scope.row.WXShareContent||'---'">
             <el-button type="text" slot="reference">{{scope.row.WXShareContent||'---'}}</el-button>
           </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="PlayUrl" label="播放地址" align="center">
+        <el-table-column prop="PlayUrl" label="播放源" align="center">
           <template slot-scope="scope">
             <el-popover
             placement="top-start"
@@ -69,11 +68,14 @@
             <!-- <el-button type="warm" size="small" @click.native="handleInfoVideo(scope.row.ID)">
               详情
             </el-button> -->
-            <el-button type="default" size="small" @click.native="editLive(scope.row.ID)">
+            <el-button plain type="primary" size="small" @click.native="editLive(scope.row.ID)">
               配置
             </el-button>
-            <el-button type="default" size="small" @click.native="editLivePrograms(scope.row.ID, scope.row.IsVote)">
+            <el-button plain type="info" size="small" @click.native="editLivePrograms(scope.row.ID, scope.row.IsVote)">
               编辑节目
+            </el-button>
+             <el-button plain type="success" size="small" @click.native="checkComments(scope.row.ID)">
+              查看互动
             </el-button>
           </template>
         </el-table-column>
@@ -130,6 +132,9 @@ export default {
           IsVote: IsVote
         }
       });
+    },
+    checkComments(id) {
+      this.$router.push(`/live/comment/${id}`);
     },
     addLive() {
       this.$API.addLiveRoom().then(res => {

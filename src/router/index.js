@@ -55,6 +55,7 @@ import liveList from '../views/live/list'
 import liveConfig from '../views/live/config'
 import liveProgram from '../views/live/program'
 import liveInfo from '../views/live/info'
+import liveComment from '../views/live/comment'
 
 import schoolCard from '../views/schoolCard/index'
 
@@ -300,6 +301,10 @@ let routes = [{
         path: '/live/info/:id',
         component: liveInfo,
         name: '节目信息'
+      },{
+        path:'/live/comment/:id',
+        component:liveComment,
+        name:'直播互动'
       }
     ]
   },{

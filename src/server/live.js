@@ -55,6 +55,27 @@ API.getProgramList = (para) => {
     })
   })
 }
+
+// 获取直播评论列表
+API.getCommentsList = (para) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl+'/api/LiveVideo/getlist',{params:para}).then((res)=>{
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+//删除评论
+API.delComment = (para) => {
+  return new Promise((resolve, reject) => {
+    axios.get(_APIurl+'/api/LiveVideo/delete',{params:para}).then((res)=>{
+      resolve(res.data.Content)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
 // 新增、编辑节目列表
 API.updateProgramList = (para) => {
   return new Promise((resolve, reject) => {
